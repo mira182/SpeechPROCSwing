@@ -39,21 +39,9 @@ public class SoundFilesTableModel extends DefaultTableModel {
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return false;
     }
-
-    @Override
-    public Object getValueAt(int row, int column) {
-        File file = files.get(row);
-        return file;
-        /*switch (column) {
-            case 0:
-                return file.getName();
-            case 1:
-                return file.getAbsolutePath();
-            case 2:
-                return getFileSize(file);
-            default:
-                return "";
-        }*/
+    
+    public File getFileFromRow(int rowIndex) {
+        return files.get(rowIndex);
     }
     
     private double getFileSize(File file) {

@@ -1,1 +1,9 @@
 /build/
+
+# Logs
+/*.log
+
+# wav, praat, csv
+/*.praat
+/*.wav
+/*.csv
