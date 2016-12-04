@@ -1,8 +1,8 @@
 package feec.cz.brno.speechproc.main;
 
-import feec.cz.brno.speechproc.calc.PraatFunctions;
 import feec.cz.brno.speechproc.gui.soundlist.SoundFilesTableModel;
-import feec.cz.brno.speechproc.visualize.GraphExample;
+import feec.cz.brno.speechproc.praat.PraatScript;
+import feec.cz.brno.speechproc.visualize.FormantCharts;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,7 +58,7 @@ public class SpeechProc extends javax.swing.JFrame {
     private void initComponents() {
 
         toolBar = new javax.swing.JToolBar();
-        praatScript = new javax.swing.JButton();
+        praatScriptBtn = new javax.swing.JButton();
         bottomPanel = new javax.swing.JPanel();
         progressBar = new javax.swing.JProgressBar();
         centerSplitPanel = new javax.swing.JSplitPane();
@@ -94,17 +94,17 @@ public class SpeechProc extends javax.swing.JFrame {
 
         toolBar.setRollover(true);
 
-        praatScript.setText("Run praat script");
-        praatScript.setToolTipText("Run praat script...");
-        praatScript.setFocusable(false);
-        praatScript.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        praatScript.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        praatScript.addActionListener(new java.awt.event.ActionListener() {
+        praatScriptBtn.setText("Run praat script");
+        praatScriptBtn.setToolTipText("Run praat script...");
+        praatScriptBtn.setFocusable(false);
+        praatScriptBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        praatScriptBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        praatScriptBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                praatScriptActionPerformed(evt);
+                praatScriptBtnActionPerformed(evt);
             }
         });
-        toolBar.add(praatScript);
+        toolBar.add(praatScriptBtn);
 
         getContentPane().add(toolBar, java.awt.BorderLayout.PAGE_START);
 
@@ -117,6 +117,8 @@ public class SpeechProc extends javax.swing.JFrame {
         centerSplitPanel.setResizeWeight(0.3);
         centerSplitPanel.setAutoscrolls(true);
         centerSplitPanel.setOneTouchExpandable(true);
+
+        leftPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Input files", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP));
 
         addSoundFileBtn.setText("Add");
         addSoundFileBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -177,7 +179,7 @@ public class SpeechProc extends javax.swing.JFrame {
         leftPanel.setLayout(leftPanelLayout);
         leftPanelLayout.setHorizontalGroup(
             leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(soundFilesListScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 484, Short.MAX_VALUE)
+            .addComponent(soundFilesListScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
             .addGroup(leftPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -198,7 +200,7 @@ public class SpeechProc extends javax.swing.JFrame {
                     .addComponent(searchFileTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(searchLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(soundFilesListScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
+                .addComponent(soundFilesListScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addSoundFileBtn)
@@ -316,7 +318,7 @@ public class SpeechProc extends javax.swing.JFrame {
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
     private void formantsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_formantsMenuItemActionPerformed
-        // TODO add your handling code here:
+        runPraatScript();
     }//GEN-LAST:event_formantsMenuItemActionPerformed
 
     private void removeSoundFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeSoundFileBtnActionPerformed
@@ -331,9 +333,9 @@ public class SpeechProc extends javax.swing.JFrame {
         addSoundFiles();
     }//GEN-LAST:event_addSoundFileBtnActionPerformed
 
-    private void praatScriptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_praatScriptActionPerformed
+    private void praatScriptBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_praatScriptBtnActionPerformed
         runPraatScript();
-    }//GEN-LAST:event_praatScriptActionPerformed
+    }//GEN-LAST:event_praatScriptBtnActionPerformed
 
     private void praatScriptMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_praatScriptMenuItemActionPerformed
         runPraatScript();
@@ -385,24 +387,20 @@ public class SpeechProc extends javax.swing.JFrame {
 
             for (File soundFile : soundFiles) {
 
-                parameters.add(soundFile.getName());
+                parameters.add(soundFile.getAbsolutePath());
 
 //            parameters.add(soundFile.getCanonicalPath().replaceFirst(soundFile.getName(), "test.csv"));
-                parameters.add("formantsListings.csv");
+                parameters.add("./formantsListings.csv");
 
-                // TODO 
-//            Path pathAbsolute = Paths.get();
-//            Path pathBase = Paths.get("/home/mira/");
-//            Path pathRelative = pathBase.relativize(pathAbsolute);
-                PraatFunctions praat = new PraatFunctions(praatScript, parameters);
-                String cmdOutput = praat.executeCommand();
+                PraatScript praat = new PraatScript(praatScript, parameters);
+                String cmdOutput = praat.runPraatScript();
 
                 logger.debug("Command line output: {}", cmdOutput);
 
                 JOptionPane.showMessageDialog(this, "Praat script has finished successfully.", "Success!", JOptionPane.INFORMATION_MESSAGE);
 
-                GraphExample graph = new GraphExample(new File("formantsListings.csv"));
-                centerTabbedPanel.add("Formants listing", graph.visualize());
+                FormantCharts graph = new FormantCharts();
+                centerTabbedPanel.add("Formants listing", graph.createFormantChart(new File("formantsListings.csv")));
             }
         }
     }
@@ -468,7 +466,7 @@ public class SpeechProc extends javax.swing.JFrame {
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openSoundFilesMenuItem;
     private javax.swing.JMenuItem pasteMenuItem;
-    private javax.swing.JButton praatScript;
+    private javax.swing.JButton praatScriptBtn;
     private javax.swing.JMenuItem praatScriptMenuItem;
     private javax.swing.JProgressBar progressBar;
     private javax.swing.JButton removeSoundFileBtn;

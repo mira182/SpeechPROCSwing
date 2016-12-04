@@ -1,4 +1,4 @@
-package feec.cz.brno.speechproc.calc;
+package feec.cz.brno.speechproc.praat;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,15 +13,13 @@ import org.apache.logging.log4j.Logger;
  *
  * @author mira
  */
-public class PraatFunctions {
-    private final static Logger logger = LogManager.getLogger(PraatFunctions.class);
+public class PraatScript {
+    private final static Logger logger = LogManager.getLogger(PraatScript.class);
     
     private final File praatScript;
     private final List<String> parameters;
-    
-//    public final static String command = "/usr/bin/praat \"formants.praat\" Plosive1.wav formants.csv";
 
-    public PraatFunctions(File praatScript, List<String> parameters) {
+    public PraatScript(File praatScript, List<String> parameters) {
         this.praatScript = praatScript;
         this.parameters = parameters;
     }
@@ -30,14 +28,17 @@ public class PraatFunctions {
         StringBuilder command = new StringBuilder();
         
         command.append("praat --run ");
-        command.append(praatScript.getName()).append(" ");
+        command.append(praatScript.getAbsolutePath()).append(" ");
         parameters.forEach(param -> command.append(param).append(" "));
         
         return command.toString();
     }
     
-    
-    public String executeCommand() {
+    /**
+     * Executes praat script using command line.
+     * @return standard output of the command
+     */
+    public String runPraatScript() {
 
 		StringBuilder output = new StringBuilder();
         String command = buildCommand();
