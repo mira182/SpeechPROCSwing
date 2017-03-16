@@ -1,7 +1,8 @@
 package feec.cz.brno.speechproc.main;
 
+import feec.cz.brno.speechproc.calc.api.runscript.PraatScript;
+import feec.cz.brno.speechproc.calc.api.runscript.ScriptRunner;
 import feec.cz.brno.speechproc.gui.soundlist.SoundFilesTableModel;
-import feec.cz.brno.speechproc.praat.PraatScript;
 import feec.cz.brno.speechproc.visualize.FormantCharts;
 import java.io.File;
 import java.util.ArrayList;
@@ -108,12 +109,13 @@ public class SpeechProc extends javax.swing.JFrame {
 
         getContentPane().add(toolBar, java.awt.BorderLayout.PAGE_START);
 
+        bottomPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
         bottomPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.TRAILING));
         bottomPanel.add(progressBar);
 
         getContentPane().add(bottomPanel, java.awt.BorderLayout.PAGE_END);
 
-        centerSplitPanel.setDividerLocation(200);
+        centerSplitPanel.setDividerLocation(300);
         centerSplitPanel.setResizeWeight(0.3);
         centerSplitPanel.setAutoscrolls(true);
         centerSplitPanel.setOneTouchExpandable(true);
@@ -179,7 +181,7 @@ public class SpeechProc extends javax.swing.JFrame {
         leftPanel.setLayout(leftPanelLayout);
         leftPanelLayout.setHorizontalGroup(
             leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(soundFilesListScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
+            .addComponent(soundFilesListScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
             .addGroup(leftPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -200,7 +202,7 @@ public class SpeechProc extends javax.swing.JFrame {
                     .addComponent(searchFileTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(searchLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(soundFilesListScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)
+                .addComponent(soundFilesListScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addSoundFileBtn)
@@ -318,7 +320,7 @@ public class SpeechProc extends javax.swing.JFrame {
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
     private void formantsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_formantsMenuItemActionPerformed
-        runPraatScript();
+        runFormantsListing();
     }//GEN-LAST:event_formantsMenuItemActionPerformed
 
     private void removeSoundFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeSoundFileBtnActionPerformed
@@ -348,6 +350,33 @@ public class SpeechProc extends javax.swing.JFrame {
     private void formant2MenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_formant2MenuItemActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_formant2MenuItemActionPerformed
+
+    private void runFormantsListing() {
+        List<File> soundFiles = getSelectedSoundFiles();
+        List<String> parameters = new ArrayList<>();
+        if (soundFiles.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No sound file selected!", "No file.", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        for (File soundFile : soundFiles) {
+
+            parameters.add(soundFile.getAbsolutePath());
+
+//            parameters.add(soundFile.getCanonicalPath().replaceFirst(soundFile.getName(), "test.csv"));
+            parameters.add("./formantsListings.csv");
+
+            PraatScript praat = new PraatScript(new File(getClass().getClassLoader().getResource("praat/formants.praat").getFile()), parameters);
+            String cmdOutput = praat.runScript();
+
+            logger.debug("Command line output: {}", cmdOutput);
+
+            JOptionPane.showMessageDialog(this, "Praat script has finished successfully.", "Success!", JOptionPane.INFORMATION_MESSAGE);
+
+            FormantCharts graph = new FormantCharts();
+            centerTabbedPanel.add("Formants listing", graph.createFormantChart(new File("formantsListings.csv"), true, true, false));
+        }
+    }
 
     private void addSoundFiles() {
         JFileChooser fileChooser = new JFileChooser();
@@ -392,15 +421,15 @@ public class SpeechProc extends javax.swing.JFrame {
 //            parameters.add(soundFile.getCanonicalPath().replaceFirst(soundFile.getName(), "test.csv"));
                 parameters.add("./formantsListings.csv");
 
-                PraatScript praat = new PraatScript(praatScript, parameters);
-                String cmdOutput = praat.runPraatScript();
+                ScriptRunner praat = new PraatScript(praatScript, parameters);
+                String cmdOutput = praat.runScript();
 
                 logger.debug("Command line output: {}", cmdOutput);
 
                 JOptionPane.showMessageDialog(this, "Praat script has finished successfully.", "Success!", JOptionPane.INFORMATION_MESSAGE);
 
                 FormantCharts graph = new FormantCharts();
-                centerTabbedPanel.add("Formants listing", graph.createFormantChart(new File("formantsListings.csv")));
+                centerTabbedPanel.add("Formants listing", graph.createFormantChart(new File("formantsListings.csv"), true, false, false));
             }
         }
     }

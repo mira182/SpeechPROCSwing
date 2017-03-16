@@ -1,10 +1,12 @@
+package feec.cz.brno.speechproc.testing.formants;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 
-import feec.cz.brno.speechproc.praat.PraatScript;
+import feec.cz.brno.speechproc.calc.api.runscript.PraatScript;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -51,7 +53,7 @@ public class PraatScriptTest {
 
         PraatScript pf = new PraatScript(new File("/home/mira/formants.praat"),
                 parameters);
-        pf.runPraatScript();
+        pf.runScript();
         File file = new File("/home/mira/test.csv");
         assertTrue("CSV file was not generated", file.exists());
     }

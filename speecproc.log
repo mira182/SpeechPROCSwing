@@ -1,3 +1,3 @@
-2016-12-04 17:40:39.432 feec.cz.brno.speechproc.main.SpeechProc DEBUG - Opening sound file: /home/mira/NetBeansProjects/SpeechPROCSwing/Plosive1.wav
-2016-12-04 17:40:46.922 feec.cz.brno.speechproc.praat.PraatScript DEBUG - Executing command: praat --run /home/mira/NetBeansProjects/SpeechPROCSwing/formants.praat /home/mira/NetBeansProjects/SpeechPROCSwing/Plosive1.wav ./formantsListings.csv 
-2016-12-04 17:40:49.164 feec.cz.brno.speechproc.main.SpeechProc DEBUG - Command line output: 
+2017-03-13 20:46:32.796 feec.cz.brno.speechproc.main.SpeechProc DEBUG - Opening sound file: /home/mira/NetBeansProjects/SpeechPROCSwing/Plosive1.wav
+2017-03-13 20:46:37.978 feec.cz.brno.speechproc.calc.api.runscript.PraatScript DEBUG - Executing command: praat --run /home/mira/NetBeansProjects/SpeechPROCSwing/build/classes/praat/formants.praat /home/mira/NetBeansProjects/SpeechPROCSwing/Plosive1.wav ./formantsListings.csv 
+2017-03-13 20:46:39.713 feec.cz.brno.speechproc.main.SpeechProc DEBUG - Command line output: 
