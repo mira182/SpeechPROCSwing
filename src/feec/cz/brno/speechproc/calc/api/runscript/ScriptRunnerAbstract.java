@@ -31,25 +31,25 @@ public abstract class ScriptRunnerAbstract implements ScriptRunner {
      */
     @Override
     public String runScript() {
-		StringBuilder output = new StringBuilder();
+        StringBuilder output = new StringBuilder();
         String command = buildCommand();
 
-		Process p;
-		try {
+        Process p;
+        try {
             logger.debug("Executing command: {}", command);
-			p = Runtime.getRuntime().exec(command);
-			p.waitFor();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            p = Runtime.getRuntime().exec(command);
+            p.waitFor();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
 
             String line;
-			while ((line = reader.readLine())!= null) {
-				output.append(line).append(System.getProperty("line.separator"));
-			}
-		} catch (IOException | InterruptedException e) {
+            while ((line = reader.readLine()) != null) {
+                output.append(line).append(System.getProperty("line.separator"));
+            }
+        } catch (IOException | InterruptedException e) {
             logger.error("Error during executing command", e);
-		}
+        }
 
-		return output.toString();
-	}
+        return output.toString();
+    }
     
 }

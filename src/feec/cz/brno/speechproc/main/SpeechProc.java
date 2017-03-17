@@ -1,13 +1,17 @@
 package feec.cz.brno.speechproc.main;
 
 import feec.cz.brno.speechproc.calc.api.runscript.PraatScript;
+import feec.cz.brno.speechproc.calc.api.runscript.ScriptParameter;
 import feec.cz.brno.speechproc.calc.api.runscript.ScriptRunner;
+import feec.cz.brno.speechproc.gui.formants.FormantParamsDialog;
 import feec.cz.brno.speechproc.gui.soundlist.SoundFilesTableModel;
 import feec.cz.brno.speechproc.visualize.FormantCharts;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
@@ -353,28 +357,39 @@ public class SpeechProc extends javax.swing.JFrame {
 
     private void runFormantsListing() {
         List<File> soundFiles = getSelectedSoundFiles();
-        List<String> parameters = new ArrayList<>();
+        Map<String, Object> parameters = new HashMap<>();
         if (soundFiles.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No sound file selected!", "No file.", JOptionPane.WARNING_MESSAGE);
             return;
         }
+        
+        FormantParamsDialog paramsDialog = new FormantParamsDialog(this, true);
+        paramsDialog.setVisible(true);
+        parameters.put("timeStep", paramsDialog.getTimeStep());
+        parameters.put("maxFormantsNumber", paramsDialog.getMaxFormantNumber());
+        parameters.put("maxFormants", paramsDialog.getMaxFormants());
+        parameters.put("windowLength", paramsDialog.getWindowLength());
+        parameters.put("preemphasis", paramsDialog.getPreemphasis());
 
-        for (File soundFile : soundFiles) {
+        if (paramsDialog.isOk()) {
+            for (File soundFile : soundFiles) {
 
-            parameters.add(soundFile.getAbsolutePath());
+                parameters.put("soundFilePath", soundFile.getAbsolutePath());
 
 //            parameters.add(soundFile.getCanonicalPath().replaceFirst(soundFile.getName(), "test.csv"));
-            parameters.add("./formantsListings.csv");
+                parameters.put("outputFile", "./formantsListings.csv");
 
-            PraatScript praat = new PraatScript(new File(getClass().getClassLoader().getResource("praat/formants.praat").getFile()), parameters);
-            String cmdOutput = praat.runScript();
+                PraatScript praat = new PraatScript(new File(getClass().getClassLoader().getResource("praat/formants.praat").getFile()), parameters);
+                String cmdOutput = praat.runScript();
 
-            logger.debug("Command line output: {}", cmdOutput);
+                logger.debug("Command line output: {}", cmdOutput);
 
-            JOptionPane.showMessageDialog(this, "Praat script has finished successfully.", "Success!", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Praat script has finished successfully.", "Success!", JOptionPane.INFORMATION_MESSAGE);
 
-            FormantCharts graph = new FormantCharts();
-            centerTabbedPanel.add("Formants listing", graph.createFormantChart(new File("formantsListings.csv"), true, true, false));
+                // TODO show only for wanted files => on button press or something
+                FormantCharts graph = new FormantCharts();
+                centerTabbedPanel.add("Formants listing", graph.createFormantChart(new File("formantsListings.csv"), true, true, false));
+            }
         }
     }
 
@@ -405,7 +420,7 @@ public class SpeechProc extends javax.swing.JFrame {
         fileChooser.setFileFilter(new FileNameExtensionFilter("Praat script (*.praat)", "praat"));
 
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            List<String> parameters = new ArrayList<>();
+            Map<String, Object> parameters = new HashMap<>();
             File praatScript = fileChooser.getSelectedFile();
             List<File> soundFiles = getSelectedSoundFiles();
 
@@ -416,10 +431,10 @@ public class SpeechProc extends javax.swing.JFrame {
 
             for (File soundFile : soundFiles) {
 
-                parameters.add(soundFile.getAbsolutePath());
+                parameters.put("soundFilePath", soundFile.getAbsolutePath());
 
 //            parameters.add(soundFile.getCanonicalPath().replaceFirst(soundFile.getName(), "test.csv"));
-                parameters.add("./formantsListings.csv");
+                parameters.put("outputFile", "./formantsListings.csv");
 
                 ScriptRunner praat = new PraatScript(praatScript, parameters);
                 String cmdOutput = praat.runScript();
