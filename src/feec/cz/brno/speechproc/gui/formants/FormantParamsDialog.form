@@ -24,71 +24,106 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
+          <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <EmptySpace pref="247" max="32767" attributes="0"/>
                       <Component id="cancelButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="okButton" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
+                      <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="preemphasisFormattedTextField" max="32767" attributes="0"/>
-                          <Component id="windowLengthFormattedTextField" max="32767" attributes="0"/>
-                          <Component id="timeStepFormattedTextField" pref="168" max="32767" attributes="0"/>
-                          <Component id="maxFormantsNumberFormattedTextField" max="32767" attributes="0"/>
-                          <Component id="maxFormantFormattedTextField" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="jLabel5" min="-2" pref="196" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="preemphasisTextField" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="jLabel4" min="-2" pref="196" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="windowLengthTextField" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="jLabel3" min="-2" pref="196" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="maxFormantTextField" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jLabel1" alignment="0" min="-2" pref="196" max="-2" attributes="0"/>
+                                  <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="maxFormantsNumberTextField" max="32767" attributes="0"/>
+                                  <Component id="timeStepTextField" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
                       </Group>
                   </Group>
               </Group>
+              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="errorMessageLabel" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+          <Group type="102" attributes="0">
+              <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                  <Component id="timeStepFormattedTextField" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="2" pref="2" max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="timeStepTextField" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+              <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                  <Component id="maxFormantsNumberFormattedTextField" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="2" pref="2" max="-2" attributes="0"/>
+                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="maxFormantsNumberTextField" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                  <Component id="maxFormantFormattedTextField" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="2" pref="2" max="-2" attributes="0"/>
+                      <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="maxFormantTextField" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                  <Component id="windowLengthFormattedTextField" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="2" pref="2" max="-2" attributes="0"/>
+                      <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="windowLengthTextField" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-                  <Component id="preemphasisFormattedTextField" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="2" pref="2" max="-2" attributes="0"/>
+                      <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="preemphasisTextField" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
+              <Component id="errorMessageLabel" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="okButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cancelButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="okButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -97,7 +132,7 @@
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
         <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-          <ComponentRef name="timeStepFormattedTextField"/>
+          <ComponentRef name="timeStepTextField"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Time step (s):"/>
       </Properties>
@@ -105,7 +140,7 @@
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
         <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-          <ComponentRef name="maxFormantsNumberFormattedTextField"/>
+          <ComponentRef name="maxFormantsNumberTextField"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Maximum formants number:"/>
       </Properties>
@@ -113,7 +148,7 @@
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
         <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-          <ComponentRef name="maxFormantsNumberFormattedTextField"/>
+          <ComponentRef name="maxFormantTextField"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Maximum formant (Hz):"/>
       </Properties>
@@ -121,7 +156,7 @@
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>
         <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-          <ComponentRef name="windowLengthFormattedTextField"/>
+          <ComponentRef name="windowLengthTextField"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Window length (s):"/>
       </Properties>
@@ -129,7 +164,7 @@
     <Component class="javax.swing.JLabel" name="jLabel5">
       <Properties>
         <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-          <ComponentRef name="preemphasisFormattedTextField"/>
+          <ComponentRef name="preemphasisTextField"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Pre-emphasis (Hz):"/>
       </Properties>
@@ -150,37 +185,61 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JFormattedTextField" name="timeStepFormattedTextField">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="0.005"/>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(doubleFormatter)"/>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="timeStepFormattedTextField.addPropertyChangeListener(this);"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.swing.JFormattedTextField" name="maxFormantsNumberFormattedTextField">
+    <Component class="javax.swing.JTextField" name="maxFormantsNumberTextField">
       <Properties>
         <Property name="text" type="java.lang.String" value="5"/>
+        <Property name="name" type="java.lang.String" value="maximum formants number" noResource="true"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="maxFormantsNumberTextField.getDocument().addDocumentListener(doubleValidator);"/>
+      </AuxValues>
     </Component>
-    <Component class="javax.swing.JFormattedTextField" name="windowLengthFormattedTextField">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="0.025"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JFormattedTextField" name="preemphasisFormattedTextField">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="50"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JFormattedTextField" name="maxFormantFormattedTextField">
+    <Component class="javax.swing.JTextField" name="maxFormantTextField">
       <Properties>
         <Property name="text" type="java.lang.String" value="5000"/>
-        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[36, 19]"/>
-        </Property>
+        <Property name="name" type="java.lang.String" value="maximum formant" noResource="true"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="maxFormantTextField.getDocument().addDocumentListener(integerValidator);"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JTextField" name="windowLengthTextField">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="0.025"/>
+        <Property name="name" type="java.lang.String" value="window length" noResource="true"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="windowLengthTextField.getDocument().addDocumentListener(doubleValidator);"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JTextField" name="preemphasisTextField">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="50"/>
+        <Property name="name" type="java.lang.String" value="pre-emphasis" noResource="true"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="preemphasisTextField.getDocument().addDocumentListener(integerValidator);"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JTextField" name="timeStepTextField">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="0.005"/>
+        <Property name="name" type="java.lang.String" value="time step" noResource="true"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="timeStepTextField.getDocument().addDocumentListener(doubleValidator);"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="errorMessageLabel">
+      <Properties>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="ff" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Erorr"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="errorMessageLabel.setVisible(false);"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

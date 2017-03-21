@@ -6,13 +6,9 @@
 package feec.cz.brno.speechproc.gui.formants;
 
 import feec.cz.brno.speechproc.main.SpeechProc;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import javax.swing.InputVerifier;
-import javax.swing.JComponent;
-import javax.swing.JFormattedTextField;
-import javax.swing.JOptionPane;
-import javax.swing.text.NumberFormatter;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,7 +16,7 @@ import org.apache.logging.log4j.Logger;
  *
  * @author hynstm
  */
-public class FormantParamsDialog extends javax.swing.JDialog implements PropertyChangeListener {
+public class FormantParamsDialog extends javax.swing.JDialog {
     
     private final static Logger logger = LogManager.getLogger(SpeechProc.class);
     
@@ -32,8 +28,8 @@ public class FormantParamsDialog extends javax.swing.JDialog implements Property
     
     private boolean ok = false;
     
-    private NumberFormatter doubleFormatter;
-    private NumberFormatter integerFormatter = new NumberFormatter();
+    private DoubleValidatorListener doubleValidator = new DoubleValidatorListener();
+    private IntegerValidatorListener integerValidator = new IntegerValidatorListener();
 
     /**
      * Creates new form FormantParamsDialog
@@ -42,18 +38,8 @@ public class FormantParamsDialog extends javax.swing.JDialog implements Property
      */
     public FormantParamsDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        initFormatters();
         initComponents();
         setLocationRelativeTo(parent);
-    }
-    
-    private void initFormatters() {
-        doubleFormatter = new NumberFormatter();
-        doubleFormatter.setValueClass(Double.class);
-        doubleFormatter.setCommitsOnValidEdit(true);
-        
-        integerFormatter.setValueClass(Integer.class);
-        integerFormatter.setCommitsOnValidEdit(true);
     }
 
     /**
@@ -72,28 +58,29 @@ public class FormantParamsDialog extends javax.swing.JDialog implements Property
         jLabel5 = new javax.swing.JLabel();
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
-        timeStepFormattedTextField = new javax.swing.JFormattedTextField(doubleFormatter);
-        maxFormantsNumberFormattedTextField = new javax.swing.JFormattedTextField();
-        windowLengthFormattedTextField = new javax.swing.JFormattedTextField();
-        preemphasisFormattedTextField = new javax.swing.JFormattedTextField();
-        maxFormantFormattedTextField = new javax.swing.JFormattedTextField();
+        maxFormantsNumberTextField = new javax.swing.JTextField();
+        maxFormantTextField = new javax.swing.JTextField();
+        windowLengthTextField = new javax.swing.JTextField();
+        preemphasisTextField = new javax.swing.JTextField();
+        timeStepTextField = new javax.swing.JTextField();
+        errorMessageLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Formants parameters");
 
-        jLabel1.setLabelFor(timeStepFormattedTextField);
+        jLabel1.setLabelFor(timeStepTextField);
         jLabel1.setText("Time step (s):");
 
-        jLabel2.setLabelFor(maxFormantsNumberFormattedTextField);
+        jLabel2.setLabelFor(maxFormantsNumberTextField);
         jLabel2.setText("Maximum formants number:");
 
-        jLabel3.setLabelFor(maxFormantsNumberFormattedTextField);
+        jLabel3.setLabelFor(maxFormantTextField);
         jLabel3.setText("Maximum formant (Hz):");
 
-        jLabel4.setLabelFor(windowLengthFormattedTextField);
+        jLabel4.setLabelFor(windowLengthTextField);
         jLabel4.setText("Window length (s):");
 
-        jLabel5.setLabelFor(preemphasisFormattedTextField);
+        jLabel5.setLabelFor(preemphasisTextField);
         jLabel5.setText("Pre-emphasis (Hz):");
 
         okButton.setText("OK");
@@ -110,121 +97,131 @@ public class FormantParamsDialog extends javax.swing.JDialog implements Property
             }
         });
 
-        timeStepFormattedTextField.setText("0.005");
-        timeStepFormattedTextField.addPropertyChangeListener(this);
+        maxFormantsNumberTextField.getDocument().addDocumentListener(doubleValidator);
+        maxFormantsNumberTextField.setText("5");
+        maxFormantsNumberTextField.setName("maximum formants number"); // NOI18N
 
-        maxFormantsNumberFormattedTextField.setText("5");
+        maxFormantTextField.getDocument().addDocumentListener(integerValidator);
+        maxFormantTextField.setText("5000");
+        maxFormantTextField.setName("maximum formant"); // NOI18N
 
-        windowLengthFormattedTextField.setText("0.025");
+        windowLengthTextField.getDocument().addDocumentListener(doubleValidator);
+        windowLengthTextField.setText("0.025");
+        windowLengthTextField.setName("window length"); // NOI18N
 
-        preemphasisFormattedTextField.setText("50");
+        preemphasisTextField.getDocument().addDocumentListener(integerValidator);
+        preemphasisTextField.setText("50");
+        preemphasisTextField.setName("pre-emphasis"); // NOI18N
 
-        maxFormantFormattedTextField.setText("5000");
-        maxFormantFormattedTextField.setPreferredSize(new java.awt.Dimension(36, 19));
+        timeStepTextField.getDocument().addDocumentListener(doubleValidator);
+        timeStepTextField.setText("0.005");
+        timeStepTextField.setName("time step"); // NOI18N
+
+        errorMessageLabel.setVisible(false);
+        errorMessageLabel.setForeground(new java.awt.Color(255, 0, 0));
+        errorMessageLabel.setText("Erorr");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addContainerGap(247, Short.MAX_VALUE)
                         .addComponent(cancelButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(okButton))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(preemphasisFormattedTextField)
-                            .addComponent(windowLengthFormattedTextField)
-                            .addComponent(timeStepFormattedTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
-                            .addComponent(maxFormantsNumberFormattedTextField)
-                            .addComponent(maxFormantFormattedTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(preemphasisTextField))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(windowLengthTextField))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(maxFormantTextField))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(maxFormantsNumberTextField)
+                                    .addComponent(timeStepTextField))))))
+                .addGap(12, 12, 12))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(errorMessageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(timeStepFormattedTextField))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(jLabel1))
+                    .addComponent(timeStepTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(maxFormantsNumberFormattedTextField))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(jLabel2))
+                    .addComponent(maxFormantsNumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(maxFormantFormattedTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(jLabel3))
+                    .addComponent(maxFormantTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(windowLengthFormattedTextField))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(jLabel4))
+                    .addComponent(windowLengthTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
-                    .addComponent(preemphasisFormattedTextField))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(jLabel5))
+                    .addComponent(preemphasisTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(errorMessageLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(okButton)
-                    .addComponent(cancelButton))
-                .addContainerGap())
+                    .addComponent(cancelButton)
+                    .addComponent(okButton))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-        try {
-            timeStep = ((Number) timeStepFormattedTextField.getValue()).doubleValue();
-            maxFormantsNumber = ((Number) maxFormantsNumberFormattedTextField.getValue()).doubleValue();
-            maxFormants = ((Number) maxFormantFormattedTextField.getValue()).intValue();
-            windowLength = ((Number) windowLengthFormattedTextField.getValue()).doubleValue();
-            preemphasis = ((Number) preemphasisFormattedTextField.getValue()).intValue();
-            
-            ok = true;
-            
-            dispose();
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Wrong format of number!", e.getMessage(), JOptionPane.ERROR_MESSAGE);
-        }
+        timeStep = Double.parseDouble(timeStepTextField.getText());
+        maxFormantsNumber = Double.parseDouble(maxFormantsNumberTextField.getText());
+        maxFormants = Integer.parseInt(maxFormantTextField.getText());
+        windowLength = Double.parseDouble(windowLengthTextField.getText());
+        preemphasis = Integer.parseInt(preemphasisTextField.getText());
+
+        ok = true;
+
+        dispose();
     }//GEN-LAST:event_okButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
-    
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        Object source = evt.getSource();
-        if (source == timeStepFormattedTextField) {
-            timeStep = (Double) timeStepFormattedTextField.getValue();
-        } 
-//else if (source == rateField) {
-//            rate = ((Number) rateField.getValue()).doubleValue();
-//        } else if (source == numPeriodsField) {
-//            numPeriods = ((Number) numPeriodsField.getValue()).intValue();
-//        }
 
-        
-        
-//        try {
-//            Double.parseDouble(evt.getNewValue().toString());
-//        } catch (NumberFormatException e) {
-//            errorMessageLabel.setText("Value format of time step is incorrect!");
-//            logger.error("Value format of time step is incorrect!", e);
-//        }
-    }
-    
     public Double getTimeStep() {
         return timeStep;
     }
@@ -251,17 +248,99 @@ public class FormantParamsDialog extends javax.swing.JDialog implements Property
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
+    private javax.swing.JLabel errorMessageLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JFormattedTextField maxFormantFormattedTextField;
-    private javax.swing.JFormattedTextField maxFormantsNumberFormattedTextField;
+    private javax.swing.JTextField maxFormantTextField;
+    private javax.swing.JTextField maxFormantsNumberTextField;
     private javax.swing.JButton okButton;
-    private javax.swing.JFormattedTextField preemphasisFormattedTextField;
-    private javax.swing.JFormattedTextField timeStepFormattedTextField;
-    private javax.swing.JFormattedTextField windowLengthFormattedTextField;
+    private javax.swing.JTextField preemphasisTextField;
+    private javax.swing.JTextField timeStepTextField;
+    private javax.swing.JTextField windowLengthTextField;
     // End of variables declaration//GEN-END:variables
+
+    class DoubleValidatorListener implements DocumentListener {
+
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+            validateNumber(e);
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+            validateNumber(e);
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+            validateNumber(e);
+        }
+        
+        private void validateNumber(DocumentEvent e) {
+            JTextField textField;
+            if (e.getDocument() == timeStepTextField.getDocument()) {
+                textField = timeStepTextField;
+            } else if (e.getDocument() == maxFormantsNumberTextField.getDocument()) {
+                textField = maxFormantsNumberTextField;
+            } else {
+                textField = windowLengthTextField;
+            }
+
+            try {
+                Double.parseDouble(textField.getText());
+                errorMessageLabel.setVisible(false);
+                okButton.setEnabled(true);
+                pack();
+            } catch (NumberFormatException ex) {
+                errorMessageLabel.setText("Value format of " + textField.getName() + " is incorrect!");
+                errorMessageLabel.setVisible(true);
+                okButton.setEnabled(false);
+                pack();
+            }
+        }
+    }
+    
+    class IntegerValidatorListener implements DocumentListener {
+
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+            validateNumber(e);
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+            validateNumber(e);
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+            validateNumber(e);
+        }
+
+        private void validateNumber(DocumentEvent e) {
+            JTextField textField;
+            if (e.getDocument() == maxFormantTextField.getDocument()) {
+                textField = maxFormantTextField;
+            } else {
+                textField = preemphasisTextField;
+            }
+
+            try {
+                Integer.parseInt(textField.getText());
+                errorMessageLabel.setVisible(false);
+                okButton.setEnabled(true);
+                pack();
+            } catch (NumberFormatException ex) {
+                errorMessageLabel.setText("Value format of " + textField.getName() + " is incorrect!");
+                errorMessageLabel.setVisible(true);
+                okButton.setEnabled(false);
+                pack();
+            }
+        }
+    }
+    
 
 }

@@ -1,7 +1,6 @@
 package feec.cz.brno.speechproc.main;
 
 import feec.cz.brno.speechproc.calc.api.runscript.PraatScript;
-import feec.cz.brno.speechproc.calc.api.runscript.ScriptParameter;
 import feec.cz.brno.speechproc.calc.api.runscript.ScriptRunner;
 import feec.cz.brno.speechproc.gui.formants.FormantParamsDialog;
 import feec.cz.brno.speechproc.gui.soundlist.SoundFilesTableModel;

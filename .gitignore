@@ -1,7 +1,7 @@
 /build/
 
 # Logs
-/*.log
+*.log
 
 # wav, praat, csv
 /*.wav
