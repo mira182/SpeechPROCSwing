@@ -28,37 +28,29 @@ public abstract class ScriptRunnerAbstract implements ScriptRunner {
     /**
      * Executes praat script using command line.
      * @return standard output of the command
+     * @throws java.io.IOException
+     * @throws java.lang.InterruptedException
+     * @throws feec.cz.brno.speechproc.calc.api.runscript.ScriptRunException
      */
     @Override
-    public String runScript() {
+    public void runScript() throws IOException, InterruptedException, ScriptRunException {
         StringBuilder output = new StringBuilder();
         String command = buildCommand();
 
         Process proc;
-        try {
-            logger.debug("Executing command: {}", command);
-            proc = Runtime.getRuntime().exec(command);
-            proc.waitFor();
-            BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+        logger.debug("Executing command: {}", command);
+        proc = Runtime.getRuntime().exec(command);
+        proc.waitFor();
 
-            BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+        BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
 
-            String line;
-            while ((line = stdInput.readLine()) != null) {
-                System.out.println("pica: " + line);
-                output.append(line).append(System.getProperty("line.separator"));
-            }
-            while ((line = stdError.readLine()) != null) {
-                System.out.println("kurva: " + line);
-                output.append(line).append(System.getProperty("line.separator"));
-            }
-            
-            logger.info("Command line output: {}", output.toString());
-        } catch (IOException | InterruptedException e) {
-            logger.error("Error during executing command", e);
+        String line;
+        while ((line = stdError.readLine()) != null) {
+            output.append(line).append(System.getProperty("line.separator"));
         }
 
-        return output.toString();
+        if (!output.toString().isEmpty())
+            throw new ScriptRunException("Command line output: " + output.toString());
     }
     
 }

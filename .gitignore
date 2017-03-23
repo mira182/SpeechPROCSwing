@@ -7,3 +7,7 @@
 /*.wav
 /*.csv
 /dist/
+
+# others
+nbproject/private/private.properties
+nbproject/private/private.xml

@@ -14,9 +14,9 @@ public class PraatScript extends ScriptRunnerAbstract {
     private final static Logger logger = LogManager.getLogger(PraatScript.class);
     
     private final File praatScriptName;
-    private final List<ScriptParameter> parameters;
+    private final ScriptParameters parameters;
 
-    public PraatScript(File praatScript, List<ScriptParameter> parameters) {
+    public PraatScript(File praatScript, ScriptParameters parameters) {
         this.praatScriptName = praatScript;
         this.parameters = parameters;
     }

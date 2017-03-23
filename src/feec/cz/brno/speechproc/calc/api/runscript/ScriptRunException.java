@@ -5,13 +5,16 @@
  */
 package feec.cz.brno.speechproc.calc.api.runscript;
 
-import java.io.IOException;
+import java.util.logging.Logger;
 
 /**
  *
- * @author mira
+ * @author hynstm
  */
-public interface ScriptRunner {
+public class ScriptRunException extends Exception {
+
+    public ScriptRunException(String string) {
+        super(string);
+    }
     
-    void runScript() throws IOException, InterruptedException, ScriptRunException;
 }

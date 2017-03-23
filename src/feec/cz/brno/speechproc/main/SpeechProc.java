@@ -1,19 +1,28 @@
 package feec.cz.brno.speechproc.main;
 
+import au.com.bytecode.opencsv.CSVReader;
 import feec.cz.brno.speechproc.calc.api.formants.FormantsImpl;
 import feec.cz.brno.speechproc.calc.api.formants.IFormants;
 import feec.cz.brno.speechproc.calc.api.runscript.PraatScript;
+import feec.cz.brno.speechproc.calc.api.runscript.ScriptRunException;
 import feec.cz.brno.speechproc.calc.api.runscript.ScriptParameter;
+import feec.cz.brno.speechproc.calc.api.runscript.ScriptParameters;
 import feec.cz.brno.speechproc.calc.api.runscript.ScriptRunner;
 import feec.cz.brno.speechproc.gui.formants.FormantParamsDialog;
+import feec.cz.brno.speechproc.gui.formants.FormantsResultPanel;
 import feec.cz.brno.speechproc.gui.soundlist.SoundFilesTableModel;
 import feec.cz.brno.speechproc.visualize.formants.chart.FormantCharts;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.RowFilter;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -333,36 +342,52 @@ public class SpeechProc extends javax.swing.JFrame {
 
     private void formantsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_formantsMenuItemActionPerformed
         List<File> soundFiles = getSelectedSoundFiles();
-        List<ScriptParameter> parameters = new ArrayList<>();
-        if (soundFiles.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No sound file selected!", "No file.", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
 
+        if (soundFiles.isEmpty()) 
+            JOptionPane.showMessageDialog(this, "No sound file selected!", "No file.", JOptionPane.WARNING_MESSAGE);
+        
         FormantParamsDialog paramsDialog = new FormantParamsDialog(this, true);
         paramsDialog.setVisible(true);
-        
+
+        ScriptParameters parameters = new ScriptParameters();
         parameters.add(new ScriptParameter("timeStep", paramsDialog.getTimeStep()));
         parameters.add(new ScriptParameter("maxFormantsNumber", paramsDialog.getMaxFormantNumber()));
         parameters.add(new ScriptParameter("maxFormants", paramsDialog.getMaxFormants()));
         parameters.add(new ScriptParameter("windowLength", paramsDialog.getWindowLength()));
         parameters.add(new ScriptParameter("preemphasis", paramsDialog.getPreemphasis()));
-//            parameters.add(soundFile.getCanonicalPath().replaceFirst(soundFile.getName(), "test.csv"));
-        parameters.add(new ScriptParameter("outputFile", new File(System.getProperty("user.dir") + System.getProperty("file.separator") + "formantsListing.csv")));
 
         if (paramsDialog.isOk()) {
+            for (File soundFile : soundFiles) {
+//            parameters.add(soundFile.getCanonicalPath().replaceFirst(soundFile.getName(), "test.csv"));
 
-            formants.formantListings(soundFiles, parameters);
+                parameters.add(new ScriptParameter("soundFilePath", soundFile.getAbsolutePath()));
+                parameters.add(new ScriptParameter("outputFile", new File(System.getProperty("user.dir") + System.getProperty("file.separator") + "formantsListing.csv")));
+                
+                File csvResultFile;
+                CSVReader reader;
+                try {
+                    csvResultFile = formants.formantListings(parameters);
+                    reader = new CSVReader(new FileReader(csvResultFile));
 
-            JOptionPane.showMessageDialog(this, "Praat script has finished successfully.", "Success!", JOptionPane.INFORMATION_MESSAGE);
+                    centerTabbedPanel.add("Formants", new FormantsResultPanel(reader));
+                } catch (IOException | InterruptedException | ScriptRunException ex) {
+                    logger.error("Praat script run has failed: ", ex);
+                    JOptionPane.showMessageDialog(this, ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
-            // TODO show only for wanted files => on button press or something
-            // result of praat script will be some statistics/data => table
-            // plus button "show graph"
-            FormantCharts graph = new FormantCharts();
-            centerTabbedPanel.add("Formants listing", graph.createFormantChart(
-                    new File(System.getProperty("user.dir") + System.getProperty("file.separator") + "formantsListing.csv"),
-                    true, true, false));
+                JOptionPane.showMessageDialog(this, "Praat script has finished successfully.", "Success!", JOptionPane.INFORMATION_MESSAGE);
+
+                // TODO show only for wanted files => on button press or something
+                // result of praat script will be some statistics/data => table
+                // plus button "show graph"
+//                FormantCharts graph = new FormantCharts();
+//                centerTabbedPanel.add("Formants listing", graph.createFormantChart(
+//                        csvResult,
+//                        true, true, false));
+                
+                parameters = new ScriptParameters();
+            }
         }
     }//GEN-LAST:event_formantsMenuItemActionPerformed
 
@@ -425,7 +450,7 @@ public class SpeechProc extends javax.swing.JFrame {
         fileChooser.setFileFilter(new FileNameExtensionFilter("Praat script (*.praat)", "praat"));
 
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            List<ScriptParameter> parameters = new ArrayList<>();
+            ScriptParameters parameters = new ScriptParameters();
             File praatScript = fileChooser.getSelectedFile();
             List<File> soundFiles = getSelectedSoundFiles();
 
@@ -442,9 +467,13 @@ public class SpeechProc extends javax.swing.JFrame {
                 parameters.add(new ScriptParameter("outputFile", "./formantsListings.csv"));
 
                 ScriptRunner praat = new PraatScript(praatScript, parameters);
-                String cmdOutput = praat.runScript();
-
-                logger.debug("Command line output: {}", cmdOutput);
+                try {
+                    praat.runScript();
+                } catch (IOException | InterruptedException | ScriptRunException ex) {
+                    logger.error("Praat script run has failed: ", ex);
+                    JOptionPane.showMessageDialog(this, ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
                 JOptionPane.showMessageDialog(this, "Praat script has finished successfully.", "Success!", JOptionPane.INFORMATION_MESSAGE);
 
