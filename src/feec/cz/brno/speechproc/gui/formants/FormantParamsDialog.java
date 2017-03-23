@@ -21,10 +21,10 @@ public class FormantParamsDialog extends javax.swing.JDialog {
     private final static Logger logger = LogManager.getLogger(SpeechProc.class);
     
     private Double timeStep;
-    private Integer maxFormants;
+    private Double maxFormants;
     private Double maxFormantsNumber;
     private Double windowLength;
-    private Integer preemphasis;
+    private Double preemphasis;
     
     private boolean ok = false;
     
@@ -40,6 +40,7 @@ public class FormantParamsDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(parent);
+        getRootPane().setDefaultButton(okButton);
     }
 
     /**
@@ -209,9 +210,9 @@ public class FormantParamsDialog extends javax.swing.JDialog {
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         timeStep = Double.parseDouble(timeStepTextField.getText());
         maxFormantsNumber = Double.parseDouble(maxFormantsNumberTextField.getText());
-        maxFormants = Integer.parseInt(maxFormantTextField.getText());
+        maxFormants = Double.parseDouble(maxFormantTextField.getText());
         windowLength = Double.parseDouble(windowLengthTextField.getText());
-        preemphasis = Integer.parseInt(preemphasisTextField.getText());
+        preemphasis = Double.parseDouble(preemphasisTextField.getText());
 
         ok = true;
 
@@ -226,7 +227,7 @@ public class FormantParamsDialog extends javax.swing.JDialog {
         return timeStep;
     }
 
-    public Integer getMaxFormants() {
+    public Double getMaxFormants() {
         return maxFormants;
     }
 
@@ -238,7 +239,7 @@ public class FormantParamsDialog extends javax.swing.JDialog {
         return windowLength;
     }
 
-    public Integer getPreemphasis() {
+    public Double getPreemphasis() {
         return preemphasis;
     }
 

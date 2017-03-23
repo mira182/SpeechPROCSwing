@@ -34,17 +34,26 @@ public abstract class ScriptRunnerAbstract implements ScriptRunner {
         StringBuilder output = new StringBuilder();
         String command = buildCommand();
 
-        Process p;
+        Process proc;
         try {
             logger.debug("Executing command: {}", command);
-            p = Runtime.getRuntime().exec(command);
-            p.waitFor();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            proc = Runtime.getRuntime().exec(command);
+            proc.waitFor();
+            BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+
+            BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
 
             String line;
-            while ((line = reader.readLine()) != null) {
+            while ((line = stdInput.readLine()) != null) {
+                System.out.println("pica: " + line);
                 output.append(line).append(System.getProperty("line.separator"));
             }
+            while ((line = stdError.readLine()) != null) {
+                System.out.println("kurva: " + line);
+                output.append(line).append(System.getProperty("line.separator"));
+            }
+            
+            logger.info("Command line output: {}", output.toString());
         } catch (IOException | InterruptedException e) {
             logger.error("Error during executing command", e);
         }

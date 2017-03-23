@@ -1,4 +1,4 @@
-package feec.cz.brno.speechproc.visualize;
+package feec.cz.brno.speechproc.visualize.formants.chart;
 
 import au.com.bytecode.opencsv.CSVReader;
 import java.awt.geom.Ellipse2D;
@@ -53,7 +53,7 @@ public class FormantCharts {
                 double Time = getDouble(readNextLine[0]);
 //                double intensity = Double.valueOf(readNextLine[1]);
                 F1 = getDouble(readNextLine[3]);
-                value.add(F2);
+                value.add(F1);
                 if (formant2) F2 = getDouble(readNextLine[5]);
                 if (formant3) F3 = getDouble(readNextLine[7]);
                 if (formant4) F4 = getDouble(readNextLine[9]);
@@ -92,7 +92,6 @@ public class FormantCharts {
         } catch (IOException ex) {
             logger.error("Couldn't create formants chart.", ex);
         }
-                    System.out.println(FormantCharts.mean(value));
         return chartPanel;
     }
  
@@ -103,13 +102,4 @@ public class FormantCharts {
             return Double.NaN;
         }
     }
-    
-    public static double mean(List<Double> m) {
-        double sum = 0;
-        for (int i = 0; i < m.size(); i++) {
-            sum += m.get(i);
-        }
-        return sum / m.size();
-    }
-
 }

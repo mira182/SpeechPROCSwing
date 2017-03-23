@@ -1,16 +1,17 @@
 package feec.cz.brno.speechproc.main;
 
+import feec.cz.brno.speechproc.calc.api.formants.FormantsImpl;
+import feec.cz.brno.speechproc.calc.api.formants.IFormants;
 import feec.cz.brno.speechproc.calc.api.runscript.PraatScript;
+import feec.cz.brno.speechproc.calc.api.runscript.ScriptParameter;
 import feec.cz.brno.speechproc.calc.api.runscript.ScriptRunner;
 import feec.cz.brno.speechproc.gui.formants.FormantParamsDialog;
 import feec.cz.brno.speechproc.gui.soundlist.SoundFilesTableModel;
-import feec.cz.brno.speechproc.visualize.FormantCharts;
+import feec.cz.brno.speechproc.visualize.formants.chart.FormantCharts;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
@@ -35,6 +36,8 @@ public class SpeechProc extends javax.swing.JFrame {
 
     private SoundFilesTableModel soundFilesTableModel = new SoundFilesTableModel();
     private TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(soundFilesTableModel);
+    
+    private IFormants formants = new FormantsImpl();
 
     /**
      * Creates new form SpeechProc
@@ -84,8 +87,8 @@ public class SpeechProc extends javax.swing.JFrame {
         formantsMenuItem = new javax.swing.JMenuItem();
         formant1MenuItem = new javax.swing.JMenuItem();
         formant2MenuItem = new javax.swing.JMenuItem();
-        copyMenuItem = new javax.swing.JMenuItem();
-        pasteMenuItem = new javax.swing.JMenuItem();
+        formant3MenuItem = new javax.swing.JMenuItem();
+        f0MenuItem = new javax.swing.JMenuItem();
         deleteMenuItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         contentsMenuItem = new javax.swing.JMenuItem();
@@ -259,6 +262,7 @@ public class SpeechProc extends javax.swing.JFrame {
         editMenu.setMnemonic('e');
         editMenu.setText("Formants");
 
+        formantsMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         formantsMenuItem.setMnemonic('t');
         formantsMenuItem.setText("Formants listing");
         formantsMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -286,13 +290,18 @@ public class SpeechProc extends javax.swing.JFrame {
         });
         editMenu.add(formant2MenuItem);
 
-        copyMenuItem.setMnemonic('y');
-        copyMenuItem.setText("Copy");
-        editMenu.add(copyMenuItem);
+        formant3MenuItem.setMnemonic('y');
+        formant3MenuItem.setText("Formant 3");
+        editMenu.add(formant3MenuItem);
 
-        pasteMenuItem.setMnemonic('p');
-        pasteMenuItem.setText("Paste");
-        editMenu.add(pasteMenuItem);
+        f0MenuItem.setMnemonic('p');
+        f0MenuItem.setText("F0 (pitch)");
+        f0MenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                f0MenuItemActionPerformed(evt);
+            }
+        });
+        editMenu.add(f0MenuItem);
 
         deleteMenuItem.setMnemonic('d');
         deleteMenuItem.setText("Delete");
@@ -323,7 +332,38 @@ public class SpeechProc extends javax.swing.JFrame {
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
     private void formantsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_formantsMenuItemActionPerformed
-        runFormantsListing();
+        List<File> soundFiles = getSelectedSoundFiles();
+        List<ScriptParameter> parameters = new ArrayList<>();
+        if (soundFiles.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No sound file selected!", "No file.", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        FormantParamsDialog paramsDialog = new FormantParamsDialog(this, true);
+        paramsDialog.setVisible(true);
+        
+        parameters.add(new ScriptParameter("timeStep", paramsDialog.getTimeStep()));
+        parameters.add(new ScriptParameter("maxFormantsNumber", paramsDialog.getMaxFormantNumber()));
+        parameters.add(new ScriptParameter("maxFormants", paramsDialog.getMaxFormants()));
+        parameters.add(new ScriptParameter("windowLength", paramsDialog.getWindowLength()));
+        parameters.add(new ScriptParameter("preemphasis", paramsDialog.getPreemphasis()));
+//            parameters.add(soundFile.getCanonicalPath().replaceFirst(soundFile.getName(), "test.csv"));
+        parameters.add(new ScriptParameter("outputFile", new File(System.getProperty("user.dir") + System.getProperty("file.separator") + "formantsListing.csv")));
+
+        if (paramsDialog.isOk()) {
+
+            formants.formantListings(soundFiles, parameters);
+
+            JOptionPane.showMessageDialog(this, "Praat script has finished successfully.", "Success!", JOptionPane.INFORMATION_MESSAGE);
+
+            // TODO show only for wanted files => on button press or something
+            // result of praat script will be some statistics/data => table
+            // plus button "show graph"
+            FormantCharts graph = new FormantCharts();
+            centerTabbedPanel.add("Formants listing", graph.createFormantChart(
+                    new File(System.getProperty("user.dir") + System.getProperty("file.separator") + "formantsListing.csv"),
+                    true, true, false));
+        }
     }//GEN-LAST:event_formantsMenuItemActionPerformed
 
     private void removeSoundFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeSoundFileBtnActionPerformed
@@ -354,43 +394,9 @@ public class SpeechProc extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_formant2MenuItemActionPerformed
 
-    private void runFormantsListing() {
-        List<File> soundFiles = getSelectedSoundFiles();
-        Map<String, Object> parameters = new HashMap<>();
-        if (soundFiles.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No sound file selected!", "No file.", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+    private void f0MenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_f0MenuItemActionPerformed
         
-        FormantParamsDialog paramsDialog = new FormantParamsDialog(this, true);
-        paramsDialog.setVisible(true);
-        parameters.put("timeStep", paramsDialog.getTimeStep());
-        parameters.put("maxFormantsNumber", paramsDialog.getMaxFormantNumber());
-        parameters.put("maxFormants", paramsDialog.getMaxFormants());
-        parameters.put("windowLength", paramsDialog.getWindowLength());
-        parameters.put("preemphasis", paramsDialog.getPreemphasis());
-
-        if (paramsDialog.isOk()) {
-            for (File soundFile : soundFiles) {
-
-                parameters.put("soundFilePath", soundFile.getAbsolutePath());
-
-//            parameters.add(soundFile.getCanonicalPath().replaceFirst(soundFile.getName(), "test.csv"));
-                parameters.put("outputFile", "./formantsListings.csv");
-
-                PraatScript praat = new PraatScript(new File(getClass().getClassLoader().getResource("praat/formants.praat").getFile()), parameters);
-                String cmdOutput = praat.runScript();
-
-                logger.debug("Command line output: {}", cmdOutput);
-
-                JOptionPane.showMessageDialog(this, "Praat script has finished successfully.", "Success!", JOptionPane.INFORMATION_MESSAGE);
-
-                // TODO show only for wanted files => on button press or something
-                FormantCharts graph = new FormantCharts();
-                centerTabbedPanel.add("Formants listing", graph.createFormantChart(new File("formantsListings.csv"), true, true, false));
-            }
-        }
-    }
+    }//GEN-LAST:event_f0MenuItemActionPerformed
 
     private void addSoundFiles() {
         JFileChooser fileChooser = new JFileChooser();
@@ -419,7 +425,7 @@ public class SpeechProc extends javax.swing.JFrame {
         fileChooser.setFileFilter(new FileNameExtensionFilter("Praat script (*.praat)", "praat"));
 
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            Map<String, Object> parameters = new HashMap<>();
+            List<ScriptParameter> parameters = new ArrayList<>();
             File praatScript = fileChooser.getSelectedFile();
             List<File> soundFiles = getSelectedSoundFiles();
 
@@ -430,10 +436,10 @@ public class SpeechProc extends javax.swing.JFrame {
 
             for (File soundFile : soundFiles) {
 
-                parameters.put("soundFilePath", soundFile.getAbsolutePath());
+                parameters.add(new ScriptParameter("soundFilePath", soundFile.getAbsolutePath()));
 
 //            parameters.add(soundFile.getCanonicalPath().replaceFirst(soundFile.getName(), "test.csv"));
-                parameters.put("outputFile", "./formantsListings.csv");
+                parameters.add(new ScriptParameter("outputFile", "./formantsListings.csv"));
 
                 ScriptRunner praat = new PraatScript(praatScript, parameters);
                 String cmdOutput = praat.runScript();
@@ -496,19 +502,19 @@ public class SpeechProc extends javax.swing.JFrame {
     private javax.swing.JSplitPane centerSplitPanel;
     private javax.swing.JTabbedPane centerTabbedPanel;
     private javax.swing.JMenuItem contentsMenuItem;
-    private javax.swing.JMenuItem copyMenuItem;
     private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exitMenuItem;
+    private javax.swing.JMenuItem f0MenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenuItem formant1MenuItem;
     private javax.swing.JMenuItem formant2MenuItem;
+    private javax.swing.JMenuItem formant3MenuItem;
     private javax.swing.JMenuItem formantsMenuItem;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JPanel leftPanel;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openSoundFilesMenuItem;
-    private javax.swing.JMenuItem pasteMenuItem;
     private javax.swing.JButton praatScriptBtn;
     private javax.swing.JMenuItem praatScriptMenuItem;
     private javax.swing.JProgressBar progressBar;

@@ -7,6 +7,7 @@ package feec.cz.brno.speechproc.testing.formants;
  */
 
 import feec.cz.brno.speechproc.calc.api.runscript.PraatScript;
+import feec.cz.brno.speechproc.calc.api.runscript.ScriptParameter;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -16,6 +17,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertTrue;
+
 
 /**
  *
@@ -23,7 +26,7 @@ import org.junit.Test;
  */
 public class PraatScriptTest {
 
-    private List<String> parameters;
+    private List<ScriptParameter> parameters;
 
     @Before
     public void setUp() {
@@ -46,11 +49,10 @@ public class PraatScriptTest {
         Path pathRelative = pathBase.relativize(pathAbsolute);
         
         System.out.println("Relative path to sound file from current director: " + pathRelative.toString());
-        parameters.add(pathRelative.toString());
-        parameters.add("/home/mira/test.csv");
+        parameters.add(new ScriptParameter("soundFile", pathRelative.toString()));
+        parameters.add(new ScriptParameter("outputFile", "/home/mira/test.csv"));
 
-        PraatScript pf = new PraatScript(new File("/home/mira/formants.praat"),
-                parameters);
+        PraatScript pf = new PraatScript(new File("/home/mira/formants.praat"), parameters);
         pf.runScript();
         File file = new File("/home/mira/test.csv");
         assertTrue("CSV file was not generated", file.exists());
