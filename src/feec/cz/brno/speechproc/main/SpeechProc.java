@@ -1,28 +1,29 @@
 package feec.cz.brno.speechproc.main;
 
-import au.com.bytecode.opencsv.CSVReader;
+import feec.cz.brno.speechproc.calc.api.f0.IF0;
+import feec.cz.brno.speechproc.calc.api.f0.IF0Impl;
 import feec.cz.brno.speechproc.calc.api.formants.FormantsImpl;
 import feec.cz.brno.speechproc.calc.api.formants.IFormants;
 import feec.cz.brno.speechproc.calc.api.runscript.PraatScript;
-import feec.cz.brno.speechproc.calc.api.runscript.ScriptRunException;
 import feec.cz.brno.speechproc.calc.api.runscript.ScriptParameter;
 import feec.cz.brno.speechproc.calc.api.runscript.ScriptParameters;
+import feec.cz.brno.speechproc.calc.api.runscript.ScriptRunException;
 import feec.cz.brno.speechproc.calc.api.runscript.ScriptRunner;
+import feec.cz.brno.speechproc.gui.JTabbedPaneCloseButton;
+import feec.cz.brno.speechproc.gui.f0.F0ParamsDialog;
+import feec.cz.brno.speechproc.gui.f0.F0ResultPanel;
+import feec.cz.brno.speechproc.gui.formants.FormantCharts;
 import feec.cz.brno.speechproc.gui.formants.FormantParamsDialog;
 import feec.cz.brno.speechproc.gui.formants.FormantsResultPanel;
 import feec.cz.brno.speechproc.gui.soundlist.SoundFilesTableModel;
-import feec.cz.brno.speechproc.visualize.formants.chart.FormantCharts;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.RowFilter;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -45,8 +46,16 @@ public class SpeechProc extends javax.swing.JFrame {
 
     private SoundFilesTableModel soundFilesTableModel = new SoundFilesTableModel();
     private TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(soundFilesTableModel);
-    
+
     private IFormants formants = new FormantsImpl();
+    private IF0 f0pitch = new IF0Impl();
+    
+    private static int tabCount = 0;
+    
+    private static final int IMG_WIDTH = 32;
+    private static final int IMG_HEIGHT= 32;
+    
+    private static File tmpFolder = null;
 
     /**
      * Creates new form SpeechProc
@@ -85,7 +94,7 @@ public class SpeechProc extends javax.swing.JFrame {
         soundFilesTable = new javax.swing.JTable();
         searchFileTextField = new javax.swing.JTextField();
         searchLabel = new javax.swing.JLabel();
-        centerTabbedPanel = new javax.swing.JTabbedPane();
+        centerTabbedPanel = new JTabbedPaneCloseButton();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openSoundFilesMenuItem = new javax.swing.JMenuItem();
@@ -94,9 +103,6 @@ public class SpeechProc extends javax.swing.JFrame {
         exitMenuItem = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
         formantsMenuItem = new javax.swing.JMenuItem();
-        formant1MenuItem = new javax.swing.JMenuItem();
-        formant2MenuItem = new javax.swing.JMenuItem();
-        formant3MenuItem = new javax.swing.JMenuItem();
         f0MenuItem = new javax.swing.JMenuItem();
         deleteMenuItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
@@ -137,14 +143,16 @@ public class SpeechProc extends javax.swing.JFrame {
 
         leftPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Input files", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP));
 
-        addSoundFileBtn.setText("Add");
+        addSoundFileBtn.setIcon(new ImageIcon(((new ImageIcon(getClass().getClassLoader().getResource("images/icons/plus.png"))).getImage()).getScaledInstance(IMG_WIDTH, IMG_HEIGHT, java.awt.Image.SCALE_SMOOTH)));
+        addSoundFileBtn.setToolTipText("Add file");
         addSoundFileBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addSoundFileBtnActionPerformed(evt);
             }
         });
 
-        removeSoundFileBtn.setText("Remove");
+        removeSoundFileBtn.setIcon(new ImageIcon(((new ImageIcon(getClass().getClassLoader().getResource("images/icons/minus.png"))).getImage()).getScaledInstance(IMG_WIDTH, IMG_HEIGHT, java.awt.Image.SCALE_SMOOTH)));
+        removeSoundFileBtn.setToolTipText("Remove file");
         removeSoundFileBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 removeSoundFileBtnActionPerformed(evt);
@@ -196,7 +204,7 @@ public class SpeechProc extends javax.swing.JFrame {
         leftPanel.setLayout(leftPanelLayout);
         leftPanelLayout.setHorizontalGroup(
             leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(soundFilesListScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
+            .addComponent(soundFilesListScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addGroup(leftPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -217,7 +225,7 @@ public class SpeechProc extends javax.swing.JFrame {
                     .addComponent(searchFileTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(searchLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(soundFilesListScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
+                .addComponent(soundFilesListScrollPanel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addSoundFileBtn)
@@ -269,7 +277,7 @@ public class SpeechProc extends javax.swing.JFrame {
         menuBar.add(fileMenu);
 
         editMenu.setMnemonic('e');
-        editMenu.setText("Formants");
+        editMenu.setText("Parameters");
 
         formantsMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         formantsMenuItem.setMnemonic('t');
@@ -281,28 +289,7 @@ public class SpeechProc extends javax.swing.JFrame {
         });
         editMenu.add(formantsMenuItem);
 
-        formant1MenuItem.setMnemonic('t');
-        formant1MenuItem.setText("Formant 1");
-        formant1MenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                formant1MenuItemActionPerformed(evt);
-            }
-        });
-        editMenu.add(formant1MenuItem);
-
-        formant2MenuItem.setMnemonic('t');
-        formant2MenuItem.setText("Formant 2");
-        formant2MenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                formant2MenuItemActionPerformed(evt);
-            }
-        });
-        editMenu.add(formant2MenuItem);
-
-        formant3MenuItem.setMnemonic('y');
-        formant3MenuItem.setText("Formant 3");
-        editMenu.add(formant3MenuItem);
-
+        f0MenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         f0MenuItem.setMnemonic('p');
         f0MenuItem.setText("F0 (pitch)");
         f0MenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -337,62 +324,58 @@ public class SpeechProc extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
+        if (tmpFolder != null) {
+            if (tmpFolder.exists())
+                tmpFolder.delete();
+        }
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
     private void formantsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_formantsMenuItemActionPerformed
         List<File> soundFiles = getSelectedSoundFiles();
 
-        if (soundFiles.isEmpty()) 
+        if (soundFiles.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No sound file selected!", "No file.", JOptionPane.WARNING_MESSAGE);
-        
-        FormantParamsDialog paramsDialog = new FormantParamsDialog(this, true);
+            return;
+        }
+
+        FormantParamsDialog paramsDialog = new FormantParamsDialog(this);
         paramsDialog.setVisible(true);
 
-        ScriptParameters parameters = new ScriptParameters();
-        parameters.add(new ScriptParameter("timeStep", paramsDialog.getTimeStep()));
-        parameters.add(new ScriptParameter("maxFormantsNumber", paramsDialog.getMaxFormantNumber()));
-        parameters.add(new ScriptParameter("maxFormants", paramsDialog.getMaxFormants()));
-        parameters.add(new ScriptParameter("windowLength", paramsDialog.getWindowLength()));
-        parameters.add(new ScriptParameter("preemphasis", paramsDialog.getPreemphasis()));
+        createTmpFolder();
+        
+        for (File soundFile : soundFiles) {
+            ScriptParameters parameters = new ScriptParameters();
+            parameters.add(new ScriptParameter("timeStep", paramsDialog.getTimeStep()));
+            parameters.add(new ScriptParameter("maxFormantsNumber", IFormants.MAXIMUX_FORMANTS));
+            parameters.add(new ScriptParameter("maxFormants", paramsDialog.getMaxFormant()));
+            parameters.add(new ScriptParameter("windowLength", paramsDialog.getWindowLength()));
+            parameters.add(new ScriptParameter("preemphasis", paramsDialog.getPreemphasis()));
+            parameters.add(new ScriptParameter("soundFilePath", soundFile.getAbsolutePath()));
+            parameters.add(new ScriptParameter(IFormants.OUTPUT_FILE_PARAM, new File(System.getProperty("user.dir") + System.getProperty("file.separator") + "tmpFiles" + System.getProperty("file.separator") + soundFile.getName() + 
+                    "-formantsListing.csv")));
 
-        if (paramsDialog.isOk()) {
-            for (File soundFile : soundFiles) {
-//            parameters.add(soundFile.getCanonicalPath().replaceFirst(soundFile.getName(), "test.csv"));
+            try {
+                File csvResultFile = formants.formantListings(parameters);
 
-                parameters.add(new ScriptParameter("soundFilePath", soundFile.getAbsolutePath()));
-                parameters.add(new ScriptParameter("outputFile", new File(System.getProperty("user.dir") + System.getProperty("file.separator") + "formantsListing.csv")));
+                FormantsResultPanel formantResultPanel = new FormantsResultPanel(soundFile, csvResultFile, paramsDialog.isMeanCalc(), paramsDialog.isMedianCalc());
+                centerTabbedPanel.add("Formants of " + soundFile.getName(), formantResultPanel);
                 
-                File csvResultFile;
-                CSVReader reader;
-                try {
-                    csvResultFile = formants.formantListings(parameters);
-                    reader = new CSVReader(new FileReader(csvResultFile));
-
-                    centerTabbedPanel.add("Formants", new FormantsResultPanel(reader));
-                } catch (IOException | InterruptedException | ScriptRunException ex) {
-                    logger.error("Praat script run has failed: ", ex);
-                    JOptionPane.showMessageDialog(this, ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                JOptionPane.showMessageDialog(this, "Praat script has finished successfully.", "Success!", JOptionPane.INFORMATION_MESSAGE);
-
-                // TODO show only for wanted files => on button press or something
-                // result of praat script will be some statistics/data => table
-                // plus button "show graph"
-//                FormantCharts graph = new FormantCharts();
-//                centerTabbedPanel.add("Formants listing", graph.createFormantChart(
-//                        csvResult,
-//                        true, true, false));
-                
-                parameters = new ScriptParameters();
+                csvResultFile.deleteOnExit();
+            } catch (IOException | InterruptedException | ScriptRunException ex) {
+                logger.error("Praat script run has failed: ", ex);
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+                return;
             }
+
+            JOptionPane.showMessageDialog(this, "Praat script has finished successfully.", "Success!", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_formantsMenuItemActionPerformed
 
     private void removeSoundFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeSoundFileBtnActionPerformed
-        // TODO add your handling code here:
+        for (int row : soundFilesTable.getSelectedRows()) {
+            soundFilesTableModel.removeRow(row);
+        }
     }//GEN-LAST:event_removeSoundFileBtnActionPerformed
 
     private void openSoundFilesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openSoundFilesMenuItemActionPerformed
@@ -411,16 +394,38 @@ public class SpeechProc extends javax.swing.JFrame {
         runPraatScript();
     }//GEN-LAST:event_praatScriptMenuItemActionPerformed
 
-    private void formant1MenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_formant1MenuItemActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_formant1MenuItemActionPerformed
-
-    private void formant2MenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_formant2MenuItemActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_formant2MenuItemActionPerformed
-
     private void f0MenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_f0MenuItemActionPerformed
+        List<File> soundFiles = getSelectedSoundFiles();
+
+        if (soundFiles.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No sound file selected!", "No file.", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         
+        F0ParamsDialog paramsDialog = new F0ParamsDialog(this);
+        paramsDialog.setVisible(true);
+        
+        createTmpFolder();
+
+        for (File soundFile : soundFiles) {
+            ScriptParameters parameters = new ScriptParameters();
+            parameters.add(new ScriptParameter("timeStep", paramsDialog.getTimeStep()));
+            parameters.add(new ScriptParameter("soundFilePath", soundFile.getAbsolutePath()));
+            parameters.add(new ScriptParameter(IFormants.OUTPUT_FILE_PARAM, new File(System.getProperty("user.dir") + System.getProperty("file.separator") + "tmpFiles" + System.getProperty("file.separator") + soundFile.getName() + "-f0pitch.csv")));
+
+            try {
+                File csvResultFile = f0pitch.f0Pitch(parameters);
+                
+                F0ResultPanel f0panel = new F0ResultPanel(soundFile, csvResultFile);
+                centerTabbedPanel.add("F0 pitch of " + soundFile.getName(), f0panel);
+                
+                csvResultFile.deleteOnExit();
+            } catch (IOException | InterruptedException | ScriptRunException ex) {
+                logger.error("Praat script run has failed: ", ex);
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
     }//GEN-LAST:event_f0MenuItemActionPerformed
 
     private void addSoundFiles() {
@@ -478,7 +483,7 @@ public class SpeechProc extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Praat script has finished successfully.", "Success!", JOptionPane.INFORMATION_MESSAGE);
 
                 FormantCharts graph = new FormantCharts();
-                centerTabbedPanel.add("Formants listing", graph.createFormantChart(new File("formantsListings.csv"), true, false, false));
+                centerTabbedPanel.add("Formants listing", graph.createFormantChart(new File("formantsListings.csv"), true, false));
             }
         }
     }
@@ -493,6 +498,12 @@ public class SpeechProc extends javax.swing.JFrame {
         }
 
         return selectedSoundFiles;
+    }
+    
+    private void createTmpFolder() {
+        tmpFolder = new File(System.getProperty("user.dir") + System.getProperty("file.separator") + "tmpFiles");
+        if (!tmpFolder.exists())
+            tmpFolder.mkdir();
     }
 
     /**
@@ -536,9 +547,6 @@ public class SpeechProc extends javax.swing.JFrame {
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenuItem f0MenuItem;
     private javax.swing.JMenu fileMenu;
-    private javax.swing.JMenuItem formant1MenuItem;
-    private javax.swing.JMenuItem formant2MenuItem;
-    private javax.swing.JMenuItem formant3MenuItem;
     private javax.swing.JMenuItem formantsMenuItem;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JPanel leftPanel;

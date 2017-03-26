@@ -6,9 +6,7 @@ package feec.cz.brno.speechproc.testing.formants;
  * and open the template in the editor.
  */
 
-import feec.cz.brno.speechproc.calc.api.runscript.PraatScript;
 import feec.cz.brno.speechproc.calc.api.runscript.ScriptParameter;
-import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -17,7 +15,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -39,24 +36,24 @@ public class PraatScriptTest {
 //        file.delete();
     }
 
-    @Test
-    public void testPraatCommand() {
-        String currentDirectory = Paths.get("").toAbsolutePath().toString();
-        System.out.println("Current directory: " + currentDirectory);
-        
-        Path pathAbsolute = Paths.get("/home/mira/Plosive1.wav");
-        Path pathBase = Paths.get(currentDirectory);
-        Path pathRelative = pathBase.relativize(pathAbsolute);
-        
-        System.out.println("Relative path to sound file from current director: " + pathRelative.toString());
-        parameters.add(new ScriptParameter("soundFile", pathRelative.toString()));
-        parameters.add(new ScriptParameter("outputFile", "/home/mira/test.csv"));
-
-        PraatScript pf = new PraatScript(new File("/home/mira/formants.praat"), parameters);
-        pf.runScript();
-        File file = new File("/home/mira/test.csv");
-        assertTrue("CSV file was not generated", file.exists());
-    }
+//    @Test
+//    public void testPraatCommand() throws IOException {
+//        String currentDirectory = Paths.get("").toAbsolutePath().toString();
+//        System.out.println("Current directory: " + currentDirectory);
+//        
+//        Path pathAbsolute = Paths.get("/home/mira/Plosive1.wav");
+//        Path pathBase = Paths.get(currentDirectory);
+//        Path pathRelative = pathBase.relativize(pathAbsolute);
+//        
+//        System.out.println("Relative path to sound file from current director: " + pathRelative.toString());
+//        parameters.add(new ScriptParameter("soundFile", pathRelative.toString()));
+//        parameters.add(new ScriptParameter("outputFile", "/home/mira/test.csv"));
+//
+//        PraatScript pf = new PraatScript(new File("/home/mira/formants.praat"), parameters);
+//        pf.runScript();
+//        File file = new File("/home/mira/test.csv");
+//        assertTrue("CSV file was not generated", file.exists());
+//    }
     
     @Test
     public void testRelativePaths() {

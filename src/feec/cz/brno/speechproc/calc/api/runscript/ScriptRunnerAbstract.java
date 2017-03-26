@@ -27,7 +27,6 @@ public abstract class ScriptRunnerAbstract implements ScriptRunner {
     
     /**
      * Executes praat script using command line.
-     * @return standard output of the command
      * @throws java.io.IOException
      * @throws java.lang.InterruptedException
      * @throws feec.cz.brno.speechproc.calc.api.runscript.ScriptRunException

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package feec.cz.brno.speechproc.calc.api.formants;
+package feec.cz.brno.speechproc.calc.api.f0;
 
 import feec.cz.brno.speechproc.calc.api.runscript.ScriptParameters;
 import feec.cz.brno.speechproc.calc.api.runscript.ScriptRunException;
@@ -14,15 +14,7 @@ import java.io.IOException;
  *
  * @author mira
  */
-public interface IFormants {
+public interface IF0 {
     
-    String OUTPUT_FILE_PARAM = "outputFile";
-    
-    int COLUMN_FORMANT_1 = 3;
-    int COLUMN_FORMANT_2 = 5;
-    int COLUMN_FORMANT_3 = 7;
-    
-    double MAXIMUX_FORMANTS = 3.0;
-    
-    File formantListings(ScriptParameters parameters) throws IOException, InterruptedException, ScriptRunException;
+    File f0Pitch(ScriptParameters parameters) throws IOException, InterruptedException, ScriptRunException;
 }

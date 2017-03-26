@@ -1,9 +1,9 @@
 form arguments
- real timeStep
- real maxFormantsNumber
- real maxFormant
- real windowLength
- real preemphasis
+ real timeStep 0.005
+ real maxFormantsNumber 3.0
+ real maxFormant 5000.0
+ real windowLength 0.025
+ real preemphasis 50.0
  word File
  word outputFileName
 endform

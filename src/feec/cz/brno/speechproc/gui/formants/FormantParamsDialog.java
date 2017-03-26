@@ -21,23 +21,25 @@ public class FormantParamsDialog extends javax.swing.JDialog {
     private final static Logger logger = LogManager.getLogger(SpeechProc.class);
     
     private Double timeStep;
-    private Double maxFormants;
-    private Double maxFormantsNumber;
+    private Double maxFormant;
     private Double windowLength;
     private Double preemphasis;
     
-    private boolean ok = false;
+    private boolean avgCalc;
+    private boolean meanCalc;
+    private boolean medianCalc;
     
-    private DoubleValidatorListener doubleValidator = new DoubleValidatorListener();
-    private IntegerValidatorListener integerValidator = new IntegerValidatorListener();
+    public static final double MAXIMUM_FORMANTS = 3.0;
+    
+    private final DoubleValidatorListener doubleValidator = new DoubleValidatorListener();
 
     /**
      * Creates new form FormantParamsDialog
      * @param parent
      * @param modal
      */
-    public FormantParamsDialog(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public FormantParamsDialog(java.awt.Frame parent) {
+        super(parent, true);
         initComponents();
         setLocationRelativeTo(parent);
         getRootPane().setDefaultButton(okButton);
@@ -53,27 +55,26 @@ public class FormantParamsDialog extends javax.swing.JDialog {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
-        maxFormantsNumberTextField = new javax.swing.JTextField();
         maxFormantTextField = new javax.swing.JTextField();
         windowLengthTextField = new javax.swing.JTextField();
         preemphasisTextField = new javax.swing.JTextField();
         timeStepTextField = new javax.swing.JTextField();
         errorMessageLabel = new javax.swing.JLabel();
+        meanCheckBox = new javax.swing.JCheckBox();
+        jLabel6 = new javax.swing.JLabel();
+        medianCheckBox = new javax.swing.JCheckBox();
+        avgCheckBox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Formants parameters");
 
         jLabel1.setLabelFor(timeStepTextField);
         jLabel1.setText("Time step (s):");
-
-        jLabel2.setLabelFor(maxFormantsNumberTextField);
-        jLabel2.setText("Maximum formants number:");
 
         jLabel3.setLabelFor(maxFormantTextField);
         jLabel3.setText("Maximum formant (Hz):");
@@ -98,11 +99,7 @@ public class FormantParamsDialog extends javax.swing.JDialog {
             }
         });
 
-        maxFormantsNumberTextField.getDocument().addDocumentListener(doubleValidator);
-        maxFormantsNumberTextField.setText("5");
-        maxFormantsNumberTextField.setName("maximum formants number"); // NOI18N
-
-        maxFormantTextField.getDocument().addDocumentListener(integerValidator);
+        maxFormantTextField.getDocument().addDocumentListener(doubleValidator);
         maxFormantTextField.setText("5000");
         maxFormantTextField.setName("maximum formant"); // NOI18N
 
@@ -110,7 +107,7 @@ public class FormantParamsDialog extends javax.swing.JDialog {
         windowLengthTextField.setText("0.025");
         windowLengthTextField.setName("window length"); // NOI18N
 
-        preemphasisTextField.getDocument().addDocumentListener(integerValidator);
+        preemphasisTextField.getDocument().addDocumentListener(doubleValidator);
         preemphasisTextField.setText("50");
         preemphasisTextField.setName("pre-emphasis"); // NOI18N
 
@@ -122,20 +119,33 @@ public class FormantParamsDialog extends javax.swing.JDialog {
         errorMessageLabel.setForeground(new java.awt.Color(255, 0, 0));
         errorMessageLabel.setText("Erorr");
 
+        meanCheckBox.setText("mean");
+
+        jLabel6.setText("Additional calculations:");
+
+        medianCheckBox.setText("median");
+
+        avgCheckBox.setText("average");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(247, Short.MAX_VALUE)
-                        .addComponent(cancelButton)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(okButton))
+                        .addComponent(timeStepTextField)
+                        .addGap(12, 12, 12))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(cancelButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(okButton))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -148,19 +158,18 @@ public class FormantParamsDialog extends javax.swing.JDialog {
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(maxFormantTextField))
+                            .addComponent(errorMessageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel2))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(maxFormantsNumberTextField)
-                                    .addComponent(timeStepTextField))))))
-                .addGap(12, 12, 12))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(errorMessageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(meanCheckBox)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(medianCheckBox)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(avgCheckBox))
+                                    .addComponent(jLabel6))
+                                .addGap(152, 152, 152)))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -171,13 +180,7 @@ public class FormantParamsDialog extends javax.swing.JDialog {
                         .addGap(2, 2, 2)
                         .addComponent(jLabel1))
                     .addComponent(timeStepTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addComponent(jLabel2))
-                    .addComponent(maxFormantsNumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(2, 2, 2)
@@ -198,6 +201,13 @@ public class FormantParamsDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(errorMessageLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(meanCheckBox)
+                    .addComponent(medianCheckBox)
+                    .addComponent(avgCheckBox))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelButton)
                     .addComponent(okButton))
@@ -209,12 +219,13 @@ public class FormantParamsDialog extends javax.swing.JDialog {
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         timeStep = Double.parseDouble(timeStepTextField.getText());
-        maxFormantsNumber = Double.parseDouble(maxFormantsNumberTextField.getText());
-        maxFormants = Double.parseDouble(maxFormantTextField.getText());
+        maxFormant = Double.parseDouble(maxFormantTextField.getText());
         windowLength = Double.parseDouble(windowLengthTextField.getText());
         preemphasis = Double.parseDouble(preemphasisTextField.getText());
-
-        ok = true;
+        
+        meanCalc = meanCheckBox.isSelected();
+        medianCalc = medianCheckBox.isSelected();
+        avgCalc = avgCheckBox.isSelected();
 
         dispose();
     }//GEN-LAST:event_okButtonActionPerformed
@@ -227,14 +238,6 @@ public class FormantParamsDialog extends javax.swing.JDialog {
         return timeStep;
     }
 
-    public Double getMaxFormants() {
-        return maxFormants;
-    }
-
-    public Double getMaxFormantNumber() {
-        return maxFormantsNumber;
-    }
-
     public Double getWindowLength() {
         return windowLength;
     }
@@ -243,20 +246,34 @@ public class FormantParamsDialog extends javax.swing.JDialog {
         return preemphasis;
     }
 
-    public boolean isOk() {
-        return ok;
+    public Double getMaxFormant() {
+        return maxFormant;
+    }
+
+    public boolean isAvgCalc() {
+        return avgCalc;
+    }
+
+    public boolean isMeanCalc() {
+        return meanCalc;
+    }
+
+    public boolean isMedianCalc() {
+        return medianCalc;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox avgCheckBox;
     private javax.swing.JButton cancelButton;
     private javax.swing.JLabel errorMessageLabel;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JTextField maxFormantTextField;
-    private javax.swing.JTextField maxFormantsNumberTextField;
+    private javax.swing.JCheckBox meanCheckBox;
+    private javax.swing.JCheckBox medianCheckBox;
     private javax.swing.JButton okButton;
     private javax.swing.JTextField preemphasisTextField;
     private javax.swing.JTextField timeStepTextField;
@@ -284,8 +301,10 @@ public class FormantParamsDialog extends javax.swing.JDialog {
             JTextField textField;
             if (e.getDocument() == timeStepTextField.getDocument()) {
                 textField = timeStepTextField;
-            } else if (e.getDocument() == maxFormantsNumberTextField.getDocument()) {
-                textField = maxFormantsNumberTextField;
+            } else if (e.getDocument() == maxFormantTextField.getDocument()) {
+                textField = maxFormantTextField;
+            } else if (e.getDocument() == preemphasisTextField.getDocument()) {
+                textField = preemphasisTextField;
             } else {
                 textField = windowLengthTextField;
             }
@@ -303,45 +322,4 @@ public class FormantParamsDialog extends javax.swing.JDialog {
             }
         }
     }
-    
-    class IntegerValidatorListener implements DocumentListener {
-
-        @Override
-        public void insertUpdate(DocumentEvent e) {
-            validateNumber(e);
-        }
-
-        @Override
-        public void removeUpdate(DocumentEvent e) {
-            validateNumber(e);
-        }
-
-        @Override
-        public void changedUpdate(DocumentEvent e) {
-            validateNumber(e);
-        }
-
-        private void validateNumber(DocumentEvent e) {
-            JTextField textField;
-            if (e.getDocument() == maxFormantTextField.getDocument()) {
-                textField = maxFormantTextField;
-            } else {
-                textField = preemphasisTextField;
-            }
-
-            try {
-                Integer.parseInt(textField.getText());
-                errorMessageLabel.setVisible(false);
-                okButton.setEnabled(true);
-                pack();
-            } catch (NumberFormatException ex) {
-                errorMessageLabel.setText("Value format of " + textField.getName() + " is incorrect!");
-                errorMessageLabel.setVisible(true);
-                okButton.setEnabled(false);
-                pack();
-            }
-        }
-    }
-    
-
 }
