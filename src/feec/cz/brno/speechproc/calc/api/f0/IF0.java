@@ -16,5 +16,8 @@ import java.io.IOException;
  */
 public interface IF0 {
     
+    String OUTPUT_FILE_PARAM = "outputFile";
+    String OUTPUT_FILE_STATS_PARAM = "f0StatsOutputFile";
+    
     File f0Pitch(ScriptParameters parameters) throws IOException, InterruptedException, ScriptRunException;
 }

@@ -17,7 +17,16 @@ public class F0ParamsDialog extends javax.swing.JDialog {
     private final DoubleValidatorListener doubleValidator = new DoubleValidatorListener();
     
     private Double timeStep;
-
+    private Double pitchMin;
+    private Double pitchMax;
+    
+    private boolean meanCalc;
+    private boolean medianCalc;
+    private boolean stdevCalc;
+    
+    private boolean jitterCalc;
+    private boolean shimmerCalc;
+    
     /**
      * Creates new form F0ParamsDialog
      * @param parent
@@ -42,6 +51,15 @@ public class F0ParamsDialog extends javax.swing.JDialog {
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         errorMessageLabel = new javax.swing.JLabel();
+        meanCheckBox = new javax.swing.JCheckBox();
+        medianCheckBox = new javax.swing.JCheckBox();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        pitchMinTextField = new javax.swing.JTextField();
+        pitchMaxTextField = new javax.swing.JTextField();
+        stdevCheckBox = new javax.swing.JCheckBox();
+        jitterCheckBox = new javax.swing.JCheckBox();
+        shimmerCheckBox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("F0 parameters");
@@ -70,6 +88,28 @@ public class F0ParamsDialog extends javax.swing.JDialog {
         errorMessageLabel.setForeground(new java.awt.Color(255, 0, 0));
         errorMessageLabel.setText("Error");
 
+        meanCheckBox.setText("mean");
+
+        medianCheckBox.setText("median");
+
+        jLabel2.setText("Pitch min (Hz):");
+
+        jLabel3.setText("Pitch max (Hz):");
+
+        pitchMinTextField.getDocument().addDocumentListener(doubleValidator);
+        pitchMinTextField.setText("75");
+        pitchMinTextField.setName("pitch min"); // NOI18N
+
+        pitchMaxTextField.getDocument().addDocumentListener(doubleValidator);
+        pitchMaxTextField.setText("600");
+        pitchMaxTextField.setName("pitch max"); // NOI18N
+
+        stdevCheckBox.setText("stdev");
+
+        jitterCheckBox.setText("jitter");
+
+        shimmerCheckBox.setText("shimmer");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -78,15 +118,36 @@ public class F0ParamsDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(errorMessageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(timeStepTextField))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 235, Short.MAX_VALUE)
                         .addComponent(cancelButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(okButton)))
+                        .addComponent(okButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1))
+                        .addGap(15, 15, 15)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(pitchMinTextField)
+                            .addComponent(timeStepTextField)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pitchMaxTextField))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jitterCheckBox)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(shimmerCheckBox))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(meanCheckBox)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(medianCheckBox)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(stdevCheckBox)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -97,12 +158,29 @@ public class F0ParamsDialog extends javax.swing.JDialog {
                     .addComponent(jLabel1)
                     .addComponent(timeStepTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(pitchMinTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(pitchMaxTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(meanCheckBox)
+                    .addComponent(medianCheckBox)
+                    .addComponent(stdevCheckBox))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jitterCheckBox)
+                    .addComponent(shimmerCheckBox))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(errorMessageLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(okButton)
                     .addComponent(cancelButton))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -110,6 +188,14 @@ public class F0ParamsDialog extends javax.swing.JDialog {
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         timeStep = Double.parseDouble(timeStepTextField.getText());
+        pitchMin = Double.parseDouble(pitchMinTextField.getText());
+        pitchMax = Double.parseDouble(pitchMaxTextField.getText());
+        
+        meanCalc = meanCheckBox.isSelected();
+        medianCalc = medianCheckBox.isSelected();
+        stdevCalc = stdevCheckBox.isSelected();
+        jitterCalc = jitterCheckBox.isSelected();
+        shimmerCalc = shimmerCheckBox.isSelected();
         
         dispose();
     }//GEN-LAST:event_okButtonActionPerformed
@@ -154,11 +240,48 @@ public class F0ParamsDialog extends javax.swing.JDialog {
         return timeStep;
     }
 
+    public Double getPitchMin() {
+        return pitchMin;
+    }
+
+    public Double getPitchMax() {
+        return pitchMax;
+    }
+
+    public boolean isMeanCalc() {
+        return meanCalc;
+    }
+
+    public boolean isMedianCalc() {
+        return medianCalc;
+    }
+
+    public boolean isStdevCalc() {
+        return stdevCalc;
+    }
+
+    public boolean isJitterCalc() {
+        return jitterCalc;
+    }
+
+    public boolean isShimmerCalc() {
+        return shimmerCalc;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
     private javax.swing.JLabel errorMessageLabel;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JCheckBox jitterCheckBox;
+    private javax.swing.JCheckBox meanCheckBox;
+    private javax.swing.JCheckBox medianCheckBox;
     private javax.swing.JButton okButton;
+    private javax.swing.JTextField pitchMaxTextField;
+    private javax.swing.JTextField pitchMinTextField;
+    private javax.swing.JCheckBox shimmerCheckBox;
+    private javax.swing.JCheckBox stdevCheckBox;
     private javax.swing.JTextField timeStepTextField;
     // End of variables declaration//GEN-END:variables
 }
