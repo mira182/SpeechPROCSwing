@@ -6,11 +6,14 @@
 package feec.cz.brno.speechproc.gui.f0;
 
 import au.com.bytecode.opencsv.CSVReader;
+import feec.cz.brno.speechproc.calc.utility.CalcUtilities;
 import feec.cz.brno.speechproc.gui.DeleteResultCsvFile;
 import feec.cz.brno.speechproc.gui.GraphWindow;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.apache.logging.log4j.LogManager;
@@ -29,16 +32,23 @@ public class F0ResultPanel extends javax.swing.JPanel implements DeleteResultCsv
     private final File csvResultFile;
     private final File sourceSoundFile;
     
+    private boolean mean;
+    private boolean median;
+    
     private GraphWindow formantsGraph;
 
     /**
      * Creates new form F0ResultPanel
      * @param sourceSoundFile
      * @param csvResultFile
+     * @param mean
+     * @param median
      */
-    public F0ResultPanel(File sourceSoundFile, File csvResultFile) {
+    public F0ResultPanel(File sourceSoundFile, File csvResultFile, boolean mean, boolean median) {
         this.csvResultFile = csvResultFile;
         this.sourceSoundFile = sourceSoundFile;
+        this.mean = mean;
+        this.median = median;
         initComponents();
         loadF0Table();
     }
@@ -54,6 +64,11 @@ public class F0ResultPanel extends javax.swing.JPanel implements DeleteResultCsv
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
         showGraphButton = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        meanDescriptionLabel = new javax.swing.JLabel();
+        medianDescriptionLabel = new javax.swing.JLabel();
+        medianValuleLabel = new javax.swing.JLabel();
+        meanValueLabel = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         f0Table = new javax.swing.JTable();
 
@@ -66,19 +81,64 @@ public class F0ResultPanel extends javax.swing.JPanel implements DeleteResultCsv
             }
         });
 
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("F0 info"));
+
+        meanDescriptionLabel.setText("F0 mean:");
+
+        medianDescriptionLabel.setText("F0 median:");
+
+        medianValuleLabel.setText("jLabel1");
+
+        meanValueLabel.setText("jLabel1");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(medianDescriptionLabel)
+                    .addComponent(meanDescriptionLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(meanValueLabel)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(medianValuleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(meanDescriptionLabel)
+                    .addComponent(meanValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(medianDescriptionLabel)
+                    .addComponent(medianValuleLabel)))
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(339, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(showGraphButton)
                 .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(315, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(63, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(showGraphButton)
                 .addContainerGap())
         );
@@ -102,12 +162,14 @@ public class F0ResultPanel extends javax.swing.JPanel implements DeleteResultCsv
     }//GEN-LAST:event_showGraphButtonActionPerformed
 
     private void loadF0Table() {
+        List<Double> f0 = new ArrayList<>();
         String[] csvLine;
         try {
             CSVReader reader = new CSVReader(new FileReader(csvResultFile), ' ');
             reader.readNext();
             f0TableModel.setColumnIdentifiers(new String[] {"Time min (s)", "Time max (s)", "F0 mean (Hz)", "F0 min (Hz)", "F0 max (Hz)", "F0 stdev (Hz)", "F0 VR (Hz)", "rel F0 stdev (%)", "rel F0 VR (%)"});
             while ((csvLine = reader.readNext()) != null) {
+//                f0.add(CalcUtilities.getDouble(csvLine[]));
                 f0TableModel.addRow(csvLine);
             }
         } catch (IOException ex) {
@@ -116,6 +178,20 @@ public class F0ResultPanel extends javax.swing.JPanel implements DeleteResultCsv
         }
         f0Table.setModel(f0TableModel);
         f0TableModel.fireTableDataChanged();
+        
+        if (mean) {
+            meanValueLabel.setText(String.valueOf(CalcUtilities.mean(f0)));
+            meanValueLabel.setVisible(true);
+        } else if (!mean) {
+            meanValueLabel.setVisible(false);
+        }
+        
+        if (median) {
+//            medianValuleLabel.setText(String.valueOf(CalcUtilities.median(f0)));
+            medianValuleLabel.setVisible(true);
+        } else if (!median) {
+            medianValuleLabel.setVisible(false);
+        }
     }
     
     @Override
@@ -126,8 +202,13 @@ public class F0ResultPanel extends javax.swing.JPanel implements DeleteResultCsv
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable f0Table;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel meanDescriptionLabel;
+    private javax.swing.JLabel meanValueLabel;
+    private javax.swing.JLabel medianDescriptionLabel;
+    private javax.swing.JLabel medianValuleLabel;
     private javax.swing.JButton showGraphButton;
     // End of variables declaration//GEN-END:variables
 }

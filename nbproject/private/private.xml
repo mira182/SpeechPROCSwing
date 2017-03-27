@@ -3,18 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/gui/soundlist/SoundFilesTableModel.java</file>
-            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/api/formants/IFormants.java</file>
-            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/main/SpeechProc.java</file>
-            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/api/runscript/ScriptRunnerAbstract.java</file>
-            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/visualize/FormantCharts.java</file>
-            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/resources/octave/formants/LPCFormants.m</file>
-            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/gui/soundlist/SoundLIstCellRenderer.java</file>
-            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/praat/Formants.java</file>
-            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/api/runscript/ScriptRunner.java</file>
-            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/api/runscript/PraatScript.java</file>
-            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/octave/formants/Formants.java</file>
-            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/api/runscript/MatlabScript.java</file>
+            <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/api/runscript/ScriptRunException.java</file>
+            <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/main/SpeechProc.java</file>
+            <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/api/formants/FormantsImpl.java</file>
+            <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/resources/praat/formants.praat</file>
+            <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/api/formants/IFormants.java</file>
+            <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/api/runscript/ScriptRunnerAbstract.java</file>
+            <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/api/runscript/PraatScript.java</file>
+            <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/api/runscript/ScriptRunner.java</file>
         </group>
     </open-files>
 </project-private>

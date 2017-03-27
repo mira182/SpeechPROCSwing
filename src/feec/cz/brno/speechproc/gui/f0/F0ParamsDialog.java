@@ -17,7 +17,10 @@ public class F0ParamsDialog extends javax.swing.JDialog {
     private final DoubleValidatorListener doubleValidator = new DoubleValidatorListener();
     
     private Double timeStep;
-
+    
+    private boolean meanCalc;
+    private boolean medianCalc;
+    
     /**
      * Creates new form F0ParamsDialog
      * @param parent
@@ -42,6 +45,8 @@ public class F0ParamsDialog extends javax.swing.JDialog {
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         errorMessageLabel = new javax.swing.JLabel();
+        meanCheckBox = new javax.swing.JCheckBox();
+        medianCheckBox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("F0 parameters");
@@ -70,6 +75,10 @@ public class F0ParamsDialog extends javax.swing.JDialog {
         errorMessageLabel.setForeground(new java.awt.Color(255, 0, 0));
         errorMessageLabel.setText("Error");
 
+        meanCheckBox.setText("mean");
+
+        medianCheckBox.setText("median");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -77,6 +86,11 @@ public class F0ParamsDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(meanCheckBox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(medianCheckBox)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(errorMessageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
@@ -97,12 +111,16 @@ public class F0ParamsDialog extends javax.swing.JDialog {
                     .addComponent(jLabel1)
                     .addComponent(timeStepTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(meanCheckBox)
+                    .addComponent(medianCheckBox))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(errorMessageLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(okButton)
                     .addComponent(cancelButton))
-                .addContainerGap())
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         pack();
@@ -110,6 +128,9 @@ public class F0ParamsDialog extends javax.swing.JDialog {
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         timeStep = Double.parseDouble(timeStepTextField.getText());
+        
+        meanCalc = meanCheckBox.isSelected();
+        medianCalc = medianCheckBox.isSelected();
         
         dispose();
     }//GEN-LAST:event_okButtonActionPerformed
@@ -154,10 +175,20 @@ public class F0ParamsDialog extends javax.swing.JDialog {
         return timeStep;
     }
 
+    public boolean isMeanCalc() {
+        return meanCalc;
+    }
+
+    public boolean isMedianCalc() {
+        return medianCalc;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
     private javax.swing.JLabel errorMessageLabel;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JCheckBox meanCheckBox;
+    private javax.swing.JCheckBox medianCheckBox;
     private javax.swing.JButton okButton;
     private javax.swing.JTextField timeStepTextField;
     // End of variables declaration//GEN-END:variables

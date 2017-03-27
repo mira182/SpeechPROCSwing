@@ -1,0 +1,5 @@
+Scripts:
+https://github.com/lennes/spect/tree/master/scripts
+
+Useful links:
+http://ec-concord.ied.edu.hk/phonetics_and_phonology/wordpress/learning_website/chapter_4_prosodic_analysis_new(1).htm#4.1.3_Pause_duration_

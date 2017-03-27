@@ -43,6 +43,9 @@ import org.apache.logging.log4j.Logger;
 public class SpeechProc extends javax.swing.JFrame {
 
     private final static Logger logger = LogManager.getLogger(SpeechProc.class);
+    
+    public static final String FS = System.getProperty("file.separator");
+    public static final String USER_DIR = System.getProperty("user.dir");
 
     private SoundFilesTableModel soundFilesTableModel = new SoundFilesTableModel();
     private TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(soundFilesTableModel);
@@ -56,6 +59,9 @@ public class SpeechProc extends javax.swing.JFrame {
     private static final int IMG_HEIGHT= 32;
     
     private static File tmpFolder = null;
+    
+    public static final String OUTPUT_FOLDER_FORMANTS = USER_DIR + FS + "tmpFiles" + FS + "formants" + FS;
+    public static final String OUTPUT_FOLDER_F0 = USER_DIR + FS + "tmpFiles" + FS + "f0" + FS;
 
     /**
      * Creates new form SpeechProc
@@ -352,8 +358,7 @@ public class SpeechProc extends javax.swing.JFrame {
             parameters.add(new ScriptParameter("windowLength", paramsDialog.getWindowLength()));
             parameters.add(new ScriptParameter("preemphasis", paramsDialog.getPreemphasis()));
             parameters.add(new ScriptParameter("soundFilePath", soundFile.getAbsolutePath()));
-            parameters.add(new ScriptParameter(IFormants.OUTPUT_FILE_PARAM, new File(System.getProperty("user.dir") + System.getProperty("file.separator") + "tmpFiles" + System.getProperty("file.separator") + soundFile.getName() + 
-                    "-formantsListing.csv")));
+            parameters.add(new ScriptParameter(IFormants.OUTPUT_FILE_PARAM, new File(OUTPUT_FOLDER_FORMANTS + soundFile.getName() + "-formantsListing.csv")));
 
             try {
                 File csvResultFile = formants.formantListings(parameters);
@@ -406,17 +411,21 @@ public class SpeechProc extends javax.swing.JFrame {
         paramsDialog.setVisible(true);
         
         createTmpFolder();
+        File f0 = new File(OUTPUT_FOLDER_F0);
+        if (!f0.exists()) {
+            f0.mkdir();
+        }
 
         for (File soundFile : soundFiles) {
             ScriptParameters parameters = new ScriptParameters();
             parameters.add(new ScriptParameter("timeStep", paramsDialog.getTimeStep()));
             parameters.add(new ScriptParameter("soundFilePath", soundFile.getAbsolutePath()));
-            parameters.add(new ScriptParameter(IFormants.OUTPUT_FILE_PARAM, new File(System.getProperty("user.dir") + System.getProperty("file.separator") + "tmpFiles" + System.getProperty("file.separator") + soundFile.getName() + "-f0pitch.csv")));
+            parameters.add(new ScriptParameter(IFormants.OUTPUT_FILE_PARAM, new File(OUTPUT_FOLDER_F0 + soundFile.getName() + "-f0pitch.csv")));
 
             try {
                 File csvResultFile = f0pitch.f0Pitch(parameters);
                 
-                F0ResultPanel f0panel = new F0ResultPanel(soundFile, csvResultFile);
+                F0ResultPanel f0panel = new F0ResultPanel(soundFile, csvResultFile, paramsDialog.isMeanCalc(), paramsDialog.isMedianCalc());
                 centerTabbedPanel.add("F0 pitch of " + soundFile.getName(), f0panel);
                 
                 csvResultFile.deleteOnExit();
@@ -501,7 +510,7 @@ public class SpeechProc extends javax.swing.JFrame {
     }
     
     private void createTmpFolder() {
-        tmpFolder = new File(System.getProperty("user.dir") + System.getProperty("file.separator") + "tmpFiles");
+        tmpFolder = new File(USER_DIR + FS + "tmpFiles");
         if (!tmpFolder.exists())
             tmpFolder.mkdir();
     }
