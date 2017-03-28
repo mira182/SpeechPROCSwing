@@ -8,6 +8,7 @@ package feec.cz.brno.speechproc.gui.f0;
 import au.com.bytecode.opencsv.CSVReader;
 import feec.cz.brno.speechproc.calc.utility.CalcUtilities;
 import feec.cz.brno.speechproc.gui.formants.FormantCharts;
+import java.awt.Color;
 import java.awt.geom.Ellipse2D;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -86,8 +87,9 @@ public class F0PitchCharts {
             renderer.setSeriesShape(1, circle);
             renderer.setSeriesShape(2, circle);
             renderer.setSeriesShape(3, circle);
-            renderer.setSeriesShape(4, circle);
-//            renderer.setSeriesPaint(0, paint);
+            renderer.setSeriesPaint(1, Color.BLUE);
+            renderer.setSeriesPaint(2, Color.RED);
+            renderer.setSeriesPaint(3, Color.YELLOW);
 
             chartPanel = new ChartPanel(chart);
             reader.close();

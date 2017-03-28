@@ -61,98 +61,111 @@ public class FormantsResultPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        infoScrollPane = new javax.swing.JScrollPane();
+        tableScrollPane = new javax.swing.JScrollPane();
+        formantTableModel = new DefaultTableModel();
+        formantsTable = new javax.swing.JTable(formantTableModel);
         infoPanel = new javax.swing.JPanel();
-        formant1Panel = new javax.swing.JPanel();
-        meanDescriptionF1Label = new javax.swing.JLabel();
-        meanF1Label = new javax.swing.JLabel();
-        medianDescriptionF1Label = new javax.swing.JLabel();
-        medianF1Label = new javax.swing.JLabel();
-        avgDescriptionF1Label = new javax.swing.JLabel();
-        averageF1Label = new javax.swing.JLabel();
         formant2Panel = new javax.swing.JPanel();
         meanDescriptionF2Label = new javax.swing.JLabel();
         meanF2Label = new javax.swing.JLabel();
         medianDescriptionF2Label = new javax.swing.JLabel();
         medianF2Label = new javax.swing.JLabel();
-        avgDescriptionF2Label = new javax.swing.JLabel();
-        averageF2Label = new javax.swing.JLabel();
         formant3Panel = new javax.swing.JPanel();
         meanDescriptionF3Label = new javax.swing.JLabel();
         meanF3Label = new javax.swing.JLabel();
         medianDescriptionF3Label = new javax.swing.JLabel();
         medianF3Label = new javax.swing.JLabel();
-        avgDescriptionF3Label = new javax.swing.JLabel();
-        averageF3Label = new javax.swing.JLabel();
         showGraphButton = new javax.swing.JButton();
-        tableScrollPane = new javax.swing.JScrollPane();
-        formantTableModel = new DefaultTableModel();
-        formantsTable = new javax.swing.JTable(formantTableModel);
+        formant1Panel = new javax.swing.JPanel();
+        meanDescriptionF1Label = new javax.swing.JLabel();
+        meanF1Label = new javax.swing.JLabel();
+        medianDescriptionF1Label = new javax.swing.JLabel();
+        medianF1Label = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
 
-        formant1Panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Formant 1"));
-        formant1Panel.setLayout(new java.awt.GridLayout(3, 2, 10, 0));
+        formantsTable.setModel(formantTableModel);
+        tableScrollPane.setViewportView(formantsTable);
 
-        meanDescriptionF1Label.setText("Mean: ");
-        formant1Panel.add(meanDescriptionF1Label);
-
-        meanF1Label.setText("jLabel2");
-        formant1Panel.add(meanF1Label);
-
-        medianDescriptionF1Label.setText("Median:");
-        formant1Panel.add(medianDescriptionF1Label);
-
-        medianF1Label.setText("jLabel3");
-        formant1Panel.add(medianF1Label);
-
-        avgDescriptionF1Label.setText("Average:");
-        formant1Panel.add(avgDescriptionF1Label);
-
-        averageF1Label.setText("jLabel4");
-        formant1Panel.add(averageF1Label);
+        add(tableScrollPane, java.awt.BorderLayout.CENTER);
 
         formant2Panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Formant 2"));
-        formant2Panel.setLayout(new java.awt.GridLayout(3, 2, 10, 0));
 
         meanDescriptionF2Label.setText("Mean:");
-        formant2Panel.add(meanDescriptionF2Label);
 
         meanF2Label.setText("jLabel7");
-        formant2Panel.add(meanF2Label);
 
         medianDescriptionF2Label.setText("Median:");
-        formant2Panel.add(medianDescriptionF2Label);
 
         medianF2Label.setText("jLabel7");
-        formant2Panel.add(medianF2Label);
 
-        avgDescriptionF2Label.setText("Average:");
-        formant2Panel.add(avgDescriptionF2Label);
-
-        averageF2Label.setText("jLabel7");
-        formant2Panel.add(averageF2Label);
+        javax.swing.GroupLayout formant2PanelLayout = new javax.swing.GroupLayout(formant2Panel);
+        formant2Panel.setLayout(formant2PanelLayout);
+        formant2PanelLayout.setHorizontalGroup(
+            formant2PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(formant2PanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(formant2PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(medianDescriptionF2Label)
+                    .addComponent(meanDescriptionF2Label, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(formant2PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(meanF2Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(medianF2Label, javax.swing.GroupLayout.DEFAULT_SIZE, 61, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        formant2PanelLayout.setVerticalGroup(
+            formant2PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(formant2PanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(formant2PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(meanDescriptionF2Label)
+                    .addComponent(meanF2Label, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(formant2PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(medianF2Label)
+                    .addComponent(medianDescriptionF2Label))
+                .addContainerGap())
+        );
 
         formant3Panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Formant 3"));
-        formant3Panel.setLayout(new java.awt.GridLayout(3, 2, 10, 0));
 
         meanDescriptionF3Label.setText("Mean:");
-        formant3Panel.add(meanDescriptionF3Label);
 
         meanF3Label.setText("jLabel8");
-        formant3Panel.add(meanF3Label);
 
         medianDescriptionF3Label.setText("Median:");
-        formant3Panel.add(medianDescriptionF3Label);
 
         medianF3Label.setText("jLabel9");
-        formant3Panel.add(medianF3Label);
 
-        avgDescriptionF3Label.setText("Average:");
-        formant3Panel.add(avgDescriptionF3Label);
-
-        averageF3Label.setText("jLabel10");
-        formant3Panel.add(averageF3Label);
+        javax.swing.GroupLayout formant3PanelLayout = new javax.swing.GroupLayout(formant3Panel);
+        formant3Panel.setLayout(formant3PanelLayout);
+        formant3PanelLayout.setHorizontalGroup(
+            formant3PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(formant3PanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(formant3PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(meanDescriptionF3Label, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(medianDescriptionF3Label))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(formant3PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(medianF3Label, javax.swing.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE)
+                    .addComponent(meanF3Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        formant3PanelLayout.setVerticalGroup(
+            formant3PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(formant3PanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(formant3PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(meanDescriptionF3Label)
+                    .addComponent(meanF3Label, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(formant3PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(medianDescriptionF3Label)
+                    .addComponent(medianF3Label))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         showGraphButton.setText("Show graph");
         showGraphButton.addActionListener(new java.awt.event.ActionListener() {
@@ -161,20 +174,61 @@ public class FormantsResultPanel extends javax.swing.JPanel {
             }
         });
 
+        formant1Panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Formant 1"));
+
+        meanDescriptionF1Label.setText("Mean: ");
+
+        meanF1Label.setText("jLabel2");
+
+        medianDescriptionF1Label.setText("Median:");
+
+        medianF1Label.setText("jLabel3");
+
+        javax.swing.GroupLayout formant1PanelLayout = new javax.swing.GroupLayout(formant1Panel);
+        formant1Panel.setLayout(formant1PanelLayout);
+        formant1PanelLayout.setHorizontalGroup(
+            formant1PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(formant1PanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(formant1PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(formant1PanelLayout.createSequentialGroup()
+                        .addComponent(meanDescriptionF1Label, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(meanF1Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(formant1PanelLayout.createSequentialGroup()
+                        .addComponent(medianDescriptionF1Label, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(medianF1Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        formant1PanelLayout.setVerticalGroup(
+            formant1PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(formant1PanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(formant1PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(meanF1Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(meanDescriptionF1Label))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(formant1PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(medianDescriptionF1Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(medianF1Label))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout infoPanelLayout = new javax.swing.GroupLayout(infoPanel);
         infoPanel.setLayout(infoPanelLayout);
         infoPanelLayout.setHorizontalGroup(
             infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(infoPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(formant1Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(formant1Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(formant2Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(formant2Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(formant3Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(formant3Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(20, 20, 20)
                 .addComponent(showGraphButton)
-                .addContainerGap(87, Short.MAX_VALUE))
+                .addContainerGap())
         );
         infoPanelLayout.setVerticalGroup(
             infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -189,14 +243,7 @@ public class FormantsResultPanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        infoScrollPane.setViewportView(infoPanel);
-
-        add(infoScrollPane, java.awt.BorderLayout.PAGE_END);
-
-        formantsTable.setModel(formantTableModel);
-        tableScrollPane.setViewportView(formantsTable);
-
-        add(tableScrollPane, java.awt.BorderLayout.CENTER);
+        add(infoPanel, java.awt.BorderLayout.PAGE_END);
     }// </editor-fold>//GEN-END:initComponents
 
     private void showGraphButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showGraphButtonActionPerformed
@@ -219,9 +266,9 @@ public class FormantsResultPanel extends javax.swing.JPanel {
             formantTableModel.setColumnIdentifiers(header);
             while ((csvLine = reader.readNext()) != null) {
                 formantTableModel.addRow(csvLine);
-                formant1.add(CalcUtilities.getDouble(csvLine[IFormants.COLUMN_FORMANT_1]));
-                formant2.add(CalcUtilities.getDouble(csvLine[IFormants.COLUMN_FORMANT_2]));
-                formant3.add(CalcUtilities.getDouble(csvLine[IFormants.COLUMN_FORMANT_3]));
+                try { formant1.add(Double.parseDouble(csvLine[IFormants.COLUMN_FORMANT_1])); } catch (NumberFormatException e) {}
+                try { formant2.add(Double.parseDouble(csvLine[IFormants.COLUMN_FORMANT_2])); } catch (NumberFormatException e) {}
+                try { formant3.add(Double.parseDouble(csvLine[IFormants.COLUMN_FORMANT_3])); } catch (NumberFormatException e) {}
             }
             reader.close();
         } catch (IOException ex) {
@@ -232,9 +279,9 @@ public class FormantsResultPanel extends javax.swing.JPanel {
         formantTableModel.fireTableDataChanged();
         
         if (mean) {
-            meanF1Label.setText(String.valueOf(CalcUtilities.mean(formant1)));
-            meanF2Label.setText(String.valueOf(CalcUtilities.mean(formant2)));
-            meanF3Label.setText(String.valueOf(CalcUtilities.mean(formant3)));
+            meanF1Label.setText(CalcUtilities.mean(formant1) + " Hz");
+            meanF2Label.setText(CalcUtilities.mean(formant2) + " Hz");
+            meanF3Label.setText(CalcUtilities.mean(formant3) + " Hz");
         } else if (!mean) {
             meanF1Label.setVisible(false);
             meanF2Label.setVisible(false);
@@ -242,33 +289,22 @@ public class FormantsResultPanel extends javax.swing.JPanel {
         }
         
         if (median) {
-            medianF1Label.setText(String.valueOf(CalcUtilities.median(formant1)));
-            medianF2Label.setText(String.valueOf(CalcUtilities.median(formant2)));
-            medianF3Label.setText(String.valueOf(CalcUtilities.median(formant3)));
+            medianF1Label.setText(CalcUtilities.median(formant1) + " Hz");
+            medianF2Label.setText(CalcUtilities.median(formant2) + " Hz");
+            medianF3Label.setText(CalcUtilities.median(formant3) + " Hz");
         } else if (!median) {
             medianF1Label.setVisible(false);
             medianF2Label.setVisible(false);
             medianF3Label.setVisible(false);
         }
-        
-        averageF1Label.setVisible(false);
-        averageF2Label.setVisible(false);
-        averageF3Label.setVisible(false);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel averageF1Label;
-    private javax.swing.JLabel averageF2Label;
-    private javax.swing.JLabel averageF3Label;
-    private javax.swing.JLabel avgDescriptionF1Label;
-    private javax.swing.JLabel avgDescriptionF2Label;
-    private javax.swing.JLabel avgDescriptionF3Label;
     private javax.swing.JPanel formant1Panel;
     private javax.swing.JPanel formant2Panel;
     private javax.swing.JPanel formant3Panel;
     private javax.swing.JTable formantsTable;
     private javax.swing.JPanel infoPanel;
-    private javax.swing.JScrollPane infoScrollPane;
     private javax.swing.JLabel meanDescriptionF1Label;
     private javax.swing.JLabel meanDescriptionF2Label;
     private javax.swing.JLabel meanDescriptionF3Label;

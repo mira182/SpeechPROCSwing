@@ -31,14 +31,14 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="384" max="32767" attributes="0"/>
                       <Component id="showGraphButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="315" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -78,33 +78,89 @@
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="medianDescriptionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="meanDescriptionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="medianDescriptionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="meanDescriptionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="medianValuleLabel" max="32767" attributes="0"/>
+                                      <Component id="meanValueLabel" max="32767" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jitterDescriptionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="shimmerDescriptionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="shimmerValueLabel" max="32767" attributes="0"/>
+                                      <Component id="jitterValueLabel" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="stdevDescriptionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="minDescriptionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="maxDescriptionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="maxValueLabel" alignment="1" max="32767" attributes="0"/>
+                                      <Component id="minValueLabel" alignment="1" max="32767" attributes="0"/>
+                                      <Component id="stdevValueLabel" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Component id="meanValueLabel" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              </Group>
-                              <Component id="medianValuleLabel" max="32767" attributes="0"/>
-                          </Group>
                       </Group>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="meanDescriptionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="meanValueLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="meanDescriptionLabel" max="32767" attributes="0"/>
+                                      <Component id="meanValueLabel" max="32767" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="medianDescriptionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="medianValuleLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="jitterDescriptionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jitterValueLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="shimmerDescriptionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="shimmerValueLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="medianDescriptionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="medianValuleLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="stdevDescriptionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="stdevValueLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="minDescriptionLabel" min="-2" max="-2" attributes="0"/>
+                              <Component id="minValueLabel" min="-2" pref="15" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="maxDescriptionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="maxValueLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -126,6 +182,56 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="meanValueLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="jLabel1"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="stdevDescriptionLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="F0 stdev:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="stdevValueLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="jLabel1"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="minDescriptionLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="F0 min:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="minValueLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="jLabel1"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="maxDescriptionLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="F0 max:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="maxValueLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="jLabel2"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jitterDescriptionLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Jitter:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jitterValueLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="jLabel1"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="shimmerDescriptionLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Shimmer:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="shimmerValueLabel">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="jLabel1"/>
                   </Properties>

@@ -34,6 +34,3 @@ for i to total_intervals
     appendInfo: report$
   endif
 endfor
-
-# Clean up
-#removeObject: textgrid, pitch, pulses
