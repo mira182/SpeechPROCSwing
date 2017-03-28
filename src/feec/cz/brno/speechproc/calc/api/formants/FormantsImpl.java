@@ -18,10 +18,8 @@ import java.io.IOException;
 public class FormantsImpl implements IFormants {
 
     @Override
-    public File formantListings(ScriptParameters parameters) throws IOException, InterruptedException, ScriptRunException {
+    public void formantListings(ScriptParameters parameters) throws IOException, InterruptedException, ScriptRunException {
         PraatScript praat = new PraatScript(new File(getClass().getClassLoader().getResource("praat/formants.praat").getFile()), parameters);
         praat.runScript();
-        
-        return new File(String.valueOf(parameters.getParameter(OUTPUT_FILE_PARAM).getValue()));
     }
 }

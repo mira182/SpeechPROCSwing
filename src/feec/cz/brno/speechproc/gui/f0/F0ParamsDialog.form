@@ -27,23 +27,53 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="meanCheckBox" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="medianCheckBox" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  </Group>
                   <Component id="errorMessageLabel" max="32767" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="timeStepTextField" max="32767" attributes="0"/>
-                  </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="235" max="32767" attributes="0"/>
                       <Component id="cancelButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="okButton" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="pitchMinTextField" max="32767" attributes="0"/>
+                          <Component id="timeStepTextField" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="pitchMaxTextField" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="jitterCheckBox" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="shimmerCheckBox" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
+                                      <Component id="medianCheckBox" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="stdevCheckBox" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="meanCheckBox" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="minCheckBox" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="maxCheckBox" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -60,8 +90,26 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="pitchMinTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="pitchMaxTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="meanCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="medianCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="stdevCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="minCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="maxCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jitterCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="shimmerCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="errorMessageLabel" min="-2" max="-2" attributes="0"/>
@@ -70,7 +118,7 @@
                   <Component id="okButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cancelButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="13" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -125,6 +173,59 @@
     <Component class="javax.swing.JCheckBox" name="medianCheckBox">
       <Properties>
         <Property name="text" type="java.lang.String" value="median"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Pitch min (Hz):"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel3">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Pitch max (Hz):"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="pitchMinTextField">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="75"/>
+        <Property name="name" type="java.lang.String" value="pitch min" noResource="true"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="pitchMinTextField.getDocument().addDocumentListener(doubleValidator);"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JTextField" name="pitchMaxTextField">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="600"/>
+        <Property name="name" type="java.lang.String" value="pitch max" noResource="true"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="pitchMaxTextField.getDocument().addDocumentListener(doubleValidator);"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="stdevCheckBox">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="stdev"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="jitterCheckBox">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="jitter"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="shimmerCheckBox">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="shimmer"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="minCheckBox">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="min"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="maxCheckBox">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="max"/>
       </Properties>
     </Component>
   </SubComponents>

@@ -15,6 +15,7 @@ import feec.cz.brno.speechproc.gui.f0.F0ResultPanel;
 import feec.cz.brno.speechproc.gui.formants.FormantCharts;
 import feec.cz.brno.speechproc.gui.formants.FormantParamsDialog;
 import feec.cz.brno.speechproc.gui.formants.FormantsResultPanel;
+import feec.cz.brno.speechproc.gui.intensity.IntensityResultPanel;
 import feec.cz.brno.speechproc.gui.soundlist.SoundFilesTableModel;
 import java.io.File;
 import java.io.IOException;
@@ -33,6 +34,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -53,15 +55,16 @@ public class SpeechProc extends javax.swing.JFrame {
     private IFormants formants = new FormantsImpl();
     private IF0 f0pitch = new IF0Impl();
     
-    private static int tabCount = 0;
-    
     private static final int IMG_WIDTH = 32;
     private static final int IMG_HEIGHT= 32;
     
-    private static File tmpFolder = null;
+    private static final String OUTPUT_FILE_PARAM = "outputFile";
+    private static final String OUTPUT_FILE_STATS_PARAM = "outputStatsFileName";
     
-    public static final String OUTPUT_FOLDER_FORMANTS = USER_DIR + FS + "tmpFiles" + FS + "formants" + FS;
-    public static final String OUTPUT_FOLDER_F0 = USER_DIR + FS + "tmpFiles" + FS + "f0" + FS;
+    public static final File OUTPUT_FOLDER_FORMANTS = new File(USER_DIR + FS + "tmpFiles" + FS + "formants" + FS);
+    public static final File OUTPUT_FOLDER_F0 = new File(USER_DIR + FS + "tmpFiles" + FS + "f0" + FS);
+    public static final File OUTPUT_FOLDER_JITTER_SHIMMER = new File(USER_DIR + FS + "tmpFiles" + FS + "jitt_shimm" + FS);
+    public static final File OUTPUT_FOLDER_INTENSITY = new File(USER_DIR + FS + "tmpFiles" + FS + "intensity" + FS);
 
     /**
      * Creates new form SpeechProc
@@ -110,14 +113,14 @@ public class SpeechProc extends javax.swing.JFrame {
         editMenu = new javax.swing.JMenu();
         formantsMenuItem = new javax.swing.JMenuItem();
         f0MenuItem = new javax.swing.JMenuItem();
-        deleteMenuItem = new javax.swing.JMenuItem();
+        intensityMenuItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         contentsMenuItem = new javax.swing.JMenuItem();
         aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Speech PROC");
-        setMinimumSize(new java.awt.Dimension(1000, 800));
+        setMinimumSize(new java.awt.Dimension(1200, 800));
         setSize(new java.awt.Dimension(1078, 980));
 
         toolBar.setRollover(true);
@@ -305,9 +308,15 @@ public class SpeechProc extends javax.swing.JFrame {
         });
         editMenu.add(f0MenuItem);
 
-        deleteMenuItem.setMnemonic('d');
-        deleteMenuItem.setText("Delete");
-        editMenu.add(deleteMenuItem);
+        intensityMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        intensityMenuItem.setMnemonic('d');
+        intensityMenuItem.setText("Intensity");
+        intensityMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                intensityMenuItemActionPerformed(evt);
+            }
+        });
+        editMenu.add(intensityMenuItem);
 
         menuBar.add(editMenu);
 
@@ -330,10 +339,8 @@ public class SpeechProc extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
-        if (tmpFolder != null) {
-            if (tmpFolder.exists())
-                tmpFolder.delete();
-        }
+        FileUtils.deleteQuietly(OUTPUT_FOLDER_F0);
+        FileUtils.deleteQuietly(OUTPUT_FOLDER_FORMANTS);
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
@@ -348,7 +355,9 @@ public class SpeechProc extends javax.swing.JFrame {
         FormantParamsDialog paramsDialog = new FormantParamsDialog(this);
         paramsDialog.setVisible(true);
 
-        createTmpFolder();
+        if (!OUTPUT_FOLDER_FORMANTS.exists()) {
+            OUTPUT_FOLDER_FORMANTS.mkdirs();
+        }
         
         for (File soundFile : soundFiles) {
             ScriptParameters parameters = new ScriptParameters();
@@ -358,22 +367,20 @@ public class SpeechProc extends javax.swing.JFrame {
             parameters.add(new ScriptParameter("windowLength", paramsDialog.getWindowLength()));
             parameters.add(new ScriptParameter("preemphasis", paramsDialog.getPreemphasis()));
             parameters.add(new ScriptParameter("soundFilePath", soundFile.getAbsolutePath()));
-            parameters.add(new ScriptParameter(IFormants.OUTPUT_FILE_PARAM, new File(OUTPUT_FOLDER_FORMANTS + soundFile.getName() + "-formantsListing.csv")));
+            parameters.add(new ScriptParameter(OUTPUT_FILE_PARAM, new File(OUTPUT_FOLDER_FORMANTS.getAbsoluteFile() + soundFile.getName() + "-formantsListing.csv")));
 
             try {
-                File csvResultFile = formants.formantListings(parameters);
+                formants.formantListings(parameters);
 
+                File csvResultFile = new File(String.valueOf(parameters.getParameter(OUTPUT_FILE_PARAM).getValue()));
+                
                 FormantsResultPanel formantResultPanel = new FormantsResultPanel(soundFile, csvResultFile, paramsDialog.isMeanCalc(), paramsDialog.isMedianCalc());
                 centerTabbedPanel.add("Formants of " + soundFile.getName(), formantResultPanel);
-                
-                csvResultFile.deleteOnExit();
             } catch (IOException | InterruptedException | ScriptRunException ex) {
                 logger.error("Praat script run has failed: ", ex);
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
-            JOptionPane.showMessageDialog(this, "Praat script has finished successfully.", "Success!", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_formantsMenuItemActionPerformed
 
@@ -410,25 +417,29 @@ public class SpeechProc extends javax.swing.JFrame {
         F0ParamsDialog paramsDialog = new F0ParamsDialog(this);
         paramsDialog.setVisible(true);
         
-        createTmpFolder();
-        File f0 = new File(OUTPUT_FOLDER_F0);
-        if (!f0.exists()) {
-            f0.mkdir();
+        if (!OUTPUT_FOLDER_F0.exists()) {
+            OUTPUT_FOLDER_F0.mkdirs();
         }
 
         for (File soundFile : soundFiles) {
             ScriptParameters parameters = new ScriptParameters();
             parameters.add(new ScriptParameter("timeStep", paramsDialog.getTimeStep()));
+            parameters.add(new ScriptParameter("pitch_min", paramsDialog.getPitchMin()));
+            parameters.add(new ScriptParameter("pitch_max", paramsDialog.getPitchMax()));
             parameters.add(new ScriptParameter("soundFilePath", soundFile.getAbsolutePath()));
-            parameters.add(new ScriptParameter(IFormants.OUTPUT_FILE_PARAM, new File(OUTPUT_FOLDER_F0 + soundFile.getName() + "-f0pitch.csv")));
+            parameters.add(new ScriptParameter(OUTPUT_FILE_PARAM, new File(OUTPUT_FOLDER_F0.getAbsolutePath() + soundFile.getName() + "-pitch.csv")));
+            parameters.add(new ScriptParameter(OUTPUT_FILE_STATS_PARAM, new File(OUTPUT_FOLDER_F0.getAbsolutePath() + soundFile.getName() + "-pitch-stats.csv")));
 
             try {
-                File csvResultFile = f0pitch.f0Pitch(parameters);
+                PraatScript praat = new PraatScript(new File(getClass().getClassLoader().getResource("praat/F0.praat").getFile()), parameters);
+                praat.runScript();
                 
-                F0ResultPanel f0panel = new F0ResultPanel(soundFile, csvResultFile, paramsDialog.isMeanCalc(), paramsDialog.isMedianCalc());
+                File csvResultFile = new File(String.valueOf(parameters.getParameter(OUTPUT_FILE_PARAM).getValue()));
+                File csvStatsFile = new File(String.valueOf(parameters.getParameter(OUTPUT_FILE_STATS_PARAM).getValue()));
+                
+                F0ResultPanel f0panel = new F0ResultPanel(soundFile, csvResultFile, csvStatsFile, paramsDialog.isMeanCalc(), paramsDialog.isMedianCalc(), 
+                        paramsDialog.isStdevCalc(), paramsDialog.isJitterCalc(), paramsDialog.isShimmerCalc(), paramsDialog.isMinCalc(), paramsDialog.isMaxCalc());
                 centerTabbedPanel.add("F0 pitch of " + soundFile.getName(), f0panel);
-                
-                csvResultFile.deleteOnExit();
             } catch (IOException | InterruptedException | ScriptRunException ex) {
                 logger.error("Praat script run has failed: ", ex);
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
@@ -436,6 +447,41 @@ public class SpeechProc extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_f0MenuItemActionPerformed
+
+    private void intensityMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_intensityMenuItemActionPerformed
+        List<File> soundFiles = getSelectedSoundFiles();
+
+        if (soundFiles.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No sound file selected!", "No file.", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (!OUTPUT_FOLDER_INTENSITY.exists()) {
+            OUTPUT_FOLDER_INTENSITY.mkdirs();
+        }
+        
+        for (File soundFile: soundFiles) {
+            ScriptParameters parameters = new ScriptParameters();
+            parameters.add(new ScriptParameter("soundFilePath", soundFile.getAbsolutePath()));
+            parameters.add(new ScriptParameter(OUTPUT_FILE_PARAM, new File(OUTPUT_FOLDER_INTENSITY.getAbsolutePath() + soundFile.getName() + "-intensity.csv")));
+            parameters.add(new ScriptParameter(OUTPUT_FILE_STATS_PARAM, new File(OUTPUT_FOLDER_F0.getAbsolutePath() + soundFile.getName() + "-intensity-stats.csv")));
+
+            try {
+                PraatScript praat = new PraatScript(new File(getClass().getClassLoader().getResource("praat/intensity.praat").getFile()), parameters);
+                praat.runScript();
+
+                File csvResultFile = new File(String.valueOf(parameters.getParameter(OUTPUT_FILE_PARAM).getValue()));
+                File csvStatsFile = new File(String.valueOf(parameters.getParameter(OUTPUT_FILE_STATS_PARAM).getValue()));
+
+                IntensityResultPanel intensityPanel = new IntensityResultPanel(soundFile, csvResultFile, csvStatsFile);
+                centerTabbedPanel.add("Intensity of " + soundFile.getName(), intensityPanel);
+            } catch (IOException | InterruptedException | ScriptRunException ex) {
+                logger.error("Praat script run has failed: ", ex);
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
+    }//GEN-LAST:event_intensityMenuItemActionPerformed
 
     private void addSoundFiles() {
         JFileChooser fileChooser = new JFileChooser();
@@ -452,7 +498,7 @@ public class SpeechProc extends javax.swing.JFrame {
                 soundFilesTableModel.addRow(file);
             });
         } else {
-            logger.debug("Open sound files cancelled by user.");
+            logger.trace("Open sound files cancelled by user.");
         }
     }
 
@@ -508,12 +554,6 @@ public class SpeechProc extends javax.swing.JFrame {
 
         return selectedSoundFiles;
     }
-    
-    private void createTmpFolder() {
-        tmpFolder = new File(USER_DIR + FS + "tmpFiles");
-        if (!tmpFolder.exists())
-            tmpFolder.mkdir();
-    }
 
     /**
      * @param args the command line arguments
@@ -551,13 +591,13 @@ public class SpeechProc extends javax.swing.JFrame {
     private javax.swing.JSplitPane centerSplitPanel;
     private javax.swing.JTabbedPane centerTabbedPanel;
     private javax.swing.JMenuItem contentsMenuItem;
-    private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenuItem f0MenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenuItem formantsMenuItem;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JMenuItem intensityMenuItem;
     private javax.swing.JPanel leftPanel;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openSoundFilesMenuItem;

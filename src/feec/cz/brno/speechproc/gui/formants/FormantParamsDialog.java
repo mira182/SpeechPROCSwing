@@ -25,7 +25,6 @@ public class FormantParamsDialog extends javax.swing.JDialog {
     private Double windowLength;
     private Double preemphasis;
     
-    private boolean avgCalc;
     private boolean meanCalc;
     private boolean medianCalc;
     
@@ -36,7 +35,6 @@ public class FormantParamsDialog extends javax.swing.JDialog {
     /**
      * Creates new form FormantParamsDialog
      * @param parent
-     * @param modal
      */
     public FormantParamsDialog(java.awt.Frame parent) {
         super(parent, true);
@@ -68,7 +66,6 @@ public class FormantParamsDialog extends javax.swing.JDialog {
         meanCheckBox = new javax.swing.JCheckBox();
         jLabel6 = new javax.swing.JLabel();
         medianCheckBox = new javax.swing.JCheckBox();
-        avgCheckBox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Formants parameters");
@@ -125,8 +122,6 @@ public class FormantParamsDialog extends javax.swing.JDialog {
 
         medianCheckBox.setText("median");
 
-        avgCheckBox.setText("average");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -164,11 +159,9 @@ public class FormantParamsDialog extends javax.swing.JDialog {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(meanCheckBox)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(medianCheckBox)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(avgCheckBox))
+                                        .addComponent(medianCheckBox))
                                     .addComponent(jLabel6))
-                                .addGap(152, 152, 152)))
+                                .addGap(210, 210, 210)))
                         .addContainerGap())))
         );
         layout.setVerticalGroup(
@@ -205,8 +198,7 @@ public class FormantParamsDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(meanCheckBox)
-                    .addComponent(medianCheckBox)
-                    .addComponent(avgCheckBox))
+                    .addComponent(medianCheckBox))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelButton)
@@ -225,7 +217,6 @@ public class FormantParamsDialog extends javax.swing.JDialog {
         
         meanCalc = meanCheckBox.isSelected();
         medianCalc = medianCheckBox.isSelected();
-        avgCalc = avgCheckBox.isSelected();
 
         dispose();
     }//GEN-LAST:event_okButtonActionPerformed
@@ -250,10 +241,6 @@ public class FormantParamsDialog extends javax.swing.JDialog {
         return maxFormant;
     }
 
-    public boolean isAvgCalc() {
-        return avgCalc;
-    }
-
     public boolean isMeanCalc() {
         return meanCalc;
     }
@@ -263,7 +250,6 @@ public class FormantParamsDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox avgCheckBox;
     private javax.swing.JButton cancelButton;
     private javax.swing.JLabel errorMessageLabel;
     private javax.swing.JLabel jLabel1;

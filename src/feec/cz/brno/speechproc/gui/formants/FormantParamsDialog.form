@@ -63,12 +63,10 @@
                                       <Component id="meanCheckBox" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="medianCheckBox" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="avgCheckBox" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="152" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="210" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -120,7 +118,6 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="meanCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="medianCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="avgCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -241,11 +238,6 @@
     <Component class="javax.swing.JCheckBox" name="medianCheckBox">
       <Properties>
         <Property name="text" type="java.lang.String" value="median"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="avgCheckBox">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="average"/>
       </Properties>
     </Component>
   </SubComponents>

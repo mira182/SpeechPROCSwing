@@ -16,5 +16,5 @@ import java.io.IOException;
  */
 public interface IF0 {
     
-    File f0Pitch(ScriptParameters parameters) throws IOException, InterruptedException, ScriptRunException;
+    void f0Pitch(ScriptParameters parameters) throws IOException, InterruptedException, ScriptRunException;
 }

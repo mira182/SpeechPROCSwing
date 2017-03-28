@@ -6,14 +6,10 @@
 package feec.cz.brno.speechproc.gui.f0;
 
 import au.com.bytecode.opencsv.CSVReader;
-import feec.cz.brno.speechproc.calc.utility.CalcUtilities;
-import feec.cz.brno.speechproc.gui.DeleteResultCsvFile;
 import feec.cz.brno.speechproc.gui.GraphWindow;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.apache.logging.log4j.LogManager;
@@ -23,17 +19,23 @@ import org.apache.logging.log4j.Logger;
  *
  * @author mira
  */
-public class F0ResultPanel extends javax.swing.JPanel implements DeleteResultCsvFile {
+public class F0ResultPanel extends javax.swing.JPanel {
     
     private final static Logger logger = LogManager.getLogger(F0ResultPanel.class);
     
-    private DefaultTableModel f0TableModel = new DefaultTableModel();
+    private final DefaultTableModel f0TableModel = new DefaultTableModel();
     
     private final File csvResultFile;
+    private final File csvStatsFile;
     private final File sourceSoundFile;
     
     private boolean mean;
     private boolean median;
+    private boolean stdev;
+    private boolean jitter;
+    private boolean shimmer;
+    private boolean f0min;
+    private boolean f0max;
     
     private GraphWindow formantsGraph;
 
@@ -41,14 +43,26 @@ public class F0ResultPanel extends javax.swing.JPanel implements DeleteResultCsv
      * Creates new form F0ResultPanel
      * @param sourceSoundFile
      * @param csvResultFile
+     * @param csvStatsFile
      * @param mean
      * @param median
+     * @param stdev
+     * @param jitter
+     * @param shimmer
+     * @param f0min
+     * @param f0max
      */
-    public F0ResultPanel(File sourceSoundFile, File csvResultFile, boolean mean, boolean median) {
+    public F0ResultPanel(File sourceSoundFile, File csvResultFile, File csvStatsFile, boolean mean, boolean median, boolean stdev, boolean jitter, boolean shimmer, boolean f0min, boolean f0max) {
         this.csvResultFile = csvResultFile;
+        this.csvStatsFile = csvStatsFile;
         this.sourceSoundFile = sourceSoundFile;
         this.mean = mean;
         this.median = median;
+        this.stdev = stdev;
+        this.jitter = jitter;
+        this.shimmer = shimmer;
+        this.f0min = f0min;
+        this.f0max = f0max;
         initComponents();
         loadF0Table();
     }
@@ -69,6 +83,16 @@ public class F0ResultPanel extends javax.swing.JPanel implements DeleteResultCsv
         medianDescriptionLabel = new javax.swing.JLabel();
         medianValuleLabel = new javax.swing.JLabel();
         meanValueLabel = new javax.swing.JLabel();
+        stdevDescriptionLabel = new javax.swing.JLabel();
+        stdevValueLabel = new javax.swing.JLabel();
+        minDescriptionLabel = new javax.swing.JLabel();
+        minValueLabel = new javax.swing.JLabel();
+        maxDescriptionLabel = new javax.swing.JLabel();
+        maxValueLabel = new javax.swing.JLabel();
+        jitterDescriptionLabel = new javax.swing.JLabel();
+        jitterValueLabel = new javax.swing.JLabel();
+        shimmerDescriptionLabel = new javax.swing.JLabel();
+        shimmerValueLabel = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         f0Table = new javax.swing.JTable();
 
@@ -91,6 +115,26 @@ public class F0ResultPanel extends javax.swing.JPanel implements DeleteResultCsv
 
         meanValueLabel.setText("jLabel1");
 
+        stdevDescriptionLabel.setText("F0 stdev:");
+
+        stdevValueLabel.setText("jLabel1");
+
+        minDescriptionLabel.setText("F0 min:");
+
+        minValueLabel.setText("jLabel1");
+
+        maxDescriptionLabel.setText("F0 max:");
+
+        maxValueLabel.setText("jLabel2");
+
+        jitterDescriptionLabel.setText("Jitter:");
+
+        jitterValueLabel.setText("jLabel1");
+
+        shimmerDescriptionLabel.setText("Shimmer:");
+
+        shimmerValueLabel.setText("jLabel1");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -98,26 +142,68 @@ public class F0ResultPanel extends javax.swing.JPanel implements DeleteResultCsv
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(medianDescriptionLabel)
-                    .addComponent(meanDescriptionLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(meanValueLabel)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(medianValuleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(medianDescriptionLabel)
+                            .addComponent(meanDescriptionLabel))
+                        .addGap(6, 6, 6)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(medianValuleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(meanValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jitterDescriptionLabel)
+                            .addComponent(shimmerDescriptionLabel))
+                        .addGap(17, 17, 17)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(shimmerValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jitterValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(stdevDescriptionLabel)
+                            .addComponent(minDescriptionLabel)
+                            .addComponent(maxDescriptionLabel))
+                        .addGap(19, 19, 19)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(maxValueLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(minValueLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(stdevValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(meanDescriptionLabel)
-                    .addComponent(meanValueLabel))
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(meanDescriptionLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(meanValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(medianDescriptionLabel)
+                            .addComponent(medianValuleLabel)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jitterDescriptionLabel)
+                            .addComponent(jitterValueLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(shimmerDescriptionLabel)
+                            .addComponent(shimmerValueLabel))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(medianDescriptionLabel)
-                    .addComponent(medianValuleLabel)))
+                    .addComponent(stdevDescriptionLabel)
+                    .addComponent(stdevValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(minDescriptionLabel)
+                    .addComponent(minValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(maxDescriptionLabel)
+                    .addComponent(maxValueLabel))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -125,13 +211,13 @@ public class F0ResultPanel extends javax.swing.JPanel implements DeleteResultCsv
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(384, Short.MAX_VALUE)
                 .addComponent(showGraphButton)
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(315, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -162,41 +248,78 @@ public class F0ResultPanel extends javax.swing.JPanel implements DeleteResultCsv
     }//GEN-LAST:event_showGraphButtonActionPerformed
 
     private void loadF0Table() {
-        List<Double> f0 = new ArrayList<>();
-        String[] csvLine;
+        String[] csvLine = null;
         try {
             CSVReader reader = new CSVReader(new FileReader(csvResultFile), ' ');
             reader.readNext();
             f0TableModel.setColumnIdentifiers(new String[] {"Time min (s)", "Time max (s)", "F0 mean (Hz)", "F0 min (Hz)", "F0 max (Hz)", "F0 stdev (Hz)", "F0 VR (Hz)", "rel F0 stdev (%)", "rel F0 VR (%)"});
             while ((csvLine = reader.readNext()) != null) {
-//                f0.add(CalcUtilities.getDouble(csvLine[]));
                 f0TableModel.addRow(csvLine);
             }
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "Failed to load formants table from CSV file!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Failed to load pitch table from CSV file " + csvResultFile.getName(), "Error", JOptionPane.ERROR_MESSAGE);
             logger.error("Failed to load formants table from CSV file!", ex);
         }
         f0Table.setModel(f0TableModel);
         f0TableModel.fireTableDataChanged();
         
+        try {
+            CSVReader reader = new CSVReader(new FileReader(csvStatsFile), ' ');
+            reader.readNext();
+            csvLine = reader.readNext();
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Failed to load pitch table from CSV file " + csvStatsFile.getName(), "Error", JOptionPane.ERROR_MESSAGE);
+            logger.error("Failed to load pitch table from CSV file!", ex);
+        }
+        
+        if (jitter) {
+            jitterValueLabel.setText(csvLine[0]);
+            jitterValueLabel.setVisible(true);
+        } else {
+            jitterValueLabel.setVisible(false);
+        }
+        
+        if (shimmer) {
+            shimmerValueLabel.setText(csvLine[1]);
+            shimmerValueLabel.setVisible(true);
+        } else {
+            shimmerValueLabel.setVisible(false);
+        }
+        
         if (mean) {
-            meanValueLabel.setText(String.valueOf(CalcUtilities.mean(f0)));
+            meanValueLabel.setText(csvLine[2] + " Hz");
             meanValueLabel.setVisible(true);
-        } else if (!mean) {
+        } else {
             meanValueLabel.setVisible(false);
         }
         
         if (median) {
-//            medianValuleLabel.setText(String.valueOf(CalcUtilities.median(f0)));
+            medianValuleLabel.setText(csvLine[3] + " Hz");
             medianValuleLabel.setVisible(true);
-        } else if (!median) {
+        } else {
             medianValuleLabel.setVisible(false);
         }
-    }
-    
-    @Override
-    public void deleteCsvFile() {
-        csvResultFile.delete();
+        
+        if (stdev) {
+            stdevValueLabel.setText(csvLine[4] + " Hz");
+            stdevValueLabel.setVisible(true);
+        } else {
+            stdevValueLabel.setVisible(false);
+        }
+        
+        if (f0min) {
+            minValueLabel.setText(csvLine[5] + " Hz");
+            minValueLabel.setVisible(true);
+        } else {
+            minValueLabel.setVisible(false);
+        }
+        
+        if (f0max) {
+            maxValueLabel.setText(csvLine[6] + " Hz");
+            maxValueLabel.setVisible(true);
+        } else {
+            maxValueLabel.setVisible(false);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -205,10 +328,20 @@ public class F0ResultPanel extends javax.swing.JPanel implements DeleteResultCsv
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel jitterDescriptionLabel;
+    private javax.swing.JLabel jitterValueLabel;
+    private javax.swing.JLabel maxDescriptionLabel;
+    private javax.swing.JLabel maxValueLabel;
     private javax.swing.JLabel meanDescriptionLabel;
     private javax.swing.JLabel meanValueLabel;
     private javax.swing.JLabel medianDescriptionLabel;
     private javax.swing.JLabel medianValuleLabel;
+    private javax.swing.JLabel minDescriptionLabel;
+    private javax.swing.JLabel minValueLabel;
+    private javax.swing.JLabel shimmerDescriptionLabel;
+    private javax.swing.JLabel shimmerValueLabel;
     private javax.swing.JButton showGraphButton;
+    private javax.swing.JLabel stdevDescriptionLabel;
+    private javax.swing.JLabel stdevValueLabel;
     // End of variables declaration//GEN-END:variables
 }

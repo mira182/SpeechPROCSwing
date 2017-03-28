@@ -16,13 +16,11 @@ import java.io.IOException;
  */
 public interface IFormants {
     
-    String OUTPUT_FILE_PARAM = "outputFile";
-    
     int COLUMN_FORMANT_1 = 3;
     int COLUMN_FORMANT_2 = 5;
     int COLUMN_FORMANT_3 = 7;
     
     double MAXIMUX_FORMANTS = 3.0;
     
-    File formantListings(ScriptParameters parameters) throws IOException, InterruptedException, ScriptRunException;
+    void formantListings(ScriptParameters parameters) throws IOException, InterruptedException, ScriptRunException;
 }

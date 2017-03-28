@@ -11,8 +11,6 @@ import feec.cz.brno.speechproc.calc.api.runscript.ScriptRunException;
 import java.io.File;
 import java.io.IOException;
 
-import static feec.cz.brno.speechproc.calc.api.formants.IFormants.OUTPUT_FILE_PARAM;
-
 /**
  *
  * @author mira
@@ -20,11 +18,9 @@ import static feec.cz.brno.speechproc.calc.api.formants.IFormants.OUTPUT_FILE_PA
 public class IF0Impl implements IF0 {
 
     @Override
-    public File f0Pitch(ScriptParameters parameters) throws IOException, InterruptedException, ScriptRunException {
+    public void f0Pitch(ScriptParameters parameters) throws IOException, InterruptedException, ScriptRunException {
         PraatScript praat = new PraatScript(new File(getClass().getClassLoader().getResource("praat/F0.praat").getFile()), parameters);
         praat.runScript();
-
-        return new File(String.valueOf(parameters.getParameter(OUTPUT_FILE_PARAM).getValue()));
     }
     
 }
