@@ -3,13 +3,22 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/resources/praat/jitter_shimmer.praat</file>
-            <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/resources/praat/F0.praat</file>
-            <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/resources/praat/voice_report.praat</file>
-            <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/main/SpeechProc.java</file>
-            <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/gui/formants/FormantsResultPanel.java</file>
-            <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/resources/praat/formants.praat</file>
-            <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/gui/f0/F0ResultPanel.java</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/api/f0/IF0Impl.java</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/gui/soundlist/SoundFilesTableModel.java</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/gui/intensity/IntensityResultPanel.java</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/main/SpeechProc.java</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/gui/f0/F0ParamsDialog.java</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/gui/formants/FormantCharts.java</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/resources/praat/voice_report.praat</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/gui/JTabbedPaneCloseButton.java</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/gui/ButtonTabComponent.java</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/resources/praat/jitter_shimmer.praat</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/api/formants/IFormants.java</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/gui/f0/F0ResultPanel.java</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/resources/praat/F0.praat</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/gui/formants/FormantParamsDialog.java</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/gui/f0/F0PitchCharts.java</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/utility/CalcUtilities.java</file>
         </group>
     </open-files>
 </project-private>

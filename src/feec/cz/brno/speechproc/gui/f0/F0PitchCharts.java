@@ -94,9 +94,9 @@ public class F0PitchCharts {
             chartPanel = new ChartPanel(chart);
             reader.close();
         } catch (FileNotFoundException ex) {
-            logger.error("Couldn't create formants chart.", ex);
+            logger.error("Couldn't create pitch chart.", ex);
         } catch (IOException ex) {
-            logger.error("Couldn't create formants chart.", ex);
+            logger.error("Couldn't create pitch chart.", ex);
         }
         return chartPanel;
     }

@@ -1,28 +1,26 @@
 package feec.cz.brno.speechproc.main;
 
-import feec.cz.brno.speechproc.calc.api.f0.IF0;
-import feec.cz.brno.speechproc.calc.api.f0.IF0Impl;
+import feec.cz.brno.speechproc.calc.api.f0.F0Impl;
 import feec.cz.brno.speechproc.calc.api.formants.FormantsImpl;
-import feec.cz.brno.speechproc.calc.api.formants.IFormants;
+import feec.cz.brno.speechproc.calc.api.intensity.IntensityImpl;
 import feec.cz.brno.speechproc.calc.api.runscript.PraatScript;
 import feec.cz.brno.speechproc.calc.api.runscript.ScriptParameter;
 import feec.cz.brno.speechproc.calc.api.runscript.ScriptParameters;
 import feec.cz.brno.speechproc.calc.api.runscript.ScriptRunException;
 import feec.cz.brno.speechproc.calc.api.runscript.ScriptRunner;
+import feec.cz.brno.speechproc.gui.Icons;
 import feec.cz.brno.speechproc.gui.JTabbedPaneCloseButton;
 import feec.cz.brno.speechproc.gui.f0.F0ParamsDialog;
-import feec.cz.brno.speechproc.gui.f0.F0ResultPanel;
 import feec.cz.brno.speechproc.gui.formants.FormantCharts;
 import feec.cz.brno.speechproc.gui.formants.FormantParamsDialog;
-import feec.cz.brno.speechproc.gui.formants.FormantsResultPanel;
-import feec.cz.brno.speechproc.gui.intensity.IntensityResultPanel;
 import feec.cz.brno.speechproc.gui.soundlist.SoundFilesTableModel;
+import java.awt.Cursor;
+import java.beans.PropertyChangeEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
@@ -38,6 +36,11 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import static feec.cz.brno.speechproc.calc.api.f0.IF0.OUTPUT_FOLDER_F0;
+import static feec.cz.brno.speechproc.calc.api.formants.IFormants.OUTPUT_FOLDER_FORMANTS;
+
+
+
 /**
  *
  * @author mira
@@ -51,20 +54,13 @@ public class SpeechProc extends javax.swing.JFrame {
 
     private SoundFilesTableModel soundFilesTableModel = new SoundFilesTableModel();
     private TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(soundFilesTableModel);
-
-    private IFormants formants = new FormantsImpl();
-    private IF0 f0pitch = new IF0Impl();
     
-    private static final int IMG_WIDTH = 32;
-    private static final int IMG_HEIGHT= 32;
     
-    private static final String OUTPUT_FILE_PARAM = "outputFile";
-    private static final String OUTPUT_FILE_STATS_PARAM = "outputStatsFileName";
-    
-    public static final File OUTPUT_FOLDER_FORMANTS = new File(USER_DIR + FS + "tmpFiles" + FS + "formants" + FS);
-    public static final File OUTPUT_FOLDER_F0 = new File(USER_DIR + FS + "tmpFiles" + FS + "f0" + FS);
     public static final File OUTPUT_FOLDER_JITTER_SHIMMER = new File(USER_DIR + FS + "tmpFiles" + FS + "jitt_shimm" + FS);
-    public static final File OUTPUT_FOLDER_INTENSITY = new File(USER_DIR + FS + "tmpFiles" + FS + "intensity" + FS);
+    
+    private FormantsImpl formantsTask;
+    private F0Impl f0Task;
+    private IntensityImpl intensityTask;
 
     /**
      * Creates new form SpeechProc
@@ -141,6 +137,8 @@ public class SpeechProc extends javax.swing.JFrame {
 
         bottomPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
         bottomPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.TRAILING));
+
+        progressBar.setStringPainted(true);
         bottomPanel.add(progressBar);
 
         getContentPane().add(bottomPanel, java.awt.BorderLayout.PAGE_END);
@@ -152,7 +150,7 @@ public class SpeechProc extends javax.swing.JFrame {
 
         leftPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Input files", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP));
 
-        addSoundFileBtn.setIcon(new ImageIcon(((new ImageIcon(getClass().getClassLoader().getResource("images/icons/plus.png"))).getImage()).getScaledInstance(IMG_WIDTH, IMG_HEIGHT, java.awt.Image.SCALE_SMOOTH)));
+        addSoundFileBtn.setIcon(Icons.PLUS_ICON);
         addSoundFileBtn.setToolTipText("Add file");
         addSoundFileBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -160,7 +158,7 @@ public class SpeechProc extends javax.swing.JFrame {
             }
         });
 
-        removeSoundFileBtn.setIcon(new ImageIcon(((new ImageIcon(getClass().getClassLoader().getResource("images/icons/minus.png"))).getImage()).getScaledInstance(IMG_WIDTH, IMG_HEIGHT, java.awt.Image.SCALE_SMOOTH)));
+        removeSoundFileBtn.setIcon(Icons.MINUS_ICON);
         removeSoundFileBtn.setToolTipText("Remove file");
         removeSoundFileBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -354,34 +352,16 @@ public class SpeechProc extends javax.swing.JFrame {
 
         FormantParamsDialog paramsDialog = new FormantParamsDialog(this);
         paramsDialog.setVisible(true);
-
-        if (!OUTPUT_FOLDER_FORMANTS.exists()) {
-            OUTPUT_FOLDER_FORMANTS.mkdirs();
-        }
         
-        for (File soundFile : soundFiles) {
-            ScriptParameters parameters = new ScriptParameters();
-            parameters.add(new ScriptParameter("timeStep", paramsDialog.getTimeStep()));
-            parameters.add(new ScriptParameter("maxFormantsNumber", IFormants.MAXIMUX_FORMANTS));
-            parameters.add(new ScriptParameter("maxFormants", paramsDialog.getMaxFormant()));
-            parameters.add(new ScriptParameter("windowLength", paramsDialog.getWindowLength()));
-            parameters.add(new ScriptParameter("preemphasis", paramsDialog.getPreemphasis()));
-            parameters.add(new ScriptParameter("soundFilePath", soundFile.getAbsolutePath()));
-            parameters.add(new ScriptParameter(OUTPUT_FILE_PARAM, new File(OUTPUT_FOLDER_FORMANTS.getAbsoluteFile() + soundFile.getName() + "-formantsListing.csv")));
-
-            try {
-                formants.formantListings(parameters);
-
-                File csvResultFile = new File(String.valueOf(parameters.getParameter(OUTPUT_FILE_PARAM).getValue()));
-                
-                FormantsResultPanel formantResultPanel = new FormantsResultPanel(soundFile, csvResultFile, paramsDialog.isMeanCalc(), paramsDialog.isMedianCalc());
-                centerTabbedPanel.add("Formants of " + soundFile.getName(), formantResultPanel);
-            } catch (IOException | InterruptedException | ScriptRunException ex) {
-                logger.error("Praat script run has failed: ", ex);
-                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-        }
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        
+        formantsTask = new FormantsImpl(paramsDialog, soundFiles);
+        progressBar.setValue(0);
+        formantsTask.addPropertyChangeListener((PropertyChangeEvent evt1) -> {
+            int progress = (Integer) evt1.getNewValue();
+            progressBar.setValue(progress);
+        });
+        formantsTask.execute();
     }//GEN-LAST:event_formantsMenuItemActionPerformed
 
     private void removeSoundFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeSoundFileBtnActionPerformed
@@ -417,35 +397,13 @@ public class SpeechProc extends javax.swing.JFrame {
         F0ParamsDialog paramsDialog = new F0ParamsDialog(this);
         paramsDialog.setVisible(true);
         
-        if (!OUTPUT_FOLDER_F0.exists()) {
-            OUTPUT_FOLDER_F0.mkdirs();
-        }
-
-        for (File soundFile : soundFiles) {
-            ScriptParameters parameters = new ScriptParameters();
-            parameters.add(new ScriptParameter("timeStep", paramsDialog.getTimeStep()));
-            parameters.add(new ScriptParameter("pitch_min", paramsDialog.getPitchMin()));
-            parameters.add(new ScriptParameter("pitch_max", paramsDialog.getPitchMax()));
-            parameters.add(new ScriptParameter("soundFilePath", soundFile.getAbsolutePath()));
-            parameters.add(new ScriptParameter(OUTPUT_FILE_PARAM, new File(OUTPUT_FOLDER_F0.getAbsolutePath() + soundFile.getName() + "-pitch.csv")));
-            parameters.add(new ScriptParameter(OUTPUT_FILE_STATS_PARAM, new File(OUTPUT_FOLDER_F0.getAbsolutePath() + soundFile.getName() + "-pitch-stats.csv")));
-
-            try {
-                PraatScript praat = new PraatScript(new File(getClass().getClassLoader().getResource("praat/F0.praat").getFile()), parameters);
-                praat.runScript();
-                
-                File csvResultFile = new File(String.valueOf(parameters.getParameter(OUTPUT_FILE_PARAM).getValue()));
-                File csvStatsFile = new File(String.valueOf(parameters.getParameter(OUTPUT_FILE_STATS_PARAM).getValue()));
-                
-                F0ResultPanel f0panel = new F0ResultPanel(soundFile, csvResultFile, csvStatsFile, paramsDialog.isMeanCalc(), paramsDialog.isMedianCalc(), 
-                        paramsDialog.isStdevCalc(), paramsDialog.isJitterCalc(), paramsDialog.isShimmerCalc(), paramsDialog.isMinCalc(), paramsDialog.isMaxCalc());
-                centerTabbedPanel.add("F0 pitch of " + soundFile.getName(), f0panel);
-            } catch (IOException | InterruptedException | ScriptRunException ex) {
-                logger.error("Praat script run has failed: ", ex);
-                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-        }
+        f0Task = new F0Impl(paramsDialog, soundFiles);
+        progressBar.setValue(0);
+        f0Task.addPropertyChangeListener((PropertyChangeEvent evt1) -> {
+            int progress = (Integer) evt1.getNewValue();
+            progressBar.setValue(progress);
+        });
+        f0Task.execute();
     }//GEN-LAST:event_f0MenuItemActionPerformed
 
     private void intensityMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_intensityMenuItemActionPerformed
@@ -456,31 +414,13 @@ public class SpeechProc extends javax.swing.JFrame {
             return;
         }
 
-        if (!OUTPUT_FOLDER_INTENSITY.exists()) {
-            OUTPUT_FOLDER_INTENSITY.mkdirs();
-        }
-        
-        for (File soundFile: soundFiles) {
-            ScriptParameters parameters = new ScriptParameters();
-            parameters.add(new ScriptParameter("soundFilePath", soundFile.getAbsolutePath()));
-            parameters.add(new ScriptParameter(OUTPUT_FILE_PARAM, new File(OUTPUT_FOLDER_INTENSITY.getAbsolutePath() + soundFile.getName() + "-intensity.csv")));
-            parameters.add(new ScriptParameter(OUTPUT_FILE_STATS_PARAM, new File(OUTPUT_FOLDER_F0.getAbsolutePath() + soundFile.getName() + "-intensity-stats.csv")));
-
-            try {
-                PraatScript praat = new PraatScript(new File(getClass().getClassLoader().getResource("praat/intensity.praat").getFile()), parameters);
-                praat.runScript();
-
-                File csvResultFile = new File(String.valueOf(parameters.getParameter(OUTPUT_FILE_PARAM).getValue()));
-                File csvStatsFile = new File(String.valueOf(parameters.getParameter(OUTPUT_FILE_STATS_PARAM).getValue()));
-
-                IntensityResultPanel intensityPanel = new IntensityResultPanel(soundFile, csvResultFile, csvStatsFile);
-                centerTabbedPanel.add("Intensity of " + soundFile.getName(), intensityPanel);
-            } catch (IOException | InterruptedException | ScriptRunException ex) {
-                logger.error("Praat script run has failed: ", ex);
-                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-        }
+        intensityTask = new IntensityImpl(soundFiles);
+        progressBar.setValue(0);
+        intensityTask.addPropertyChangeListener((PropertyChangeEvent evt1) -> {
+            int progress = (Integer) evt1.getNewValue();
+            progressBar.setValue(progress);
+        });
+        intensityTask.execute();
     }//GEN-LAST:event_intensityMenuItemActionPerformed
 
     private void addSoundFiles() {

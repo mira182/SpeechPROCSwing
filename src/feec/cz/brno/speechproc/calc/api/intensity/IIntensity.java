@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package feec.cz.brno.speechproc.calc.api.f0;
+package feec.cz.brno.speechproc.calc.api.intensity;
 
 import feec.cz.brno.speechproc.calc.api.SpeechParameter;
 import java.io.File;
@@ -15,8 +15,7 @@ import static feec.cz.brno.speechproc.main.SpeechProc.USER_DIR;
  *
  * @author mira
  */
-public interface IF0 extends SpeechParameter {
+public interface IIntensity extends SpeechParameter {
     
-    public static final File OUTPUT_FOLDER_F0 = new File(USER_DIR + FS + "tmpFiles" + FS + "f0" + FS);
-    
+    public static final File OUTPUT_FOLDER_INTENSITY = new File(USER_DIR + FS + "tmpFiles" + FS + "intensity" + FS);
 }

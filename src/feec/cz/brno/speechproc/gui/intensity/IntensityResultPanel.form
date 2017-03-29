@@ -228,6 +228,12 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Show graph"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showGraphButtonActionPerformed"/>
+              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JButton(Icons.GRAPH_ICON)"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
