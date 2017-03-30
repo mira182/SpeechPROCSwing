@@ -6,7 +6,7 @@ package feec.cz.brno.speechproc.testing.formants;
  * and open the template in the editor.
  */
 
-import feec.cz.brno.speechproc.calc.api.runscript.ScriptParameter;
+import feec.cz.brno.speechproc.calc.api.params.ScriptParameter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;

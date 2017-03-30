@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package feec.cz.brno.speechproc.calc.api.runscript;
+package feec.cz.brno.speechproc.calc.api.params;
 
 /**
  *
