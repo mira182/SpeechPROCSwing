@@ -5,15 +5,21 @@
  */
 package feec.cz.brno.speechproc.calc.api.f0;
 
+import feec.cz.brno.speechproc.calc.api.params.ResultStatus;
 import feec.cz.brno.speechproc.calc.api.runscript.PraatScript;
-import feec.cz.brno.speechproc.calc.api.runscript.ScriptParameter;
-import feec.cz.brno.speechproc.calc.api.runscript.ScriptParameters;
+import feec.cz.brno.speechproc.calc.api.params.ScriptParameter;
+import feec.cz.brno.speechproc.calc.api.params.ScriptParameters;
+import feec.cz.brno.speechproc.calc.api.params.ScriptResult;
 import feec.cz.brno.speechproc.calc.api.runscript.ScriptRunException;
 import feec.cz.brno.speechproc.gui.f0.F0ParamsDialog;
 import feec.cz.brno.speechproc.gui.f0.F0ResultPanel;
+import feec.cz.brno.speechproc.gui.results.ResultsTableModel;
+import java.awt.Cursor;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,18 +29,20 @@ import org.apache.logging.log4j.Logger;
  *
  * @author mira
  */
-public class F0Impl extends SwingWorker<Boolean, Void> implements IF0 {
+public class F0Impl extends SwingWorker<Boolean, ScriptResult> implements IF0 {
 
     private final static Logger logger = LogManager.getLogger(F0Impl.class);
 
+    private final JFrame parent;
     private final F0ParamsDialog paramsDialog;
+    private final ResultsTableModel resultsTableModel;
     private final List<File> soundFiles;
-
     
-    
-    public F0Impl(F0ParamsDialog paramsDialog, final List<File> soundFiles) {
+    public F0Impl(JFrame parent, F0ParamsDialog paramsDialog, final List<File> soundFiles, ResultsTableModel resultsTableModel) {
+        this.parent = parent;
         this.soundFiles = soundFiles;
         this.paramsDialog = paramsDialog;
+        this.resultsTableModel = resultsTableModel;
     }
     
     @Override
@@ -62,14 +70,28 @@ public class F0Impl extends SwingWorker<Boolean, Void> implements IF0 {
 
                 F0ResultPanel f0panel = new F0ResultPanel(soundFile, csvResultFile, csvStatsFile, paramsDialog.isMeanCalc(), paramsDialog.isMedianCalc(),
                         paramsDialog.isStdevCalc(), paramsDialog.isJitterCalc(), paramsDialog.isShimmerCalc(), paramsDialog.isMinCalc(), paramsDialog.isMaxCalc());
-//                centerTabbedPanel.add("F0 pitch of " + soundFile.getName(), f0panel);
+                publish(new ScriptResult(soundFile, ResultStatus.OK));
             } catch (IOException | InterruptedException | ScriptRunException ex) {
                 logger.error("Praat script run has failed: ", ex);
-//                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+                publish(new ScriptResult(soundFile, ResultStatus.FAILED));
             }
             setProgress(100 * ++processedFiles / soundFiles.size());
         }
         return true;
     }
+
+    @Override
+    protected void process(List<ScriptResult> list) {
+        for (ScriptResult result : list) {
+            resultsTableModel.addRow(result);
+        }
+    }
+
+    @Override
+    protected void done() {
+        parent.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        JOptionPane.showMessageDialog(parent, "Pitch was successfuly calculated.", "Success", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
     
 }

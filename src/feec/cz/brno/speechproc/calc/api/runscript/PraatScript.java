@@ -1,5 +1,6 @@
 package feec.cz.brno.speechproc.calc.api.runscript;
 
+import feec.cz.brno.speechproc.calc.api.params.ScriptParameters;
 import java.io.File;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
