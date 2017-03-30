@@ -6,10 +6,8 @@
 package feec.cz.brno.speechproc.gui.intensity;
 
 import au.com.bytecode.opencsv.CSVReader;
-import feec.cz.brno.speechproc.calc.utility.CalcUtilities;
 import feec.cz.brno.speechproc.gui.GraphWindow;
-import feec.cz.brno.speechproc.gui.f0.F0ResultPanel;
-import feec.cz.brno.speechproc.gui.formants.FormantCharts;
+import feec.cz.brno.speechproc.gui.Icons;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -32,17 +30,13 @@ public class IntensityResultPanel extends javax.swing.JPanel {
     private final File csvResultFile;
     private final File csvStatsFile;
     
-    private GraphWindow intensityGraph;
+    private GraphWindow intensityChart;
     
     /**
      * Creates new form IntensityResultPanel
      * @param sourceSoundFile
      * @param csvResultFile
      * @param csvStatsFile
-     * @param mean
-     * @param median
-     * @param stdev
-     * @param min
      */
     public IntensityResultPanel(File sourceSoundFile, File csvResultFile, File csvStatsFile) {
         this.sourceSoundFile = sourceSoundFile;
@@ -78,7 +72,7 @@ public class IntensityResultPanel extends javax.swing.JPanel {
         timeOfMaxLabel = new javax.swing.JLabel();
         timeOfMinValueLabel = new javax.swing.JLabel();
         timeOfMaxValueLabel = new javax.swing.JLabel();
-        showGraphButton = new javax.swing.JButton();
+        showGraphButton = new javax.swing.JButton(Icons.GRAPH_ICON);
         jScrollPane2 = new javax.swing.JScrollPane();
         intensityTable = new javax.swing.JTable();
 
@@ -88,7 +82,6 @@ public class IntensityResultPanel extends javax.swing.JPanel {
 
         minDescriptionLabel.setText("Min:");
 
-        minValueLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         minValueLabel.setText("jLabel1");
 
         maxDescriptionLabel.setText("Max:");
@@ -223,10 +216,10 @@ public class IntensityResultPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void showGraphButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showGraphButtonActionPerformed
-        if (intensityGraph == null) {
+        if (intensityChart == null) {
             IntensityCharts graph = new IntensityCharts();
-            intensityGraph = new GraphWindow(csvResultFile.getAbsolutePath(), graph.createIntensityChart(csvResultFile));
-            intensityGraph.setVisible(true);
+            intensityChart = new GraphWindow(csvResultFile.getAbsolutePath(), graph.createIntensityChart(csvResultFile));
+            intensityChart.setVisible(true);
         }
     }//GEN-LAST:event_showGraphButtonActionPerformed
 

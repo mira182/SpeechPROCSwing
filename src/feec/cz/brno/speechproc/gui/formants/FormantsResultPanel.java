@@ -9,6 +9,7 @@ import au.com.bytecode.opencsv.CSVReader;
 import feec.cz.brno.speechproc.calc.api.formants.IFormants;
 import feec.cz.brno.speechproc.calc.utility.CalcUtilities;
 import feec.cz.brno.speechproc.gui.GraphWindow;
+import feec.cz.brno.speechproc.gui.Icons;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -75,7 +76,7 @@ public class FormantsResultPanel extends javax.swing.JPanel {
         meanF3Label = new javax.swing.JLabel();
         medianDescriptionF3Label = new javax.swing.JLabel();
         medianF3Label = new javax.swing.JLabel();
-        showGraphButton = new javax.swing.JButton();
+        showGraphButton = new javax.swing.JButton(Icons.GRAPH_ICON);
         formant1Panel = new javax.swing.JPanel();
         meanDescriptionF1Label = new javax.swing.JLabel();
         meanF1Label = new javax.swing.JLabel();
@@ -110,8 +111,8 @@ public class FormantsResultPanel extends javax.swing.JPanel {
                     .addComponent(meanDescriptionF2Label, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(formant2PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(meanF2Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(medianF2Label, javax.swing.GroupLayout.DEFAULT_SIZE, 61, Short.MAX_VALUE))
+                    .addComponent(meanF2Label, javax.swing.GroupLayout.DEFAULT_SIZE, 61, Short.MAX_VALUE)
+                    .addComponent(medianF2Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         formant2PanelLayout.setVerticalGroup(
@@ -223,10 +224,10 @@ public class FormantsResultPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(formant1Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(formant2Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(formant2Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(formant3Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(20, 20, 20)
+                .addComponent(formant3Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addComponent(showGraphButton)
                 .addContainerGap())
         );

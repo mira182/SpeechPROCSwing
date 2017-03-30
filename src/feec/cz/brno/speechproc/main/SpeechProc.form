@@ -196,6 +196,9 @@
       </Layout>
       <SubComponents>
         <Component class="javax.swing.JProgressBar" name="progressBar">
+          <Properties>
+            <Property name="stringPainted" type="boolean" value="true"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
@@ -278,7 +281,7 @@
               </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JButton()"/>
-                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="addSoundFileBtn.setIcon(new ImageIcon(((new ImageIcon(getClass().getClassLoader().getResource(&quot;images/icons/plus.png&quot;))).getImage()).getScaledInstance(IMG_WIDTH, IMG_HEIGHT, java.awt.Image.SCALE_SMOOTH)));"/>
+                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="addSoundFileBtn.setIcon(Icons.PLUS_ICON);"/>
               </AuxValues>
             </Component>
             <Component class="javax.swing.JButton" name="removeSoundFileBtn">
@@ -290,7 +293,7 @@
               </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JButton()"/>
-                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="removeSoundFileBtn.setIcon(new ImageIcon(((new ImageIcon(getClass().getClassLoader().getResource(&quot;images/icons/minus.png&quot;))).getImage()).getScaledInstance(IMG_WIDTH, IMG_HEIGHT, java.awt.Image.SCALE_SMOOTH)));"/>
+                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="removeSoundFileBtn.setIcon(Icons.MINUS_ICON);"/>
               </AuxValues>
             </Component>
             <Container class="javax.swing.JScrollPane" name="soundFilesListScrollPanel">

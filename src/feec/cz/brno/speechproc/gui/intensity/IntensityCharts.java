@@ -22,19 +22,21 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 /**
  *
- * @author hynstm
+ * @author mira
  */
 public class IntensityCharts {
+    
     private static final Logger logger = LogManager.getLogger(IntensityCharts.class);
 
     public ChartPanel createIntensityChart(File csvFile) {
         XYSeriesCollection dataset = new XYSeriesCollection();
-
         CSVReader reader = null;
         ChartPanel chartPanel = null;
         try {
             reader = new CSVReader(new FileReader(csvFile), ' ');
-            
+
+            // Set up series
+//            final XYSeries seriesIntensity = new XYSeries("Intensity");
             final XYSeries seriesIntensity = new XYSeries("Intensity");
 
             double intensity = 0;
@@ -44,7 +46,7 @@ public class IntensityCharts {
             while ((readNextLine = reader.readNext()) != null) {
                 // add values to dataset
                 double Time = CalcUtilities.getDouble(readNextLine[0]);
-                intensity = CalcUtilities.getDouble(readNextLine[1]);
+
                 seriesIntensity.add(Time, intensity);
             }
 
@@ -61,5 +63,4 @@ public class IntensityCharts {
         }
         return chartPanel;
     }
-    
 }

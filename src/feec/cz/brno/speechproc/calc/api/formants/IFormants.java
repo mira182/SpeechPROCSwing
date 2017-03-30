@@ -5,22 +5,23 @@
  */
 package feec.cz.brno.speechproc.calc.api.formants;
 
-import feec.cz.brno.speechproc.calc.api.runscript.ScriptParameters;
-import feec.cz.brno.speechproc.calc.api.runscript.ScriptRunException;
+import feec.cz.brno.speechproc.calc.api.SpeechParameter;
 import java.io.File;
-import java.io.IOException;
+
+import static feec.cz.brno.speechproc.main.SpeechProc.FS;
+import static feec.cz.brno.speechproc.main.SpeechProc.USER_DIR;
 
 /**
  *
  * @author mira
  */
-public interface IFormants {
+public interface IFormants extends SpeechParameter {
     
-    int COLUMN_FORMANT_1 = 3;
-    int COLUMN_FORMANT_2 = 5;
-    int COLUMN_FORMANT_3 = 7;
+    public static final int COLUMN_FORMANT_1 = 3;
+    public static final int COLUMN_FORMANT_2 = 5;
+    public static final int COLUMN_FORMANT_3 = 7;
     
-    double MAXIMUX_FORMANTS = 3.0;
+    public static final double MAXIMUX_FORMANTS = 3.0;
     
-    void formantListings(ScriptParameters parameters) throws IOException, InterruptedException, ScriptRunException;
+    public static final File OUTPUT_FOLDER_FORMANTS = new File(USER_DIR + FS + "tmpFiles" + FS + "formants" + FS);
 }
