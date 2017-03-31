@@ -18,6 +18,7 @@ import feec.cz.brno.speechproc.gui.results.ResultsTableModel;
 import java.awt.Cursor;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -68,12 +69,15 @@ public class FormantsImpl extends SwingWorker<Boolean, ScriptResult> implements 
                 praat.runScript();
 
                 File csvResultFile = new File(String.valueOf(parameters.getParameter(OUTPUT_FILE_PARAM).getValue()));
-
-                FormantsResultPanel formantResultPanel = new FormantsResultPanel(soundFile, csvResultFile, paramsDialog.isMeanCalc(), paramsDialog.isMedianCalc());
-                publish(new ScriptResult(soundFile, ResultStatus.OK));
+                
+                ScriptParameters additionalParams = new ScriptParameters();
+                additionalParams.add(new ScriptParameter(MEAN_PARAM, paramsDialog.isMeanCalc()));
+                additionalParams.add(new ScriptParameter(MEDIAN_PARAM, paramsDialog.isMedianCalc()));
+                
+                publish(new ScriptResult(soundFile, ResultStatus.OK, ResultCategory.FORMANTS, csvResultFile, null, additionalParams));
             } catch (IOException | InterruptedException | ScriptRunException ex) {
                 logger.error("Praat script run has failed: ", ex);
-                publish(new ScriptResult(soundFile, ResultStatus.FAILED));
+                publish(new ScriptResult(ResultStatus.FAILED, ResultCategory.FORMANTS));
                 return false;
             }
             setProgress(100 * ++processedFiles / soundFiles.size());

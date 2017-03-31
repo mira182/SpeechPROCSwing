@@ -26,6 +26,13 @@ public class ScriptParameters implements Iterable<ScriptParameter> {
                 .findAny()
                 .orElse(null);
     }
+    
+    public Object getParameterValue(String name) {
+        return parameters.stream()
+                .filter(param -> param.getParameterName().equals(name))
+                .findAny()
+                .orElse(null).getValue();
+    }
 
     @Override
     public Iterator<ScriptParameter> iterator() {

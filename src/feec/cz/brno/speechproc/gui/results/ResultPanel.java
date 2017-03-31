@@ -5,13 +5,22 @@
  */
 package feec.cz.brno.speechproc.gui.results;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.util.StringStack;
+import feec.cz.brno.speechproc.calc.api.SpeechParameter;
+import static feec.cz.brno.speechproc.calc.api.SpeechParameter.JITTER_PARAM;
+import static feec.cz.brno.speechproc.calc.api.SpeechParameter.MAX_PARAM;
+import static feec.cz.brno.speechproc.calc.api.SpeechParameter.MEAN_PARAM;
+import static feec.cz.brno.speechproc.calc.api.SpeechParameter.MEDIAN_PARAM;
+import static feec.cz.brno.speechproc.calc.api.SpeechParameter.MIN_PARAM;
+import static feec.cz.brno.speechproc.calc.api.SpeechParameter.SHIMMER_PARAM;
+import static feec.cz.brno.speechproc.calc.api.SpeechParameter.STDEV_PARAM;
+import feec.cz.brno.speechproc.calc.api.params.ResultStatus;
+import feec.cz.brno.speechproc.calc.api.params.ScriptParameters;
 import feec.cz.brno.speechproc.calc.api.params.ScriptResult;
+import feec.cz.brno.speechproc.gui.f0.F0ResultPanel;
 import feec.cz.brno.speechproc.gui.formants.FormantsResultPanel;
-import java.util.List;
+import feec.cz.brno.speechproc.gui.intensity.IntensityResultPanel;
 import javax.swing.JFrame;
-import javax.swing.table.DefaultTableModel;
-import org.jfree.ui.about.AboutFrame;
+import javax.swing.JPanel;
 
 /**
  *
@@ -80,7 +89,7 @@ public class ResultPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void showDetailsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showDetailsButtonActionPerformed
-        
+        showResultDetails();
     }//GEN-LAST:event_showDetailsButtonActionPerformed
 
     public void addRow(ScriptResult result) {
@@ -94,13 +103,31 @@ public class ResultPanel extends javax.swing.JPanel {
     
     private void showResultDetails() {
         for (int row : resultTable.getSelectedRows()) {
-            JFrame resultWindow = new JFrame();
-            switch (resultTableModel.getResult(row).getCategory()) {
-                case FORMANTS:
-                    FormantsResultPanel resultPanel = new FormantsResultPanel(sourceSoundFile, csvResultFile, true, true);
+            ScriptResult selectedResult = resultTableModel.getResult(row);
+            if (selectedResult.getStatus().equals(ResultStatus.OK)) {
+                JFrame resultWindow = new JFrame();
+                resultWindow.setTitle("F0 pitch of " + selectedResult.getSoundFile().getName());
+                JPanel resultPanel = null;
+                ScriptParameters params = selectedResult.getAdditionalParams();
+                switch (selectedResult.getCategory()) {
+                    case FORMANTS:
+                        resultPanel = new FormantsResultPanel(selectedResult.getSoundFile(), selectedResult.getCsvResult(), (Boolean)params.getParameterValue(MEAN_PARAM), (Boolean)params.getParameterValue(MEDIAN_PARAM));
+                        break;
+                    case F0:
+                        resultPanel = new F0ResultPanel(selectedResult.getSoundFile(), selectedResult.getCsvResult(), selectedResult.getCsvStatsResult(), 
+                                (Boolean) params.getParameterValue(MEAN_PARAM), (Boolean) params.getParameterValue(MEDIAN_PARAM),
+                                (Boolean) params.getParameterValue(STDEV_PARAM), (Boolean) params.getParameterValue(JITTER_PARAM), 
+                                (Boolean) params.getParameterValue(SHIMMER_PARAM), (Boolean) params.getParameterValue(MIN_PARAM), 
+                                (Boolean) params.getParameterValue(MAX_PARAM));
+                        break;
+                    case INTENSITY:
+                        resultPanel = new IntensityResultPanel(selectedResult.getSoundFile(), selectedResult.getCsvResult(), selectedResult.getCsvStatsResult());
+                        break;
+                }
+                resultWindow.setContentPane(resultPanel);
+                resultWindow.pack();
+                resultWindow.setVisible(true);
             }
-            
-            
         }
     }
 

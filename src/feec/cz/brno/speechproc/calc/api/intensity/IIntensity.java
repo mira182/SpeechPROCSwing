@@ -5,7 +5,7 @@
  */
 package feec.cz.brno.speechproc.calc.api.intensity;
 
-import feec.cz.brno.speechproc.calc.api.params.SpeechParameter;
+import feec.cz.brno.speechproc.calc.api.SpeechParameter;
 import java.io.File;
 
 import static feec.cz.brno.speechproc.main.SpeechProc.FS;

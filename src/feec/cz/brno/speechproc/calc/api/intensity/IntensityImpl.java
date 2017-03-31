@@ -18,6 +18,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import static feec.cz.brno.speechproc.calc.api.f0.IF0.OUTPUT_FOLDER_F0;
+import feec.cz.brno.speechproc.calc.api.params.ResultCategory;
 import feec.cz.brno.speechproc.calc.api.params.ResultStatus;
 import feec.cz.brno.speechproc.calc.api.params.ScriptResult;
 import feec.cz.brno.speechproc.gui.results.ResultsTableModel;
@@ -62,13 +63,11 @@ public class IntensityImpl extends SwingWorker<Boolean, ScriptResult> implements
 
                 File csvResultFile = new File(String.valueOf(parameters.getParameter(OUTPUT_FILE_PARAM).getValue()));
                 File csvStatsFile = new File(String.valueOf(parameters.getParameter(OUTPUT_FILE_STATS_PARAM).getValue()));
-
-                IntensityResultPanel intensityPanel = new IntensityResultPanel(soundFile, csvResultFile, csvStatsFile);
                 
-                publish(new ScriptResult(soundFile, ResultStatus.OK));
+                publish(new ScriptResult(soundFile, ResultStatus.OK, ResultCategory.INTENSITY, csvResultFile, csvStatsFile));
             } catch (IOException | InterruptedException | ScriptRunException ex) {
                 logger.error("Praat script run has failed: ", ex);
-                publish(new ScriptResult(soundFile, ResultStatus.FAILED));
+                publish(new ScriptResult(soundFile, ResultStatus.FAILED, ResultCategory.INTENSITY));
             }
             setProgress(100 * ++processedFiles / soundFiles.size());
         }

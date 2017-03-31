@@ -5,6 +5,7 @@
  */
 package feec.cz.brno.speechproc.calc.api.f0;
 
+import feec.cz.brno.speechproc.calc.api.params.ResultCategory;
 import feec.cz.brno.speechproc.calc.api.params.ResultStatus;
 import feec.cz.brno.speechproc.calc.api.runscript.PraatScript;
 import feec.cz.brno.speechproc.calc.api.params.ScriptParameter;
@@ -17,6 +18,7 @@ import feec.cz.brno.speechproc.gui.results.ResultsTableModel;
 import java.awt.Cursor;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -67,13 +69,20 @@ public class F0Impl extends SwingWorker<Boolean, ScriptResult> implements IF0 {
 
                 File csvResultFile = new File(String.valueOf(parameters.getParameter(OUTPUT_FILE_PARAM).getValue()));
                 File csvStatsFile = new File(String.valueOf(parameters.getParameter(OUTPUT_FILE_STATS_PARAM).getValue()));
-
-                F0ResultPanel f0panel = new F0ResultPanel(soundFile, csvResultFile, csvStatsFile, paramsDialog.isMeanCalc(), paramsDialog.isMedianCalc(),
-                        paramsDialog.isStdevCalc(), paramsDialog.isJitterCalc(), paramsDialog.isShimmerCalc(), paramsDialog.isMinCalc(), paramsDialog.isMaxCalc());
-                publish(new ScriptResult(soundFile, ResultStatus.OK));
+                
+                ScriptParameters additionalParams = new ScriptParameters();
+                additionalParams.add(new ScriptParameter(MEAN_PARAM, paramsDialog.isMeanCalc()));
+                additionalParams.add(new ScriptParameter(MEDIAN_PARAM, paramsDialog.isMedianCalc()));
+                additionalParams.add(new ScriptParameter(STDEV_PARAM, paramsDialog.isStdevCalc()));
+                additionalParams.add(new ScriptParameter(JITTER_PARAM, paramsDialog.isJitterCalc()));
+                additionalParams.add(new ScriptParameter(SHIMMER_PARAM, paramsDialog.isShimmerCalc()));
+                additionalParams.add(new ScriptParameter(MIN_PARAM, paramsDialog.isMinCalc()));
+                additionalParams.add(new ScriptParameter(MAX_PARAM, paramsDialog.isMaxCalc()));
+                
+                publish(new ScriptResult(soundFile, ResultStatus.OK, ResultCategory.F0, csvResultFile, csvStatsFile, additionalParams));
             } catch (IOException | InterruptedException | ScriptRunException ex) {
                 logger.error("Praat script run has failed: ", ex);
-                publish(new ScriptResult(soundFile, ResultStatus.FAILED));
+                publish(new ScriptResult(ResultStatus.FAILED, ResultCategory.F0));
             }
             setProgress(100 * ++processedFiles / soundFiles.size());
         }
@@ -90,7 +99,7 @@ public class F0Impl extends SwingWorker<Boolean, ScriptResult> implements IF0 {
     @Override
     protected void done() {
         parent.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-        JOptionPane.showMessageDialog(parent, "Pitch was successfuly calculated.", "Success", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(parent, "Pitch calculation is finished.", "Done", JOptionPane.INFORMATION_MESSAGE);
     }
     
     
