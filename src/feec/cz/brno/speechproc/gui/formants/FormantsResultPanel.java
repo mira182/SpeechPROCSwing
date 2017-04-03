@@ -38,8 +38,6 @@ public class FormantsResultPanel extends javax.swing.JPanel {
      * Creates new form FormantsResultPanel
      * @param sourceSoundFile
      * @param csvResultFile
-     * @param mean
-     * @param median
      */
     public FormantsResultPanel(File sourceSoundFile, File csvResultFile) {
         this.sourceSoundFile = sourceSoundFile;
@@ -243,11 +241,13 @@ public class FormantsResultPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void showGraphButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showGraphButtonActionPerformed
+        logger.debug("Showing formants chart from " + csvResultFile.getName());
         if (formantsGraph == null) {
             FormantCharts graph = new FormantCharts();
             formantsGraph = new GraphWindow(csvResultFile.getAbsolutePath(), graph.createFormantChart(csvResultFile));
             formantsGraph.setVisible(true);
-            logger.debug("Showing formant chart from " + csvResultFile.getName());
+        } else {
+            formantsGraph.setVisible(true);
         }
     }//GEN-LAST:event_showGraphButtonActionPerformed
 
@@ -274,14 +274,14 @@ public class FormantsResultPanel extends javax.swing.JPanel {
         }
         formantsTable.setModel(formantTableModel);
         formantTableModel.fireTableDataChanged();
-        
-            meanF1Label.setText(CalcUtilities.mean(formant1) + " Hz");
-            meanF2Label.setText(CalcUtilities.mean(formant2) + " Hz");
-            meanF3Label.setText(CalcUtilities.mean(formant3) + " Hz");
-        
-            medianF1Label.setText(CalcUtilities.median(formant1) + " Hz");
-            medianF2Label.setText(CalcUtilities.median(formant2) + " Hz");
-            medianF3Label.setText(CalcUtilities.median(formant3) + " Hz");
+   
+        meanF1Label.setText(CalcUtilities.mean(formant1) + " Hz");
+        meanF2Label.setText(CalcUtilities.mean(formant2) + " Hz");
+        meanF3Label.setText(CalcUtilities.mean(formant3) + " Hz");
+
+        medianF1Label.setText(CalcUtilities.median(formant1) + " Hz");
+        medianF2Label.setText(CalcUtilities.median(formant2) + " Hz");
+        medianF3Label.setText(CalcUtilities.median(formant3) + " Hz");
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

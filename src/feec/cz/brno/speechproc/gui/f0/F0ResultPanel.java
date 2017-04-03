@@ -30,7 +30,7 @@ public class F0ResultPanel extends javax.swing.JPanel {
     private final File csvStatsFile;
     private final File sourceSoundFile;
     
-    private GraphWindow formantsGraph;
+    private GraphWindow f0Graph;
 
     /**
      * Creates new form F0ResultPanel
@@ -368,11 +368,13 @@ public class F0ResultPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void showGraphButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showGraphButtonActionPerformed
-        if (formantsGraph == null) {
+        logger.debug("Showing pitch chart from " + csvResultFile.getName());
+        if (f0Graph == null) {
             F0PitchCharts charts = new F0PitchCharts();
-            formantsGraph = new GraphWindow(csvResultFile.getAbsolutePath(), charts.createF0Chart(csvResultFile));
-            formantsGraph.setVisible(true);
-            logger.debug("Showing pitch chart from " + csvResultFile.getName());
+            f0Graph = new GraphWindow(csvResultFile.getAbsolutePath(), charts.createChart(csvResultFile));
+            f0Graph.setVisible(true);
+        } else {
+            f0Graph.setVisible(true);
         }
     }//GEN-LAST:event_showGraphButtonActionPerformed
 

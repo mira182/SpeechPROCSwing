@@ -25,8 +25,6 @@ public class FormantParamsDialog extends javax.swing.JDialog {
     private Double windowLength;
     private Double preemphasis;
     
-    private boolean meanCalc;
-    private boolean medianCalc;
     private boolean ok;
     
     public static final double MAXIMUM_FORMANTS = 3.0;
@@ -64,9 +62,6 @@ public class FormantParamsDialog extends javax.swing.JDialog {
         preemphasisTextField = new javax.swing.JTextField();
         timeStepTextField = new javax.swing.JTextField();
         errorMessageLabel = new javax.swing.JLabel();
-        meanCheckBox = new javax.swing.JCheckBox();
-        jLabel6 = new javax.swing.JLabel();
-        medianCheckBox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Formants parameters");
@@ -117,12 +112,6 @@ public class FormantParamsDialog extends javax.swing.JDialog {
         errorMessageLabel.setForeground(new java.awt.Color(255, 0, 0));
         errorMessageLabel.setText("Erorr");
 
-        meanCheckBox.setText("mean");
-
-        jLabel6.setText("Additional calculations:");
-
-        medianCheckBox.setText("median");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -133,7 +122,7 @@ public class FormantParamsDialog extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(timeStepTextField)
+                        .addComponent(timeStepTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
                         .addGap(12, 12, 12))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -154,15 +143,7 @@ public class FormantParamsDialog extends javax.swing.JDialog {
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(maxFormantTextField))
-                            .addComponent(errorMessageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(meanCheckBox)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(medianCheckBox))
-                                    .addComponent(jLabel6))
-                                .addGap(210, 210, 210)))
+                            .addComponent(errorMessageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap())))
         );
         layout.setVerticalGroup(
@@ -195,12 +176,6 @@ public class FormantParamsDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(errorMessageLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(meanCheckBox)
-                    .addComponent(medianCheckBox))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelButton)
                     .addComponent(okButton))
@@ -215,9 +190,6 @@ public class FormantParamsDialog extends javax.swing.JDialog {
         maxFormant = Double.parseDouble(maxFormantTextField.getText());
         windowLength = Double.parseDouble(windowLengthTextField.getText());
         preemphasis = Double.parseDouble(preemphasisTextField.getText());
-        
-        meanCalc = meanCheckBox.isSelected();
-        medianCalc = medianCheckBox.isSelected();
         
         ok = true;
 
@@ -244,14 +216,6 @@ public class FormantParamsDialog extends javax.swing.JDialog {
         return maxFormant;
     }
 
-    public boolean isMeanCalc() {
-        return meanCalc;
-    }
-
-    public boolean isMedianCalc() {
-        return medianCalc;
-    }
-
     public boolean isOk() {
         return ok;
     }
@@ -263,10 +227,7 @@ public class FormantParamsDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JTextField maxFormantTextField;
-    private javax.swing.JCheckBox meanCheckBox;
-    private javax.swing.JCheckBox medianCheckBox;
     private javax.swing.JButton okButton;
     private javax.swing.JTextField preemphasisTextField;
     private javax.swing.JTextField timeStepTextField;

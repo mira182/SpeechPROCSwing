@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import feec.cz.brno.speechproc.gui.api.CompareChart;
 
 /**
  *
@@ -216,11 +217,13 @@ public class IntensityResultPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void showGraphButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showGraphButtonActionPerformed
-        if (intensityChart == null) {
-            IntensityCharts graph = new IntensityCharts();
-            intensityChart = new GraphWindow(csvResultFile.getAbsolutePath(), graph.createIntensityChart(csvResultFile));
+        logger.debug("Showing intensity graph from " + csvResultFile.getName());
+        if (intensityChart == null) {    
+            CompareChart graph = new IntensityCharts();
+            intensityChart = new GraphWindow(csvResultFile.getAbsolutePath(), graph.createChart(csvStatsFile));
             intensityChart.setVisible(true);
-            logger.debug("Showing intensity graph from " + csvResultFile.getName());
+        } else {
+            intensityChart.setVisible(true);
         }
     }//GEN-LAST:event_showGraphButtonActionPerformed
 

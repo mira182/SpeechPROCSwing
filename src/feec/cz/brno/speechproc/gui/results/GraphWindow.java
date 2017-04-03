@@ -5,21 +5,22 @@
  */
 package feec.cz.brno.speechproc.gui.results;
 
-import javax.swing.JPanel;
+import org.jfree.chart.ChartPanel;
 
 /**
  *
  * @author mira
  */
 public class GraphWindow extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form GraphWindow
      * @param title
+     * @param chartPanel
      */
-    public GraphWindow(String title, JPanel graphPanel) {
+    public GraphWindow(String title, ChartPanel chartPanel) {
         setTitle(title);
-        setContentPane(graphPanel);
+        setContentPane(chartPanel);
         initComponents();
     }
 

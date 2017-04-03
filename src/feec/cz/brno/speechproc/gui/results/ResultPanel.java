@@ -6,24 +6,32 @@
 package feec.cz.brno.speechproc.gui.results;
 
 
-import com.sun.glass.events.KeyEvent;
+import feec.cz.brno.speechproc.calc.api.SpeechParameter;
 import feec.cz.brno.speechproc.calc.api.params.ResultStatus;
 import feec.cz.brno.speechproc.calc.api.params.ScriptResult;
+import feec.cz.brno.speechproc.gui.Icons;
 import feec.cz.brno.speechproc.gui.f0.F0ResultPanel;
 import feec.cz.brno.speechproc.gui.formants.FormantsResultPanel;
+import feec.cz.brno.speechproc.gui.intensity.IntensityCharts;
 import feec.cz.brno.speechproc.gui.intensity.IntensityResultPanel;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import feec.cz.brno.speechproc.gui.api.CompareChart;
+import feec.cz.brno.speechproc.gui.f0.F0PitchCharts;
+import org.jfree.chart.ChartPanel;
 
 
 /**
@@ -80,6 +88,8 @@ public class ResultPanel extends javax.swing.JPanel {
             JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT
         );
         resultTable.setModel(resultTableModel);
+        resultTable.getSelectionModel().addListSelectionListener(new ResultTableListSelectionListener());
+        resultTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         resultTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 resultTableMouseClicked(evt);
@@ -92,6 +102,7 @@ public class ResultPanel extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(resultTable);
 
+        showDetailsButton.setIcon(Icons.DETAILS_ICON);
         showDetailsButton.setText("Result details");
         showDetailsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -99,7 +110,14 @@ public class ResultPanel extends javax.swing.JPanel {
             }
         });
 
+        compareButton.setIcon(Icons.COMPARE_CHARTS_ICON);
         compareButton.setText("Compare results");
+        compareButton.setEnabled(false);
+        compareButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                compareButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -143,6 +161,31 @@ public class ResultPanel extends javax.swing.JPanel {
             showResultDetails();
         }
     }//GEN-LAST:event_resultTableKeyReleased
+
+    private void compareButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compareButtonActionPerformed
+        if (resultTable.getSelectedRowCount() == 2) {
+            ScriptResult selectedResult1 = resultTableModel.getResult(resultTable.getSelectedRows()[0]);
+            ScriptResult selectedResult2 = resultTableModel.getResult(resultTable.getSelectedRows()[1]);
+            ChartPanel chartPanel = null;
+            switch (selectedResult1.getCategory()) {
+                case FORMANTS:
+                    logger.debug("Showing formants compared chart of " + selectedResult1.getSoundFile().getName() + " and " + selectedResult2.getCsvResult().getName());
+                    break;
+                case F0:
+                    CompareChart chart = new F0PitchCharts();
+                    chartPanel = chart.createComparedChart(selectedResult1.getCsvResult(), selectedResult2.getCsvResult());
+                    logger.debug("Showing pitch compared chart of " + selectedResult1.getSoundFile().getName() + " and " + selectedResult2.getCsvResult().getName());
+                    break;
+                case INTENSITY:
+                    chart = new IntensityCharts();
+                    chartPanel = chart.createComparedChart(selectedResult1.getCsvResult(), selectedResult2.getCsvResult());
+                    logger.debug("Showing intensity compared chart of " + selectedResult1.getSoundFile().getName() + " and " + selectedResult2.getCsvResult().getName());
+                    break;
+            }
+            GraphWindow resultWindow = new GraphWindow("Compared graph", chartPanel);
+            resultWindow.setVisible(true);
+        }
+    }//GEN-LAST:event_compareButtonActionPerformed
 
     public void addRow(ScriptResult result) {
         resultTableModel.addRow(result);
@@ -195,4 +238,20 @@ public class ResultPanel extends javax.swing.JPanel {
     private javax.swing.JTable resultTable;
     private javax.swing.JButton showDetailsButton;
     // End of variables declaration//GEN-END:variables
+
+    class ResultTableListSelectionListener implements ListSelectionListener {
+
+        @Override
+        public void valueChanged(ListSelectionEvent lse) {
+            if (resultTable.getSelectedRowCount() == 2) {
+                if (resultTableModel.getResult(resultTable.getSelectedRows()[0]).getStatus().equals(ResultStatus.OK) 
+                        && resultTableModel.getResult(resultTable.getSelectedRows()[1]).getStatus().equals(ResultStatus.OK)) {
+                    compareButton.setEnabled(true);
+                }
+            } else {
+                compareButton.setEnabled(false);
+            }
+        }
+        
+    }
 }

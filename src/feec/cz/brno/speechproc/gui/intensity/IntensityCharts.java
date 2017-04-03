@@ -19,26 +19,25 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import feec.cz.brno.speechproc.gui.api.CompareChart;
 
 /**
  *
  * @author mira
  */
-public class IntensityCharts {
+public class IntensityCharts implements CompareChart {
     
     private static final Logger logger = LogManager.getLogger(IntensityCharts.class);
 
-    public ChartPanel createIntensityChart(File csvFile) {
+    @Override
+    public ChartPanel createChart(File csvFile) {
         XYSeriesCollection dataset = new XYSeriesCollection();
         CSVReader reader = null;
         ChartPanel chartPanel = null;
         try {
             reader = new CSVReader(new FileReader(csvFile), ' ');
-
             // Set up series
-//            final XYSeries seriesIntensity = new XYSeries("Intensity");
             final XYSeries seriesIntensity = new XYSeries("Intensity");
-
             double intensity = 0;
 
             // header
@@ -50,13 +49,63 @@ public class IntensityCharts {
 
                 seriesIntensity.add(Time, intensity);
             }
-
             dataset.addSeries(seriesIntensity);
+            
+            JFreeChart chart = ChartFactory.createXYLineChart("Intensity", "Time [s]", "Frequency [Hz]", dataset, PlotOrientation.VERTICAL, true, true, true);
+            
+            chartPanel = new ChartPanel(chart);
+            
+            reader.close();
+        } catch (FileNotFoundException ex) {
+            logger.error("Couldn't create intensity chart.", ex);
+        } catch (IOException ex) {
+            logger.error("Couldn't create intensity chart.", ex);
+        }
+        return chartPanel;
+    }
+
+    @Override
+    public ChartPanel createComparedChart(File csvFile1, File csvFile2) {
+        ChartPanel chartPanel = null;
+        XYSeriesCollection dataset = new XYSeriesCollection();
+        CSVReader reader1 = null;
+        CSVReader reader2 = null;
+        try {
+            reader1 = new CSVReader(new FileReader(csvFile1), ' ');
+            reader2 = new CSVReader(new FileReader(csvFile2), ' ');
+            
+            final XYSeries seriesIntensity1 = new XYSeries("Intensity of " + csvFile1.getName());
+            final XYSeries seriesIntensity2 = new XYSeries("Intensity of " + csvFile2.getName());
+            double intensity = 0;
+
+            // header
+            String[] readNextLine = reader1.readNext();
+            while ((readNextLine = reader1.readNext()) != null) {
+                // add values to dataset
+                double Time = CalcUtilities.getDouble(readNextLine[0]);
+                intensity = CalcUtilities.getDouble(readNextLine[1]);
+
+                seriesIntensity1.add(Time, intensity);
+            }
+            dataset.addSeries(seriesIntensity1);
+            
+            readNextLine = reader2.readNext();
+            while ((readNextLine = reader2.readNext()) != null) {
+                // add values to dataset
+                double Time = CalcUtilities.getDouble(readNextLine[0]);
+                intensity = CalcUtilities.getDouble(readNextLine[1]);
+
+                seriesIntensity2.add(Time, intensity);
+            }
+            dataset.addSeries(seriesIntensity2);
+            
 
             JFreeChart chart = ChartFactory.createXYLineChart("Intensity", "Time [s]", "Frequency [Hz]", dataset, PlotOrientation.VERTICAL, true, true, true);
 
             chartPanel = new ChartPanel(chart);
-            reader.close();
+
+            reader1.close();
+            reader2.close();
         } catch (FileNotFoundException ex) {
             logger.error("Couldn't create intensity chart.", ex);
         } catch (IOException ex) {
