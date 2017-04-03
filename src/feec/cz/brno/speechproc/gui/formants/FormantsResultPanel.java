@@ -8,8 +8,8 @@ package feec.cz.brno.speechproc.gui.formants;
 import au.com.bytecode.opencsv.CSVReader;
 import feec.cz.brno.speechproc.calc.api.formants.IFormants;
 import feec.cz.brno.speechproc.calc.utility.CalcUtilities;
-import feec.cz.brno.speechproc.gui.GraphWindow;
 import feec.cz.brno.speechproc.gui.Icons;
+import feec.cz.brno.speechproc.gui.results.GraphWindow;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -31,9 +31,6 @@ public class FormantsResultPanel extends javax.swing.JPanel {
     private File csvResultFile;
     private DefaultTableModel formantTableModel;
     
-    private boolean mean;
-    private boolean median;
-    
     private final File sourceSoundFile;
     private GraphWindow formantsGraph;
     
@@ -44,11 +41,9 @@ public class FormantsResultPanel extends javax.swing.JPanel {
      * @param mean
      * @param median
      */
-    public FormantsResultPanel(File sourceSoundFile, File csvResultFile, boolean mean, boolean median) {
+    public FormantsResultPanel(File sourceSoundFile, File csvResultFile) {
         this.sourceSoundFile = sourceSoundFile;
         this.csvResultFile = csvResultFile;
-        this.mean = mean;
-        this.median = median;
         initComponents();
         loadFormantsTable();
     }
@@ -250,8 +245,9 @@ public class FormantsResultPanel extends javax.swing.JPanel {
     private void showGraphButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showGraphButtonActionPerformed
         if (formantsGraph == null) {
             FormantCharts graph = new FormantCharts();
-            formantsGraph = new GraphWindow(csvResultFile.getAbsolutePath(), graph.createFormantChart(csvResultFile, true, true));
+            formantsGraph = new GraphWindow(csvResultFile.getAbsolutePath(), graph.createFormantChart(csvResultFile));
             formantsGraph.setVisible(true);
+            logger.debug("Showing formant chart from " + csvResultFile.getName());
         }
     }//GEN-LAST:event_showGraphButtonActionPerformed
 
@@ -279,25 +275,13 @@ public class FormantsResultPanel extends javax.swing.JPanel {
         formantsTable.setModel(formantTableModel);
         formantTableModel.fireTableDataChanged();
         
-        if (mean) {
             meanF1Label.setText(CalcUtilities.mean(formant1) + " Hz");
             meanF2Label.setText(CalcUtilities.mean(formant2) + " Hz");
             meanF3Label.setText(CalcUtilities.mean(formant3) + " Hz");
-        } else if (!mean) {
-            meanF1Label.setVisible(false);
-            meanF2Label.setVisible(false);
-            meanF3Label.setVisible(false);
-        }
         
-        if (median) {
             medianF1Label.setText(CalcUtilities.median(formant1) + " Hz");
             medianF2Label.setText(CalcUtilities.median(formant2) + " Hz");
             medianF3Label.setText(CalcUtilities.median(formant3) + " Hz");
-        } else if (!median) {
-            medianF1Label.setVisible(false);
-            medianF2Label.setVisible(false);
-            medianF3Label.setVisible(false);
-        }
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

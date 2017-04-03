@@ -35,9 +35,10 @@ public abstract class ScriptRunnerAbstract implements ScriptRunner {
     public void runScript() throws IOException, InterruptedException, ScriptRunException {
         StringBuilder output = new StringBuilder();
         String command = buildCommand();
+        
+        logger.debug("Executing command: {}", command);
 
         Process proc;
-        logger.debug("Executing command: {}", command);
         proc = Runtime.getRuntime().exec(command);
         proc.waitFor();
 

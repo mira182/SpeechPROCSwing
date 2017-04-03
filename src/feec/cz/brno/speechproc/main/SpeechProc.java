@@ -3,9 +3,9 @@ package feec.cz.brno.speechproc.main;
 import feec.cz.brno.speechproc.calc.api.f0.F0Impl;
 import feec.cz.brno.speechproc.calc.api.formants.FormantsImpl;
 import feec.cz.brno.speechproc.calc.api.intensity.IntensityImpl;
-import feec.cz.brno.speechproc.calc.api.runscript.PraatScript;
 import feec.cz.brno.speechproc.calc.api.params.ScriptParameter;
 import feec.cz.brno.speechproc.calc.api.params.ScriptParameters;
+import feec.cz.brno.speechproc.calc.api.runscript.PraatScript;
 import feec.cz.brno.speechproc.calc.api.runscript.ScriptRunException;
 import feec.cz.brno.speechproc.calc.api.runscript.ScriptRunner;
 import feec.cz.brno.speechproc.gui.Icons;
@@ -13,14 +13,17 @@ import feec.cz.brno.speechproc.gui.JTabbedPaneCloseButton;
 import feec.cz.brno.speechproc.gui.f0.F0ParamsDialog;
 import feec.cz.brno.speechproc.gui.formants.FormantCharts;
 import feec.cz.brno.speechproc.gui.formants.FormantParamsDialog;
+import feec.cz.brno.speechproc.gui.results.ResultPanel;
 import feec.cz.brno.speechproc.gui.soundlist.SoundFilesTableModel;
 import java.awt.Cursor;
+import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Vector;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
@@ -38,10 +41,6 @@ import org.apache.logging.log4j.Logger;
 
 import static feec.cz.brno.speechproc.calc.api.f0.IF0.OUTPUT_FOLDER_F0;
 import static feec.cz.brno.speechproc.calc.api.formants.IFormants.OUTPUT_FOLDER_FORMANTS;
-import feec.cz.brno.speechproc.gui.intensity.IntensityResultPanel;
-import feec.cz.brno.speechproc.gui.results.ResultPanel;
-
-
 
 /**
  *
@@ -55,10 +54,7 @@ public class SpeechProc extends javax.swing.JFrame {
     public static final String USER_DIR = System.getProperty("user.dir");
 
     private SoundFilesTableModel soundFilesTableModel = new SoundFilesTableModel();
-    private TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(soundFilesTableModel);
-    
-    
-    public static final File OUTPUT_FOLDER_JITTER_SHIMMER = new File(USER_DIR + FS + "tmpFiles" + FS + "jitt_shimm" + FS);
+    private TableRowSorter<TableModel> searchFieldRowSorter = new TableRowSorter<>(soundFilesTableModel);
     
     private FormantsImpl formantsTask;
     private F0Impl f0Task;
@@ -92,6 +88,7 @@ public class SpeechProc extends javax.swing.JFrame {
         toolBar = new javax.swing.JToolBar();
         praatScriptBtn = new javax.swing.JButton();
         bottomPanel = new javax.swing.JPanel();
+        progressLabel = new javax.swing.JLabel();
         progressBar = new javax.swing.JProgressBar();
         centerSplitPanel = new javax.swing.JSplitPane();
         leftPanel = new javax.swing.JPanel();
@@ -139,6 +136,7 @@ public class SpeechProc extends javax.swing.JFrame {
 
         bottomPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
         bottomPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.TRAILING));
+        bottomPanel.add(progressLabel);
 
         progressBar.setStringPainted(true);
         bottomPanel.add(progressBar);
@@ -169,10 +167,19 @@ public class SpeechProc extends javax.swing.JFrame {
         });
 
         soundFilesTableModel.setColumnIdentifiers(new String[] { "Name", "Path", "Size"});
+        for (int column = 0; column < soundFilesTable.getColumnCount(); column++) {
+            soundFilesTableModel.addColumn(soundFilesTable.getColumnName(column));
+        }
+        soundFilesTable.setAutoCreateRowSorter(true);
         soundFilesTable.setModel(soundFilesTableModel);
-        soundFilesTable.setRowSorter(rowSorter);
+        soundFilesTable.setRowSorter(searchFieldRowSorter);
         soundFilesTable.setGridColor(new java.awt.Color(255, 255, 255));
         soundFilesTable.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        soundFilesTable.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                soundFilesTableKeyReleased(evt);
+            }
+        });
         soundFilesListScrollPanel.setViewportView(soundFilesTable);
 
         searchFileTextField.getDocument().addDocumentListener(new DocumentListener(){
@@ -182,9 +189,9 @@ public class SpeechProc extends javax.swing.JFrame {
                 String text = searchFileTextField.getText();
 
                 if (text.trim().length() == 0) {
-                    rowSorter.setRowFilter(null);
+                    searchFieldRowSorter.setRowFilter(null);
                 } else {
-                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                    searchFieldRowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
                 }
             }
 
@@ -193,9 +200,9 @@ public class SpeechProc extends javax.swing.JFrame {
                 String text = searchFileTextField.getText();
 
                 if (text.trim().length() == 0) {
-                    rowSorter.setRowFilter(null);
+                    searchFieldRowSorter.setRowFilter(null);
                 } else {
-                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                    searchFieldRowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
                 }
             }
 
@@ -242,6 +249,12 @@ public class SpeechProc extends javax.swing.JFrame {
         );
 
         centerSplitPanel.setLeftComponent(leftPanel);
+
+        centerTabbedPanel.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                centerTabbedPanelKeyPressed(evt);
+            }
+        });
         centerSplitPanel.setRightComponent(centerTabbedPanel);
 
         getContentPane().add(centerSplitPanel, java.awt.BorderLayout.CENTER);
@@ -355,28 +368,27 @@ public class SpeechProc extends javax.swing.JFrame {
         FormantParamsDialog paramsDialog = new FormantParamsDialog(this);
         paramsDialog.setVisible(true);
         
-        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        
-        ResultPanel resultPanel = new ResultPanel();
-        centerTabbedPanel.add("Formants", resultPanel);
-        
-        formantsTask = new FormantsImpl(this, paramsDialog, soundFiles, resultPanel.getResultTableModel());
-        progressBar.setValue(0);
-        formantsTask.addPropertyChangeListener((PropertyChangeEvent evt1) -> {
-            if ("progress".equals(evt1.getPropertyName())) {
-                int progress = (Integer) evt1.getNewValue();
-                progressBar.setValue(progress);
-            }
-        });
-        formantsTask.execute();
-        
-        setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        if (paramsDialog.isOk()) {
+
+            setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+            ResultPanel resultPanel = new ResultPanel();
+            centerTabbedPanel.add("Formants", resultPanel);
+
+            formantsTask = new FormantsImpl(this, paramsDialog, soundFiles, resultPanel.getResultTableModel(), progressLabel);
+            progressBar.setValue(0);
+            formantsTask.addPropertyChangeListener((PropertyChangeEvent evt1) -> {
+                if ("progress".equals(evt1.getPropertyName())) {
+                    int progress = (Integer) evt1.getNewValue();
+                    progressBar.setValue(progress);
+                }
+            });
+            formantsTask.execute();
+        }
     }//GEN-LAST:event_formantsMenuItemActionPerformed
 
     private void removeSoundFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeSoundFileBtnActionPerformed
-        for (int row : soundFilesTable.getSelectedRows()) {
-            soundFilesTableModel.removeRow(row);
-        }
+        removeSelectedRows();
     }//GEN-LAST:event_removeSoundFileBtnActionPerformed
 
     private void openSoundFilesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openSoundFilesMenuItemActionPerformed
@@ -406,20 +418,35 @@ public class SpeechProc extends javax.swing.JFrame {
         F0ParamsDialog paramsDialog = new F0ParamsDialog(this);
         paramsDialog.setVisible(true);
         
-        
-        ResultPanel resultPanel = new ResultPanel();
-        centerTabbedPanel.add("F0 pitch", resultPanel);
-        
-        f0Task = new F0Impl(this, paramsDialog, soundFiles, resultPanel.getResultTableModel());
-        progressBar.setValue(0);
-        f0Task.addPropertyChangeListener((PropertyChangeEvent evt1) -> {
-            if ("progress".equals(evt1.getPropertyName())) {
-                int progress = (Integer) evt1.getNewValue();
-                progressBar.setValue(progress);
-            }
-        });
-        f0Task.execute();
+        if (paramsDialog.isOk()) {
+            setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+            ResultPanel resultPanel = new ResultPanel();
+            centerTabbedPanel.add("F0 pitch", resultPanel);
+
+            f0Task = new F0Impl(this, paramsDialog, soundFiles, resultPanel.getResultTableModel(), progressLabel);
+            progressBar.setValue(0);
+            f0Task.addPropertyChangeListener((PropertyChangeEvent evt1) -> {
+                if ("progress".equals(evt1.getPropertyName())) {
+                    int progress = (Integer) evt1.getNewValue();
+                    progressBar.setValue(progress);
+                }
+            });
+            f0Task.execute();
+        }
     }//GEN-LAST:event_f0MenuItemActionPerformed
+
+    private void soundFilesTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_soundFilesTableKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_DELETE) {
+            removeSelectedRows();
+        }
+    }//GEN-LAST:event_soundFilesTableKeyReleased
+
+    private void centerTabbedPanelKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_centerTabbedPanelKeyPressed
+        if (evt.isControlDown() && evt.getKeyCode() == KeyEvent.VK_W) {
+            centerTabbedPanel.remove(centerTabbedPanel.getSelectedIndex());
+        }
+    }//GEN-LAST:event_centerTabbedPanelKeyPressed
 
     private void intensityMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                  
         List<File> soundFiles = getSelectedSoundFiles();
@@ -428,11 +455,13 @@ public class SpeechProc extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "No sound file selected!", "No file.", JOptionPane.WARNING_MESSAGE);
             return;
         }
+        
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
         ResultPanel resultPanel = new ResultPanel();
         centerTabbedPanel.add("Intensity", resultPanel);
         
-        intensityTask = new IntensityImpl(this, soundFiles, resultPanel.getResultTableModel());
+        intensityTask = new IntensityImpl(this, soundFiles, resultPanel.getResultTableModel(), progressLabel);
         progressBar.setValue(0);
         intensityTask.addPropertyChangeListener((PropertyChangeEvent evt1) -> {
             if ("progress".equals(evt1.getPropertyName())) {
@@ -448,7 +477,9 @@ public class SpeechProc extends javax.swing.JFrame {
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setMultiSelectionEnabled(true);
         fileChooser.setDialogTitle("Open sound file");
-        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        // TODO use user.home
+//        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        fileChooser.setCurrentDirectory(new File("/media/mira/0f00c26e-7ed7-4b05-99c3-763797a05b44/mira/School/2016_17/DIPLOMKA/PAR_CZ_001/K1004/"));
         fileChooser.setFileFilter(new FileNameExtensionFilter("Sound files (*.wav, *.mp3)", "wav", "mp3"));
 
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
@@ -459,6 +490,23 @@ public class SpeechProc extends javax.swing.JFrame {
             });
         } else {
             logger.trace("Open sound files cancelled by user.");
+        }
+    }
+    
+    private void removeSelectedRows() {
+        if (soundFilesTable.getSelectedRowCount() > 0) {
+            List<Vector> selectedRows = new ArrayList<>(25);
+            Vector rowData = soundFilesTableModel.getDataVector();
+            for (int row : soundFilesTable.getSelectedRows()) {
+                int modelRow = soundFilesTable.convertRowIndexToModel(row);
+                Vector rowValue = (Vector) rowData.get(modelRow);
+                selectedRows.add(rowValue);
+            }
+
+            for (Vector rowValue : selectedRows) {
+                int rowIndex = rowData.indexOf(rowValue);
+                soundFilesTableModel.removeRow(rowIndex);
+            }
         }
     }
 
@@ -498,7 +546,7 @@ public class SpeechProc extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Praat script has finished successfully.", "Success!", JOptionPane.INFORMATION_MESSAGE);
 
                 FormantCharts graph = new FormantCharts();
-                centerTabbedPanel.add("Formants listing", graph.createFormantChart(new File("formantsListings.csv"), true, false));
+                centerTabbedPanel.add("Formants listing", graph.createFormantChart(new File("formantsListings.csv")));
             }
         }
     }
@@ -564,6 +612,7 @@ public class SpeechProc extends javax.swing.JFrame {
     private javax.swing.JButton praatScriptBtn;
     private javax.swing.JMenuItem praatScriptMenuItem;
     private javax.swing.JProgressBar progressBar;
+    private javax.swing.JLabel progressLabel;
     private javax.swing.JButton removeSoundFileBtn;
     private javax.swing.JMenuItem saveAsMenuItem;
     private javax.swing.JTextField searchFileTextField;

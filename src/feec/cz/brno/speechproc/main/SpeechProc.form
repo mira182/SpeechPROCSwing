@@ -195,6 +195,8 @@
         <Property name="alignment" type="int" value="4"/>
       </Layout>
       <SubComponents>
+        <Component class="javax.swing.JLabel" name="progressLabel">
+        </Component>
         <Component class="javax.swing.JProgressBar" name="progressBar">
           <Properties>
             <Property name="stringPainted" type="boolean" value="true"/>
@@ -302,7 +304,8 @@
               <SubComponents>
                 <Component class="javax.swing.JTable" name="soundFilesTable">
                   <Properties>
-                    <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor" postCode="soundFilesTable.setRowSorter(rowSorter);">
+                    <Property name="autoCreateRowSorter" type="boolean" value="true"/>
+                    <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor" postCode="soundFilesTable.setRowSorter(searchFieldRowSorter);">
                       <Connection code="soundFilesTableModel" type="code"/>
                     </Property>
                     <Property name="gridColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -312,8 +315,11 @@
                       <JTableSelectionModel selectionMode="2"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="soundFilesTableKeyReleased"/>
+                  </Events>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="soundFilesTableModel.setColumnIdentifiers(new String[] { &quot;Name&quot;, &quot;Path&quot;, &quot;Size&quot;});"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="soundFilesTableModel.setColumnIdentifiers(new String[] { &quot;Name&quot;, &quot;Path&quot;, &quot;Size&quot;});&#xa;for (int column = 0; column &lt; soundFilesTable.getColumnCount(); column++) {&#xa;    soundFilesTableModel.addColumn(soundFilesTable.getColumnName(column));&#xa;}"/>
                   </AuxValues>
                 </Component>
               </SubComponents>
@@ -325,7 +331,7 @@
                 </Property>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="searchFileTextField.getDocument().addDocumentListener(new DocumentListener(){&#xa;&#xa;            @Override&#xa;        public void insertUpdate(DocumentEvent e) {&#xa;                String text = searchFileTextField.getText();&#xa;&#xa;                if (text.trim().length() == 0) {&#xa;                    rowSorter.setRowFilter(null);&#xa;                } else {&#xa;                    rowSorter.setRowFilter(RowFilter.regexFilter(&quot;(?i)&quot; + text));&#xa;                }&#xa;            }&#xa;&#xa;            @Override&#xa;        public void removeUpdate(DocumentEvent e) {&#xa;                String text = searchFileTextField.getText();&#xa;&#xa;                if (text.trim().length() == 0) {&#xa;                    rowSorter.setRowFilter(null);&#xa;                } else {&#xa;                    rowSorter.setRowFilter(RowFilter.regexFilter(&quot;(?i)&quot; + text));&#xa;                }&#xa;            }&#xa;&#xa;            @Override&#xa;        public void changedUpdate(DocumentEvent e) {&#xa;                throw new UnsupportedOperationException(&quot;Not supported yet.&quot;); //To change body of generated methods, choose Tools | Templates.&#xa;            }&#xa;&#xa;        });"/>
+                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="searchFileTextField.getDocument().addDocumentListener(new DocumentListener(){&#xa;&#xa;            @Override&#xa;        public void insertUpdate(DocumentEvent e) {&#xa;                String text = searchFileTextField.getText();&#xa;&#xa;                if (text.trim().length() == 0) {&#xa;                    searchFieldRowSorter.setRowFilter(null);&#xa;                } else {&#xa;                    searchFieldRowSorter.setRowFilter(RowFilter.regexFilter(&quot;(?i)&quot; + text));&#xa;                }&#xa;            }&#xa;&#xa;            @Override&#xa;        public void removeUpdate(DocumentEvent e) {&#xa;                String text = searchFileTextField.getText();&#xa;&#xa;                if (text.trim().length() == 0) {&#xa;                    searchFieldRowSorter.setRowFilter(null);&#xa;                } else {&#xa;                    searchFieldRowSorter.setRowFilter(RowFilter.regexFilter(&quot;(?i)&quot; + text));&#xa;                }&#xa;            }&#xa;&#xa;            @Override&#xa;        public void changedUpdate(DocumentEvent e) {&#xa;                throw new UnsupportedOperationException(&quot;Not supported yet.&quot;); //To change body of generated methods, choose Tools | Templates.&#xa;            }&#xa;&#xa;        });"/>
               </AuxValues>
             </Component>
             <Component class="javax.swing.JLabel" name="searchLabel">
@@ -336,6 +342,9 @@
           </SubComponents>
         </Container>
         <Container class="javax.swing.JTabbedPane" name="centerTabbedPanel">
+          <Events>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="centerTabbedPanelKeyPressed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTabbedPaneCloseButton()"/>
           </AuxValues>

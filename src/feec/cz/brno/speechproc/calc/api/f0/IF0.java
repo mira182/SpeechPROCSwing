@@ -17,6 +17,6 @@ import static feec.cz.brno.speechproc.main.SpeechProc.USER_DIR;
  */
 public interface IF0 extends SpeechParameter {
     
-    public static final File OUTPUT_FOLDER_F0 = new File(USER_DIR + FS + "tmpFiles" + FS + "f0" + FS);
+    public static final File OUTPUT_FOLDER_F0 = new File(USER_DIR + FS + "tmpFiles" + FS + "f0");
     
 }

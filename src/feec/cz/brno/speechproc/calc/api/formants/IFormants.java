@@ -23,5 +23,5 @@ public interface IFormants extends SpeechParameter {
     
     public static final double MAXIMUX_FORMANTS = 3.0;
     
-    public static final File OUTPUT_FOLDER_FORMANTS = new File(USER_DIR + FS + "tmpFiles" + FS + "formants" + FS);
+    public static final File OUTPUT_FOLDER_FORMANTS = new File(USER_DIR + FS + "tmpFiles" + FS + "formants");
 }

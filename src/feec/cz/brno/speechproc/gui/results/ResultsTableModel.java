@@ -5,9 +5,7 @@
  */
 package feec.cz.brno.speechproc.gui.results;
 
-import feec.cz.brno.speechproc.calc.api.params.ResultStatus;
 import feec.cz.brno.speechproc.calc.api.params.ScriptResult;
-import feec.cz.brno.speechproc.gui.soundlist.SoundFilesTableModel;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -22,7 +20,7 @@ public class ResultsTableModel extends DefaultTableModel {
     
     private final static Logger logger = LogManager.getLogger(ResultsTableModel.class);
     
-    private List<ScriptResult> results;
+    private final List<ScriptResult> results;
 
     public ResultsTableModel() {
         this.results = new ArrayList<>();

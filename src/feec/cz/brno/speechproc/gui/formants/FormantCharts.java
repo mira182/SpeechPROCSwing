@@ -26,7 +26,7 @@ public class FormantCharts {
     
     private static final Logger logger = LogManager.getLogger(FormantCharts.class);
 
-    public ChartPanel createFormantChart(File csvFile, boolean formant2, boolean formant3) {
+    public ChartPanel createFormantChart(File csvFile) {
         XYSeriesCollection dataset = new XYSeriesCollection();
         CSVReader reader = null;
         ChartPanel chartPanel = null;
@@ -34,12 +34,11 @@ public class FormantCharts {
             reader = new CSVReader(new FileReader(csvFile), ',');
             
             // Set up series
-//            final XYSeries seriesIntensity = new XYSeries("Intensity");
             final XYSeries seriesF1 = new XYSeries("Formant 1");
             final XYSeries seriesF2 = new XYSeries("Formant 2");
             final XYSeries seriesF3 = new XYSeries("Formant 3");
             
-            double F1;
+            double F1 = 0;
             double F2 = 0;
             double F3 = 0;
       
@@ -48,22 +47,14 @@ public class FormantCharts {
             while ((readNextLine = reader.readNext()) != null) {
                 // add values to dataset
                 double Time = CalcUtilities.getDouble(readNextLine[0]);
-//                double intensity = Double.valueOf(readNextLine[1]);
-                F1 = CalcUtilities.getDouble(readNextLine[3]);
-                if (formant2) F2 = CalcUtilities.getDouble(readNextLine[5]);
-                if (formant3) F3 = CalcUtilities.getDouble(readNextLine[7]);
-                
-//                seriesIntensity.add(Time, intensity);
-
-                seriesF1.add(Time, F1);
-                if (formant2) seriesF2.add(Time, F2);
-                if (formant3) seriesF2.add(Time, F3);
+                try { F1 = Double.parseDouble(readNextLine[3]); seriesF1.add(Time, F1); } catch (NumberFormatException e) {}
+                try { F2 = Double.parseDouble(readNextLine[5]); seriesF2.add(Time, F2); } catch (NumberFormatException e) {}
+                try { F3 = Double.parseDouble(readNextLine[7]); seriesF3.add(Time, F3); } catch (NumberFormatException e) {}
             }
-
-//            dataset.addSeries(seriesIntensity);
+            
             dataset.addSeries(seriesF1);
-            if (formant2) dataset.addSeries(seriesF2);
-            if (formant3) dataset.addSeries(seriesF3);
+            dataset.addSeries(seriesF2);
+            dataset.addSeries(seriesF3);
 
             JFreeChart chart = ChartFactory.createScatterPlot("Formants", "Time [s]", "Frequency [Hz]", dataset, PlotOrientation.VERTICAL, true, true, true);
 

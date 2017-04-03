@@ -6,8 +6,8 @@
 package feec.cz.brno.speechproc.gui.f0;
 
 import au.com.bytecode.opencsv.CSVReader;
-import feec.cz.brno.speechproc.gui.GraphWindow;
 import feec.cz.brno.speechproc.gui.Icons;
+import feec.cz.brno.speechproc.gui.results.GraphWindow;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -30,14 +30,6 @@ public class F0ResultPanel extends javax.swing.JPanel {
     private final File csvStatsFile;
     private final File sourceSoundFile;
     
-    private boolean mean;
-    private boolean median;
-    private boolean stdev;
-    private boolean jitter;
-    private boolean shimmer;
-    private boolean f0min;
-    private boolean f0max;
-    
     private GraphWindow formantsGraph;
 
     /**
@@ -45,25 +37,11 @@ public class F0ResultPanel extends javax.swing.JPanel {
      * @param sourceSoundFile
      * @param csvResultFile
      * @param csvStatsFile
-     * @param mean
-     * @param median
-     * @param stdev
-     * @param jitter
-     * @param shimmer
-     * @param f0min
-     * @param f0max
      */
-    public F0ResultPanel(File sourceSoundFile, File csvResultFile, File csvStatsFile, boolean mean, boolean median, boolean stdev, boolean jitter, boolean shimmer, boolean f0min, boolean f0max) {
+    public F0ResultPanel(File sourceSoundFile, File csvResultFile, File csvStatsFile) {
         this.csvResultFile = csvResultFile;
         this.csvStatsFile = csvStatsFile;
         this.sourceSoundFile = sourceSoundFile;
-        this.mean = mean;
-        this.median = median;
-        this.stdev = stdev;
-        this.jitter = jitter;
-        this.shimmer = shimmer;
-        this.f0min = f0min;
-        this.f0max = f0max;
         initComponents();
         loadF0Table();
     }
@@ -90,10 +68,30 @@ public class F0ResultPanel extends javax.swing.JPanel {
         minValueLabel = new javax.swing.JLabel();
         maxDescriptionLabel = new javax.swing.JLabel();
         maxValueLabel = new javax.swing.JLabel();
-        jitterDescriptionLabel = new javax.swing.JLabel();
-        jitterValueLabel = new javax.swing.JLabel();
-        shimmerDescriptionLabel = new javax.swing.JLabel();
-        shimmerValueLabel = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jitterLocDescriptionLabel = new javax.swing.JLabel();
+        jitterLocValueLabel = new javax.swing.JLabel();
+        jitterLocAbsDescriptionLabel = new javax.swing.JLabel();
+        jitterLocAbsValueLabel = new javax.swing.JLabel();
+        jitterRapDescriptionLabel = new javax.swing.JLabel();
+        jitterRapValueLabel = new javax.swing.JLabel();
+        jitterPpq5DescriptionLabel = new javax.swing.JLabel();
+        jitterDdpDescriptionLabel = new javax.swing.JLabel();
+        jitterPpq5ValueLabel = new javax.swing.JLabel();
+        jitterDdpValueLabel = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        shimmerLocDescriptionLabel = new javax.swing.JLabel();
+        shimmerLocValueLabel = new javax.swing.JLabel();
+        shimmerLocDbDescriptionLabel = new javax.swing.JLabel();
+        shimmerLocDbValueLabel = new javax.swing.JLabel();
+        shimmerApq3DescriptionLabel = new javax.swing.JLabel();
+        shimmerApq3ValueLabel = new javax.swing.JLabel();
+        shimmerApq5DescriptionLabel = new javax.swing.JLabel();
+        shimmerApq5ValueLabel = new javax.swing.JLabel();
+        shimmerApq11DescriptionLabel = new javax.swing.JLabel();
+        shimmerApq11ValueLabel = new javax.swing.JLabel();
+        shimmerDdaDescriptionLabel = new javax.swing.JLabel();
+        shimmerDdaValueLabel = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         f0Table = new javax.swing.JTable();
 
@@ -128,14 +126,6 @@ public class F0ResultPanel extends javax.swing.JPanel {
 
         maxValueLabel.setText("jLabel2");
 
-        jitterDescriptionLabel.setText("Jitter:");
-
-        jitterValueLabel.setText("jLabel1");
-
-        shimmerDescriptionLabel.setText("Shimmer:");
-
-        shimmerValueLabel.setText("jLabel1");
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -151,14 +141,7 @@ public class F0ResultPanel extends javax.swing.JPanel {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(medianValuleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(meanValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jitterDescriptionLabel)
-                            .addComponent(shimmerDescriptionLabel))
-                        .addGap(17, 17, 17)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(shimmerValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jitterValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(140, 140, 140))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(stdevDescriptionLabel)
@@ -175,23 +158,13 @@ public class F0ResultPanel extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(meanDescriptionLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(meanValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(medianDescriptionLabel)
-                            .addComponent(medianValuleLabel)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jitterDescriptionLabel)
-                            .addComponent(jitterValueLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(shimmerDescriptionLabel)
-                            .addComponent(shimmerValueLabel))))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(meanDescriptionLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(meanValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(medianDescriptionLabel)
+                    .addComponent(medianValuleLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(stdevDescriptionLabel)
@@ -204,6 +177,154 @@ public class F0ResultPanel extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(maxDescriptionLabel)
                     .addComponent(maxValueLabel))
+                .addContainerGap(33, Short.MAX_VALUE))
+        );
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Jitter"));
+
+        jitterLocDescriptionLabel.setText("Jitter (local):");
+
+        jitterLocValueLabel.setText("jLabel1");
+
+        jitterLocAbsDescriptionLabel.setText("Jitter (local, absolute):");
+
+        jitterLocAbsValueLabel.setText("jLabel1");
+
+        jitterRapDescriptionLabel.setText("Jitter (rap): ");
+
+        jitterRapValueLabel.setText("jLabel1");
+
+        jitterPpq5DescriptionLabel.setText("Jitter (ppq5):");
+
+        jitterDdpDescriptionLabel.setText("Jitter (ddp):");
+
+        jitterPpq5ValueLabel.setText("jLabel1");
+
+        jitterDdpValueLabel.setText("jLabel1");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jitterLocAbsDescriptionLabel)
+                    .addComponent(jitterRapDescriptionLabel)
+                    .addComponent(jitterPpq5DescriptionLabel)
+                    .addComponent(jitterDdpDescriptionLabel)
+                    .addComponent(jitterLocDescriptionLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jitterLocAbsValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
+                    .addComponent(jitterRapValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jitterLocValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jitterPpq5ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jitterDdpValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jitterLocDescriptionLabel)
+                    .addComponent(jitterLocValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jitterLocAbsDescriptionLabel)
+                    .addComponent(jitterLocAbsValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jitterRapDescriptionLabel)
+                    .addComponent(jitterRapValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jitterPpq5DescriptionLabel)
+                    .addComponent(jitterPpq5ValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jitterDdpDescriptionLabel)
+                    .addComponent(jitterDdpValueLabel))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Shimmer"));
+
+        shimmerLocDescriptionLabel.setText("Shimmer (local):");
+
+        shimmerLocValueLabel.setText("jLabel1");
+
+        shimmerLocDbDescriptionLabel.setText("Shimmer (local, dB):");
+
+        shimmerLocDbValueLabel.setText("jLabel1");
+
+        shimmerApq3DescriptionLabel.setText("Shimmer (apq3):");
+
+        shimmerApq3ValueLabel.setText("jLabel1");
+
+        shimmerApq5DescriptionLabel.setText("Shimmer (apq5):");
+
+        shimmerApq5ValueLabel.setText("jLabel2");
+
+        shimmerApq11DescriptionLabel.setText("Shimmer (apq11):");
+
+        shimmerApq11ValueLabel.setText("jLabel2");
+
+        shimmerDdaDescriptionLabel.setText("Shimmer (dda):");
+
+        shimmerDdaValueLabel.setText("jLabel2");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(shimmerLocDbDescriptionLabel)
+                    .addComponent(shimmerLocDescriptionLabel)
+                    .addComponent(shimmerApq3DescriptionLabel)
+                    .addComponent(shimmerApq5DescriptionLabel)
+                    .addComponent(shimmerApq11DescriptionLabel)
+                    .addComponent(shimmerDdaDescriptionLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(shimmerLocDbValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+                    .addComponent(shimmerLocValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(shimmerApq5ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(shimmerApq11ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(shimmerApq3ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(shimmerDdaValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(shimmerLocDescriptionLabel)
+                    .addComponent(shimmerLocValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(shimmerLocDbDescriptionLabel)
+                    .addComponent(shimmerLocDbValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(shimmerApq3DescriptionLabel)
+                    .addComponent(shimmerApq3ValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(shimmerApq5DescriptionLabel)
+                    .addComponent(shimmerApq5ValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(shimmerApq11DescriptionLabel)
+                    .addComponent(shimmerApq11ValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(shimmerDdaDescriptionLabel)
+                    .addComponent(shimmerDdaValueLabel))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -214,7 +335,11 @@ public class F0ResultPanel extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addComponent(showGraphButton)
                 .addContainerGap())
         );
@@ -224,7 +349,11 @@ public class F0ResultPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(showGraphButton)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -243,6 +372,7 @@ public class F0ResultPanel extends javax.swing.JPanel {
             F0PitchCharts charts = new F0PitchCharts();
             formantsGraph = new GraphWindow(csvResultFile.getAbsolutePath(), charts.createF0Chart(csvResultFile));
             formantsGraph.setVisible(true);
+            logger.debug("Showing pitch chart from " + csvResultFile.getName());
         }
     }//GEN-LAST:event_showGraphButtonActionPerformed
 
@@ -270,65 +400,48 @@ public class F0ResultPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Failed to load pitch table from CSV file " + csvStatsFile.getName(), "Error", JOptionPane.ERROR_MESSAGE);
             logger.error("Failed to load pitch table from CSV file!", ex);
         }
+        // jitter
+        jitterLocValueLabel.setText(csvLine[0]);
+        jitterLocAbsValueLabel.setText(csvLine[1]);
+        jitterRapValueLabel.setText(csvLine[2]);
+        jitterPpq5ValueLabel.setText(csvLine[3]);
+        jitterDdpValueLabel.setText(csvLine[4]);
         
-        if (jitter) {
-            jitterValueLabel.setText(csvLine[0]);
-            jitterValueLabel.setVisible(true);
-        } else {
-            jitterValueLabel.setVisible(false);
-        }
-        
-        if (shimmer) {
-            shimmerValueLabel.setText(csvLine[1]);
-            shimmerValueLabel.setVisible(true);
-        } else {
-            shimmerValueLabel.setVisible(false);
-        }
-        
-        if (mean) {
-            meanValueLabel.setText(csvLine[2] + " Hz");
-            meanValueLabel.setVisible(true);
-        } else {
-            meanValueLabel.setVisible(false);
-        }
-        
-        if (median) {
-            medianValuleLabel.setText(csvLine[3] + " Hz");
-            medianValuleLabel.setVisible(true);
-        } else {
-            medianValuleLabel.setVisible(false);
-        }
-        
-        if (stdev) {
-            stdevValueLabel.setText(csvLine[4] + " Hz");
-            stdevValueLabel.setVisible(true);
-        } else {
-            stdevValueLabel.setVisible(false);
-        }
-        
-        if (f0min) {
-            minValueLabel.setText(csvLine[5] + " Hz");
-            minValueLabel.setVisible(true);
-        } else {
-            minValueLabel.setVisible(false);
-        }
-        
-        if (f0max) {
-            maxValueLabel.setText(csvLine[6] + " Hz");
-            maxValueLabel.setVisible(true);
-        } else {
-            maxValueLabel.setVisible(false);
-        }
+        // shimmer
+        shimmerLocValueLabel.setText(csvLine[5]);
+        shimmerLocDbValueLabel.setText(csvLine[6]);
+        shimmerApq3ValueLabel.setText(csvLine[7]);
+        shimmerApq5ValueLabel.setText(csvLine[8]);
+        shimmerApq11ValueLabel.setText(csvLine[9]);
+        shimmerDdaValueLabel.setText(csvLine[10]);
+
+        // other
+        meanValueLabel.setText(csvLine[11] + " Hz");
+        medianValuleLabel.setText(csvLine[12] + " Hz");
+        stdevValueLabel.setText(csvLine[13] + " Hz");
+        stdevValueLabel.setVisible(true);
+        minValueLabel.setText(csvLine[14] + " Hz");
+        maxValueLabel.setText(csvLine[15] + " Hz");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable f0Table;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JLabel jitterDescriptionLabel;
-    private javax.swing.JLabel jitterValueLabel;
+    private javax.swing.JLabel jitterDdpDescriptionLabel;
+    private javax.swing.JLabel jitterDdpValueLabel;
+    private javax.swing.JLabel jitterLocAbsDescriptionLabel;
+    private javax.swing.JLabel jitterLocAbsValueLabel;
+    private javax.swing.JLabel jitterLocDescriptionLabel;
+    private javax.swing.JLabel jitterLocValueLabel;
+    private javax.swing.JLabel jitterPpq5DescriptionLabel;
+    private javax.swing.JLabel jitterPpq5ValueLabel;
+    private javax.swing.JLabel jitterRapDescriptionLabel;
+    private javax.swing.JLabel jitterRapValueLabel;
     private javax.swing.JLabel maxDescriptionLabel;
     private javax.swing.JLabel maxValueLabel;
     private javax.swing.JLabel meanDescriptionLabel;
@@ -337,8 +450,18 @@ public class F0ResultPanel extends javax.swing.JPanel {
     private javax.swing.JLabel medianValuleLabel;
     private javax.swing.JLabel minDescriptionLabel;
     private javax.swing.JLabel minValueLabel;
-    private javax.swing.JLabel shimmerDescriptionLabel;
-    private javax.swing.JLabel shimmerValueLabel;
+    private javax.swing.JLabel shimmerApq11DescriptionLabel;
+    private javax.swing.JLabel shimmerApq11ValueLabel;
+    private javax.swing.JLabel shimmerApq3DescriptionLabel;
+    private javax.swing.JLabel shimmerApq3ValueLabel;
+    private javax.swing.JLabel shimmerApq5DescriptionLabel;
+    private javax.swing.JLabel shimmerApq5ValueLabel;
+    private javax.swing.JLabel shimmerDdaDescriptionLabel;
+    private javax.swing.JLabel shimmerDdaValueLabel;
+    private javax.swing.JLabel shimmerLocDbDescriptionLabel;
+    private javax.swing.JLabel shimmerLocDbValueLabel;
+    private javax.swing.JLabel shimmerLocDescriptionLabel;
+    private javax.swing.JLabel shimmerLocValueLabel;
     private javax.swing.JButton showGraphButton;
     private javax.swing.JLabel stdevDescriptionLabel;
     private javax.swing.JLabel stdevValueLabel;
