@@ -27,6 +27,7 @@ public class FormantParamsDialog extends javax.swing.JDialog {
     
     private boolean meanCalc;
     private boolean medianCalc;
+    private boolean ok;
     
     public static final double MAXIMUM_FORMANTS = 3.0;
     
@@ -217,6 +218,8 @@ public class FormantParamsDialog extends javax.swing.JDialog {
         
         meanCalc = meanCheckBox.isSelected();
         medianCalc = medianCheckBox.isSelected();
+        
+        ok = true;
 
         dispose();
     }//GEN-LAST:event_okButtonActionPerformed
@@ -247,6 +250,10 @@ public class FormantParamsDialog extends javax.swing.JDialog {
 
     public boolean isMedianCalc() {
         return medianCalc;
+    }
+
+    public boolean isOk() {
+        return ok;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -17,5 +17,5 @@ import static feec.cz.brno.speechproc.main.SpeechProc.USER_DIR;
  */
 public interface IIntensity extends SpeechParameter {
     
-    public static final File OUTPUT_FOLDER_INTENSITY = new File(USER_DIR + FS + "tmpFiles" + FS + "intensity" + FS);
+    public static final File OUTPUT_FOLDER_INTENSITY = new File(USER_DIR + FS + "tmpFiles" + FS + "intensity");
 }

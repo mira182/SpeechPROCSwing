@@ -46,13 +46,14 @@ public class IntensityCharts {
             while ((readNextLine = reader.readNext()) != null) {
                 // add values to dataset
                 double Time = CalcUtilities.getDouble(readNextLine[0]);
+                intensity = CalcUtilities.getDouble(readNextLine[1]);
 
                 seriesIntensity.add(Time, intensity);
             }
 
             dataset.addSeries(seriesIntensity);
 
-            JFreeChart chart = ChartFactory.createXYLineChart("F0 pitch", "Time [s]", "Frequency [Hz]", dataset, PlotOrientation.VERTICAL, true, true, true);
+            JFreeChart chart = ChartFactory.createXYLineChart("Intensity", "Time [s]", "Frequency [Hz]", dataset, PlotOrientation.VERTICAL, true, true, true);
 
             chartPanel = new ChartPanel(chart);
             reader.close();

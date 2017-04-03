@@ -18,35 +18,23 @@ public class ScriptResult {
     private ResultCategory category;
     private File csvResult;
     private File csvStatsResult;
-    private ScriptParameters additionalParams;
-    
-    public ScriptResult(File soundFile, ResultStatus status, ResultCategory category) {
-        this(soundFile, status, category, null, null, null);
-    }
+    private Exception failureReason;
 
-    public ScriptResult(File soundFile, ResultStatus status, ResultCategory category, File csvResult) {
-        this(soundFile, status, category, csvResult, null, null);
-    }
-    
-    public ScriptResult(File soundFile, ResultStatus status, ResultCategory category, File csvResult, File csvStatsFile) {
-        this(soundFile, status, category, csvResult, csvStatsFile, null);
-    }
-
-    public ScriptResult(File soundFile, ResultStatus status, ResultCategory category, File csvResult, ScriptParameters additionalParams) {
-        this(soundFile, status, category, csvResult, null, additionalParams);
-    }
-
-    public ScriptResult(File soundFile, ResultStatus status, ResultCategory category, File csvResult, File csvStatsResult, ScriptParameters additionalParams) {
+    public ScriptResult(File soundFile, ResultStatus status, ResultCategory category, File csvResult, File csvStatsResult, Exception failureReason) {
         this.soundFile = soundFile;
         this.status = status;
         this.category = category;
         this.csvResult = csvResult;
         this.csvStatsResult = csvStatsResult;
-        this.additionalParams = additionalParams;
+        this.failureReason = failureReason;
     }
 
-    public ScriptResult(ResultStatus resultStatus, ResultCategory resultCategory) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ScriptResult(File soundFile, ResultStatus resultStatus, ResultCategory resultCategory, Exception ex) {
+        this(soundFile, resultStatus, resultCategory, null, null, ex);
+    }
+
+    public ScriptResult(File soundFile, ResultStatus resultStatus, ResultCategory resultCategory, File csvResultFile, File csvStatsFile) {
+        this(soundFile, resultStatus, resultCategory, csvResultFile, csvStatsFile, null);
     }
 
     public File getSoundFile() {
@@ -89,12 +77,11 @@ public class ScriptResult {
         this.csvStatsResult = csvStatsResult;
     }
 
-    public ScriptParameters getAdditionalParams() {
-        return additionalParams;
+    public Exception getFailureReason() {
+        return failureReason;
     }
 
-    public void setAdditionalParams(ScriptParameters additionalParams) {
-        this.additionalParams = additionalParams;
+    public void setFailureReason(Exception failureReason) {
+        this.failureReason = failureReason;
     }
-    
 }

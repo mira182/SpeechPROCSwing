@@ -5,28 +5,34 @@
  */
 package feec.cz.brno.speechproc.gui.results;
 
-import feec.cz.brno.speechproc.calc.api.SpeechParameter;
-import static feec.cz.brno.speechproc.calc.api.SpeechParameter.JITTER_PARAM;
-import static feec.cz.brno.speechproc.calc.api.SpeechParameter.MAX_PARAM;
-import static feec.cz.brno.speechproc.calc.api.SpeechParameter.MEAN_PARAM;
-import static feec.cz.brno.speechproc.calc.api.SpeechParameter.MEDIAN_PARAM;
-import static feec.cz.brno.speechproc.calc.api.SpeechParameter.MIN_PARAM;
-import static feec.cz.brno.speechproc.calc.api.SpeechParameter.SHIMMER_PARAM;
-import static feec.cz.brno.speechproc.calc.api.SpeechParameter.STDEV_PARAM;
+
+import com.sun.glass.events.KeyEvent;
 import feec.cz.brno.speechproc.calc.api.params.ResultStatus;
-import feec.cz.brno.speechproc.calc.api.params.ScriptParameters;
 import feec.cz.brno.speechproc.calc.api.params.ScriptResult;
 import feec.cz.brno.speechproc.gui.f0.F0ResultPanel;
 import feec.cz.brno.speechproc.gui.formants.FormantsResultPanel;
 import feec.cz.brno.speechproc.gui.intensity.IntensityResultPanel;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Point;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.KeyStroke;
+import javax.swing.table.DefaultTableCellRenderer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 /**
  *
  * @author hynstm
  */
 public class ResultPanel extends javax.swing.JPanel {
+    
+    private final static Logger logger = LogManager.getLogger(ResultPanel.class);
     
     private ResultsTableModel resultTableModel = new ResultsTableModel();
 
@@ -36,6 +42,22 @@ public class ResultPanel extends javax.swing.JPanel {
     public ResultPanel() {
         resultTableModel.setColumnIdentifiers(new String[] {"Number", "Sound file name", "Status"});
         initComponents();
+        resultTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table,
+                    Object value, boolean isSelected, boolean hasFocus,
+                    int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                if (value instanceof ResultStatus) {
+                    if (((ResultStatus) value).equals(ResultStatus.FAILED)) {
+                        if (!isSelected)
+                            c.setBackground(new Color(236, 95, 93)); // you can set the foreground and/or background here
+                    }
+                }
+                return c;
+            }
+        });
     }
 
     /**
@@ -52,7 +74,22 @@ public class ResultPanel extends javax.swing.JPanel {
         showDetailsButton = new javax.swing.JButton();
         compareButton = new javax.swing.JButton();
 
+        resultTable.registerKeyboardAction(
+            null,
+            KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
+            JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT
+        );
         resultTable.setModel(resultTableModel);
+        resultTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                resultTableMouseClicked(evt);
+            }
+        });
+        resultTable.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                resultTableKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(resultTable);
 
         showDetailsButton.setText("Result details");
@@ -92,6 +129,21 @@ public class ResultPanel extends javax.swing.JPanel {
         showResultDetails();
     }//GEN-LAST:event_showDetailsButtonActionPerformed
 
+    private void resultTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resultTableMouseClicked
+        JTable table = (JTable) evt.getSource();
+        Point p = evt.getPoint();
+        int row = table.rowAtPoint(p);
+        if (evt.getClickCount() == 2) {
+            showResultDetails(row);
+        }
+    }//GEN-LAST:event_resultTableMouseClicked
+
+    private void resultTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_resultTableKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            showResultDetails();
+        }
+    }//GEN-LAST:event_resultTableKeyReleased
+
     public void addRow(ScriptResult result) {
         resultTableModel.addRow(result);
         resultTableModel.fireTableDataChanged();
@@ -101,33 +153,39 @@ public class ResultPanel extends javax.swing.JPanel {
         return resultTableModel;
     }
     
-    private void showResultDetails() {
+    protected void showResultDetails() {
         for (int row : resultTable.getSelectedRows()) {
-            ScriptResult selectedResult = resultTableModel.getResult(row);
-            if (selectedResult.getStatus().equals(ResultStatus.OK)) {
-                JFrame resultWindow = new JFrame();
-                resultWindow.setTitle("F0 pitch of " + selectedResult.getSoundFile().getName());
-                JPanel resultPanel = null;
-                ScriptParameters params = selectedResult.getAdditionalParams();
-                switch (selectedResult.getCategory()) {
-                    case FORMANTS:
-                        resultPanel = new FormantsResultPanel(selectedResult.getSoundFile(), selectedResult.getCsvResult(), (Boolean)params.getParameterValue(MEAN_PARAM), (Boolean)params.getParameterValue(MEDIAN_PARAM));
-                        break;
-                    case F0:
-                        resultPanel = new F0ResultPanel(selectedResult.getSoundFile(), selectedResult.getCsvResult(), selectedResult.getCsvStatsResult(), 
-                                (Boolean) params.getParameterValue(MEAN_PARAM), (Boolean) params.getParameterValue(MEDIAN_PARAM),
-                                (Boolean) params.getParameterValue(STDEV_PARAM), (Boolean) params.getParameterValue(JITTER_PARAM), 
-                                (Boolean) params.getParameterValue(SHIMMER_PARAM), (Boolean) params.getParameterValue(MIN_PARAM), 
-                                (Boolean) params.getParameterValue(MAX_PARAM));
-                        break;
-                    case INTENSITY:
-                        resultPanel = new IntensityResultPanel(selectedResult.getSoundFile(), selectedResult.getCsvResult(), selectedResult.getCsvStatsResult());
-                        break;
-                }
-                resultWindow.setContentPane(resultPanel);
-                resultWindow.pack();
-                resultWindow.setVisible(true);
+            showResultDetails(row);
+        }
+    }
+    
+    protected void showResultDetails(int row) {
+        ScriptResult selectedResult = resultTableModel.getResult(row);
+        if (selectedResult.getStatus().equals(ResultStatus.OK)) {
+            JFrame resultWindow = new JFrame();
+            JPanel resultPanel = null;
+            switch (selectedResult.getCategory()) {
+                case FORMANTS:
+                    resultWindow.setTitle("Formants of " + selectedResult.getSoundFile().getName());
+                    resultPanel = new FormantsResultPanel(selectedResult.getSoundFile(), selectedResult.getCsvResult());
+                    logger.debug("Showing formants details of " + selectedResult.getSoundFile().getName());
+                    break;
+                case F0:
+                    resultWindow.setTitle("F0 pitch of " + selectedResult.getSoundFile().getName());
+                    resultPanel = new F0ResultPanel(selectedResult.getSoundFile(), selectedResult.getCsvResult(), selectedResult.getCsvStatsResult());
+                    logger.debug("Showing pitch details of " + selectedResult.getSoundFile().getName());
+                    break;
+                case INTENSITY:
+                    resultWindow.setTitle("Intensity of " + selectedResult.getSoundFile().getName());
+                    resultPanel = new IntensityResultPanel(selectedResult.getSoundFile(), selectedResult.getCsvResult(), selectedResult.getCsvStatsResult());
+                    logger.debug("Showing intensity details of " + selectedResult.getSoundFile().getName());
+                    break;
             }
+            resultWindow.setContentPane(resultPanel);
+            resultWindow.pack();
+            resultWindow.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Cannot show details of \"FAILED\" calculation.", "Show details", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
