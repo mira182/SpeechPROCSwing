@@ -16,5 +16,7 @@ public interface CompareChart {
 
     ChartPanel createChart(File csvFile);
     
+    ChartPanel createStatsChart(File csvFile);
+    
     ChartPanel createComparedChart(File csvFile1, File csvFile2);
 }
