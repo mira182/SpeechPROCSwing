@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -64,17 +65,41 @@ public class FormantsResultPanel extends javax.swing.JPanel {
         meanF2Label = new javax.swing.JLabel();
         medianDescriptionF2Label = new javax.swing.JLabel();
         medianF2Label = new javax.swing.JLabel();
+        stedvF2DescriptionLabel = new javax.swing.JLabel();
+        stdevF2ValueLabel = new javax.swing.JLabel();
+        minF2DescriptionLabel = new javax.swing.JLabel();
+        minF2ValueLabel = new javax.swing.JLabel();
+        maxF2DescriptionLabel = new javax.swing.JLabel();
+        maxF2ValueLabel = new javax.swing.JLabel();
+        varianceF2DescriptionLabel = new javax.swing.JLabel();
+        varianceF2ValueLabel = new javax.swing.JLabel();
         formant3Panel = new javax.swing.JPanel();
         meanDescriptionF3Label = new javax.swing.JLabel();
         meanF3Label = new javax.swing.JLabel();
         medianDescriptionF3Label = new javax.swing.JLabel();
         medianF3Label = new javax.swing.JLabel();
+        stdevF3DescriptionLabel = new javax.swing.JLabel();
+        stdevF3ValueLabel = new javax.swing.JLabel();
+        minF3DescriptionLabel = new javax.swing.JLabel();
+        minF3ValueLabel = new javax.swing.JLabel();
+        maxF3DescriptionLabel = new javax.swing.JLabel();
+        maxF3ValueLabel = new javax.swing.JLabel();
+        varianceF3DescriptionLabel = new javax.swing.JLabel();
+        varianceF3ValueLabel = new javax.swing.JLabel();
         showGraphButton = new javax.swing.JButton(Icons.GRAPH_ICON);
         formant1Panel = new javax.swing.JPanel();
         meanDescriptionF1Label = new javax.swing.JLabel();
         meanF1Label = new javax.swing.JLabel();
         medianDescriptionF1Label = new javax.swing.JLabel();
         medianF1Label = new javax.swing.JLabel();
+        stdevF1DescriptionLabel = new javax.swing.JLabel();
+        stdevF1ValueLabel = new javax.swing.JLabel();
+        minF1DescriptionLabel = new javax.swing.JLabel();
+        minF1ValueLabel = new javax.swing.JLabel();
+        maxF1DescriptionLabel = new javax.swing.JLabel();
+        maxF1ValueLabel = new javax.swing.JLabel();
+        varianceF1DescriptionLabel = new javax.swing.JLabel();
+        varianceF1ValueLabel = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -93,6 +118,22 @@ public class FormantsResultPanel extends javax.swing.JPanel {
 
         medianF2Label.setText("jLabel7");
 
+        stedvF2DescriptionLabel.setText("Stdev");
+
+        stdevF2ValueLabel.setText("jLabel1");
+
+        minF2DescriptionLabel.setText("Min:");
+
+        minF2ValueLabel.setText("jLabel1");
+
+        maxF2DescriptionLabel.setText("Max:");
+
+        maxF2ValueLabel.setText("jLabel2");
+
+        varianceF2DescriptionLabel.setText("Variance:");
+
+        varianceF2ValueLabel.setText("jLabel2");
+
         javax.swing.GroupLayout formant2PanelLayout = new javax.swing.GroupLayout(formant2Panel);
         formant2Panel.setLayout(formant2PanelLayout);
         formant2PanelLayout.setHorizontalGroup(
@@ -101,11 +142,19 @@ public class FormantsResultPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(formant2PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(medianDescriptionF2Label)
-                    .addComponent(meanDescriptionF2Label, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(meanDescriptionF2Label, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(stedvF2DescriptionLabel)
+                    .addComponent(minF2DescriptionLabel)
+                    .addComponent(maxF2DescriptionLabel)
+                    .addComponent(varianceF2DescriptionLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(formant2PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(meanF2Label, javax.swing.GroupLayout.DEFAULT_SIZE, 61, Short.MAX_VALUE)
-                    .addComponent(medianF2Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(medianF2Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(stdevF2ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(varianceF2ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(minF2ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(maxF2ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         formant2PanelLayout.setVerticalGroup(
@@ -115,11 +164,27 @@ public class FormantsResultPanel extends javax.swing.JPanel {
                 .addGroup(formant2PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(meanDescriptionF2Label)
                     .addComponent(meanF2Label, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(formant2PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(medianF2Label)
                     .addComponent(medianDescriptionF2Label))
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(formant2PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(stedvF2DescriptionLabel)
+                    .addComponent(stdevF2ValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(formant2PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(varianceF2DescriptionLabel)
+                    .addComponent(varianceF2ValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(formant2PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(minF2DescriptionLabel)
+                    .addComponent(minF2ValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(formant2PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(maxF2DescriptionLabel)
+                    .addComponent(maxF2ValueLabel))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         formant3Panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Formant 3"));
@@ -132,6 +197,22 @@ public class FormantsResultPanel extends javax.swing.JPanel {
 
         medianF3Label.setText("jLabel9");
 
+        stdevF3DescriptionLabel.setText("Stdev:");
+
+        stdevF3ValueLabel.setText("jLabel2");
+
+        minF3DescriptionLabel.setText("Min:");
+
+        minF3ValueLabel.setText("jLabel2");
+
+        maxF3DescriptionLabel.setText("Max:");
+
+        maxF3ValueLabel.setText("jLabel2");
+
+        varianceF3DescriptionLabel.setText("Variance:");
+
+        varianceF3ValueLabel.setText("jLabel2");
+
         javax.swing.GroupLayout formant3PanelLayout = new javax.swing.GroupLayout(formant3Panel);
         formant3Panel.setLayout(formant3PanelLayout);
         formant3PanelLayout.setHorizontalGroup(
@@ -140,11 +221,19 @@ public class FormantsResultPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(formant3PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(meanDescriptionF3Label, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(medianDescriptionF3Label))
+                    .addComponent(medianDescriptionF3Label)
+                    .addComponent(stdevF3DescriptionLabel)
+                    .addComponent(minF3DescriptionLabel)
+                    .addComponent(maxF3DescriptionLabel)
+                    .addComponent(varianceF3DescriptionLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(formant3PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(stdevF3ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(medianF3Label, javax.swing.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE)
-                    .addComponent(meanF3Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(meanF3Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(varianceF3ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(minF3ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(maxF3ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         formant3PanelLayout.setVerticalGroup(
@@ -158,6 +247,22 @@ public class FormantsResultPanel extends javax.swing.JPanel {
                 .addGroup(formant3PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(medianDescriptionF3Label)
                     .addComponent(medianF3Label))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(formant3PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(stdevF3DescriptionLabel)
+                    .addComponent(stdevF3ValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(formant3PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(varianceF3DescriptionLabel)
+                    .addComponent(varianceF3ValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(formant3PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(minF3DescriptionLabel)
+                    .addComponent(minF3ValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(formant3PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(maxF3DescriptionLabel)
+                    .addComponent(maxF3ValueLabel))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -178,6 +283,22 @@ public class FormantsResultPanel extends javax.swing.JPanel {
 
         medianF1Label.setText("jLabel3");
 
+        stdevF1DescriptionLabel.setText("Stdev:");
+
+        stdevF1ValueLabel.setText("jLabel2");
+
+        minF1DescriptionLabel.setText("Min:");
+
+        minF1ValueLabel.setText("jLabel1");
+
+        maxF1DescriptionLabel.setText("Max:");
+
+        maxF1ValueLabel.setText("jLabel1");
+
+        varianceF1DescriptionLabel.setText("Variance:");
+
+        varianceF1ValueLabel.setText("jLabel1");
+
         javax.swing.GroupLayout formant1PanelLayout = new javax.swing.GroupLayout(formant1Panel);
         formant1Panel.setLayout(formant1PanelLayout);
         formant1PanelLayout.setHorizontalGroup(
@@ -185,14 +306,20 @@ public class FormantsResultPanel extends javax.swing.JPanel {
             .addGroup(formant1PanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(formant1PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(formant1PanelLayout.createSequentialGroup()
-                        .addComponent(meanDescriptionF1Label, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(meanF1Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(formant1PanelLayout.createSequentialGroup()
-                        .addComponent(medianDescriptionF1Label, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(medianF1Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(medianDescriptionF1Label, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(stdevF1DescriptionLabel)
+                    .addComponent(meanDescriptionF1Label, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(varianceF1DescriptionLabel)
+                    .addComponent(minF1DescriptionLabel)
+                    .addComponent(maxF1DescriptionLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(formant1PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(medianF1Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(meanF1Label, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(varianceF1ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(stdevF1ValueLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(maxF1ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(minF1ValueLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         formant1PanelLayout.setVerticalGroup(
@@ -206,7 +333,25 @@ public class FormantsResultPanel extends javax.swing.JPanel {
                 .addGroup(formant1PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(medianDescriptionF1Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(medianF1Label))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(formant1PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(stdevF1DescriptionLabel)
+                    .addComponent(stdevF1ValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(formant1PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(varianceF1DescriptionLabel)
+                    .addComponent(varianceF1ValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(formant1PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(minF1DescriptionLabel)
+                    .addComponent(minF1ValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(formant1PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(formant1PanelLayout.createSequentialGroup()
+                        .addComponent(maxF1DescriptionLabel)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(maxF1ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout infoPanelLayout = new javax.swing.GroupLayout(infoPanel);
@@ -220,7 +365,7 @@ public class FormantsResultPanel extends javax.swing.JPanel {
                 .addComponent(formant2Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(formant3Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
                 .addComponent(showGraphButton)
                 .addContainerGap())
         );
@@ -244,7 +389,7 @@ public class FormantsResultPanel extends javax.swing.JPanel {
         logger.debug("Showing formants chart from " + csvResultFile.getName());
         if (formantsGraph == null) {
             FormantCharts graph = new FormantCharts();
-            formantsGraph = new GraphWindow(csvResultFile.getAbsolutePath(), graph.createFormantChart(csvResultFile));
+            formantsGraph = new GraphWindow(csvResultFile.getAbsolutePath(), graph.createChart(csvResultFile));
             formantsGraph.setVisible(true);
         } else {
             formantsGraph.setVisible(true);
@@ -282,6 +427,22 @@ public class FormantsResultPanel extends javax.swing.JPanel {
         medianF1Label.setText(CalcUtilities.median(formant1) + " Hz");
         medianF2Label.setText(CalcUtilities.median(formant2) + " Hz");
         medianF3Label.setText(CalcUtilities.median(formant3) + " Hz");
+        
+        stdevF1ValueLabel.setText(CalcUtilities.stdev(formant1) + " Hz");
+        stdevF2ValueLabel.setText(CalcUtilities.stdev(formant2) + " Hz");
+        stdevF3ValueLabel.setText(CalcUtilities.stdev(formant3) + " Hz");
+        
+        varianceF1ValueLabel.setText(CalcUtilities.variance(formant1) + " Hz");
+        varianceF2ValueLabel.setText(CalcUtilities.variance(formant2) + " Hz");
+        varianceF3ValueLabel.setText(CalcUtilities.variance(formant3) + " Hz");
+        
+        minF1ValueLabel.setText(Collections.min(formant1) + " Hz");
+        minF2ValueLabel.setText(Collections.min(formant2) + " Hz");
+        minF3ValueLabel.setText(Collections.min(formant3) + " Hz");
+        
+        maxF1ValueLabel.setText(Collections.max(formant1) + " Hz");
+        maxF2ValueLabel.setText(Collections.max(formant2) + " Hz");
+        maxF3ValueLabel.setText(Collections.max(formant3) + " Hz");
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -290,6 +451,12 @@ public class FormantsResultPanel extends javax.swing.JPanel {
     private javax.swing.JPanel formant3Panel;
     private javax.swing.JTable formantsTable;
     private javax.swing.JPanel infoPanel;
+    private javax.swing.JLabel maxF1DescriptionLabel;
+    private javax.swing.JLabel maxF1ValueLabel;
+    private javax.swing.JLabel maxF2DescriptionLabel;
+    private javax.swing.JLabel maxF2ValueLabel;
+    private javax.swing.JLabel maxF3DescriptionLabel;
+    private javax.swing.JLabel maxF3ValueLabel;
     private javax.swing.JLabel meanDescriptionF1Label;
     private javax.swing.JLabel meanDescriptionF2Label;
     private javax.swing.JLabel meanDescriptionF3Label;
@@ -302,7 +469,25 @@ public class FormantsResultPanel extends javax.swing.JPanel {
     private javax.swing.JLabel medianF1Label;
     private javax.swing.JLabel medianF2Label;
     private javax.swing.JLabel medianF3Label;
+    private javax.swing.JLabel minF1DescriptionLabel;
+    private javax.swing.JLabel minF1ValueLabel;
+    private javax.swing.JLabel minF2DescriptionLabel;
+    private javax.swing.JLabel minF2ValueLabel;
+    private javax.swing.JLabel minF3DescriptionLabel;
+    private javax.swing.JLabel minF3ValueLabel;
     private javax.swing.JButton showGraphButton;
+    private javax.swing.JLabel stdevF1DescriptionLabel;
+    private javax.swing.JLabel stdevF1ValueLabel;
+    private javax.swing.JLabel stdevF2ValueLabel;
+    private javax.swing.JLabel stdevF3DescriptionLabel;
+    private javax.swing.JLabel stdevF3ValueLabel;
+    private javax.swing.JLabel stedvF2DescriptionLabel;
     private javax.swing.JScrollPane tableScrollPane;
+    private javax.swing.JLabel varianceF1DescriptionLabel;
+    private javax.swing.JLabel varianceF1ValueLabel;
+    private javax.swing.JLabel varianceF2DescriptionLabel;
+    private javax.swing.JLabel varianceF2ValueLabel;
+    private javax.swing.JLabel varianceF3DescriptionLabel;
+    private javax.swing.JLabel varianceF3ValueLabel;
     // End of variables declaration//GEN-END:variables
 }

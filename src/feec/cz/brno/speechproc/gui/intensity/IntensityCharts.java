@@ -113,4 +113,9 @@ public class IntensityCharts implements CompareChart {
         }
         return chartPanel;
     }
+
+    @Override
+    public ChartPanel createStatsChart(File csvFile) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

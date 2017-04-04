@@ -55,7 +55,7 @@
                   <Component id="formant2Panel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="formant3Panel" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="20" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Component id="showGraphButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -92,17 +92,25 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="medianDescriptionF2Label" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="meanDescriptionF2Label" alignment="0" min="-2" pref="57" max="-2" attributes="0"/>
+                          <Component id="stedvF2DescriptionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="minF2DescriptionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="maxF2DescriptionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="varianceF2DescriptionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="meanF2Label" pref="61" max="32767" attributes="0"/>
-                          <Component id="medianF2Label" max="32767" attributes="0"/>
+                          <Component id="medianF2Label" alignment="0" max="32767" attributes="0"/>
+                          <Component id="stdevF2ValueLabel" alignment="0" max="32767" attributes="0"/>
+                          <Component id="varianceF2ValueLabel" alignment="0" max="32767" attributes="0"/>
+                          <Component id="minF2ValueLabel" max="32767" attributes="0"/>
+                          <Component id="maxF2ValueLabel" alignment="0" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -114,12 +122,32 @@
                           <Component id="meanDescriptionF2Label" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="meanF2Label" alignment="3" min="-2" pref="15" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="medianF2Label" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="medianDescriptionF2Label" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="stedvF2DescriptionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="stdevF2ValueLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="varianceF2DescriptionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="varianceF2ValueLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="minF2DescriptionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="minF2ValueLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="maxF2DescriptionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="maxF2ValueLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -145,6 +173,46 @@
                 <Property name="text" type="java.lang.String" value="jLabel7"/>
               </Properties>
             </Component>
+            <Component class="javax.swing.JLabel" name="stedvF2DescriptionLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Stdev"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="stdevF2ValueLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="jLabel1"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="minF2DescriptionLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Min:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="minF2ValueLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="jLabel1"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="maxF2DescriptionLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Max:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="maxF2ValueLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="jLabel2"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="varianceF2DescriptionLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Variance:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="varianceF2ValueLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="jLabel2"/>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="formant3Panel">
@@ -160,17 +228,25 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="meanDescriptionF3Label" alignment="0" min="-2" pref="57" max="-2" attributes="0"/>
                           <Component id="medianDescriptionF3Label" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="stdevF3DescriptionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="minF3DescriptionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="maxF3DescriptionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="varianceF3DescriptionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="stdevF3ValueLabel" max="32767" attributes="0"/>
                           <Component id="medianF3Label" pref="64" max="32767" attributes="0"/>
                           <Component id="meanF3Label" max="32767" attributes="0"/>
+                          <Component id="varianceF3ValueLabel" alignment="0" max="32767" attributes="0"/>
+                          <Component id="minF3ValueLabel" max="32767" attributes="0"/>
+                          <Component id="maxF3ValueLabel" alignment="0" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -186,6 +262,26 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="medianDescriptionF3Label" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="medianF3Label" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="stdevF3DescriptionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="stdevF3ValueLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="varianceF3DescriptionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="varianceF3ValueLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="minF3DescriptionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="minF3ValueLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="maxF3DescriptionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="maxF3ValueLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
@@ -211,6 +307,46 @@
             <Component class="javax.swing.JLabel" name="medianF3Label">
               <Properties>
                 <Property name="text" type="java.lang.String" value="jLabel9"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="stdevF3DescriptionLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Stdev:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="stdevF3ValueLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="jLabel2"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="minF3DescriptionLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Min:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="minF3ValueLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="jLabel2"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="maxF3DescriptionLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Max:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="maxF3ValueLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="jLabel2"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="varianceF3DescriptionLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Variance:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="varianceF3ValueLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="jLabel2"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -239,18 +375,23 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="medianDescriptionF1Label" alignment="0" min="-2" pref="63" max="-2" attributes="0"/>
+                          <Component id="stdevF1DescriptionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="meanDescriptionF1Label" alignment="0" min="-2" pref="63" max="-2" attributes="0"/>
+                          <Component id="varianceF1DescriptionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="minF1DescriptionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="maxF1DescriptionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="meanDescriptionF1Label" min="-2" pref="63" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                              <Component id="meanF1Label" max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="medianDescriptionF1Label" min="-2" pref="63" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                              <Component id="medianF1Label" max="32767" attributes="0"/>
-                          </Group>
+                          <Component id="medianF1Label" alignment="0" max="32767" attributes="0"/>
+                          <Component id="meanF1Label" alignment="1" max="32767" attributes="0"/>
+                          <Component id="varianceF1ValueLabel" alignment="0" max="32767" attributes="0"/>
+                          <Component id="stdevF1ValueLabel" alignment="1" max="32767" attributes="0"/>
+                          <Component id="maxF1ValueLabel" alignment="0" max="32767" attributes="0"/>
+                          <Component id="minF1ValueLabel" alignment="1" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -269,7 +410,30 @@
                           <Component id="medianDescriptionF1Label" max="32767" attributes="0"/>
                           <Component id="medianF1Label" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="stdevF1DescriptionLabel" min="-2" max="-2" attributes="0"/>
+                          <Component id="stdevF1ValueLabel" min="-2" pref="15" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="varianceF1DescriptionLabel" min="-2" max="-2" attributes="0"/>
+                          <Component id="varianceF1ValueLabel" min="-2" pref="15" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="minF1DescriptionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="minF1ValueLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="maxF1DescriptionLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                          <Component id="maxF1ValueLabel" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -293,6 +457,46 @@
             <Component class="javax.swing.JLabel" name="medianF1Label">
               <Properties>
                 <Property name="text" type="java.lang.String" value="jLabel3"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="stdevF1DescriptionLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Stdev:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="stdevF1ValueLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="jLabel2"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="minF1DescriptionLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Min:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="minF1ValueLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="jLabel1"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="maxF1DescriptionLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Max:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="maxF1ValueLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="jLabel1"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="varianceF1DescriptionLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Variance:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="varianceF1ValueLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="jLabel1"/>
               </Properties>
             </Component>
           </SubComponents>

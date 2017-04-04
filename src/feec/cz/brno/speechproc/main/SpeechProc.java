@@ -374,6 +374,7 @@ public class SpeechProc extends javax.swing.JFrame {
 
             ResultPanel resultPanel = new ResultPanel();
             centerTabbedPanel.add("Formants", resultPanel);
+            centerTabbedPanel.setSelectedComponent(resultPanel);
 
             formantsTask = new FormantsImpl(this, paramsDialog, soundFiles, resultPanel.getResultTableModel(), progressLabel);
             progressBar.setValue(0);
@@ -423,6 +424,7 @@ public class SpeechProc extends javax.swing.JFrame {
 
             ResultPanel resultPanel = new ResultPanel();
             centerTabbedPanel.add("F0 pitch", resultPanel);
+            centerTabbedPanel.setSelectedComponent(resultPanel);
 
             f0Task = new F0Impl(this, paramsDialog, soundFiles, resultPanel.getResultTableModel(), progressLabel);
             progressBar.setValue(0);
@@ -460,6 +462,7 @@ public class SpeechProc extends javax.swing.JFrame {
 
         ResultPanel resultPanel = new ResultPanel();
         centerTabbedPanel.add("Intensity", resultPanel);
+        centerTabbedPanel.setSelectedComponent(resultPanel);
         
         intensityTask = new IntensityImpl(this, soundFiles, resultPanel.getResultTableModel(), progressLabel);
         progressBar.setValue(0);
@@ -546,7 +549,7 @@ public class SpeechProc extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Praat script has finished successfully.", "Success!", JOptionPane.INFORMATION_MESSAGE);
 
                 FormantCharts graph = new FormantCharts();
-                centerTabbedPanel.add("Formants listing", graph.createFormantChart(new File("formantsListings.csv")));
+                centerTabbedPanel.add("Formants listing", graph.createChart(new File("formantsListings.csv")));
             }
         }
     }

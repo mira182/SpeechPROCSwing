@@ -9,7 +9,6 @@ import au.com.bytecode.opencsv.CSVReader;
 import feec.cz.brno.speechproc.calc.utility.CalcUtilities;
 import feec.cz.brno.speechproc.gui.api.CompareChart;
 import feec.cz.brno.speechproc.gui.formants.FormantCharts;
-import java.awt.Color;
 import java.awt.geom.Ellipse2D;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -197,5 +196,10 @@ public class F0PitchCharts implements CompareChart {
             logger.error("Couldn't create pitch chart.", ex);
         }
         return chartPanel;
+    }
+
+    @Override
+    public ChartPanel createStatsChart(File csvFile) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

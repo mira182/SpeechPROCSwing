@@ -31,6 +31,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import feec.cz.brno.speechproc.gui.api.CompareChart;
 import feec.cz.brno.speechproc.gui.f0.F0PitchCharts;
+import feec.cz.brno.speechproc.gui.formants.FormantCharts;
 import org.jfree.chart.ChartPanel;
 
 
@@ -170,16 +171,18 @@ public class ResultPanel extends javax.swing.JPanel {
             switch (selectedResult1.getCategory()) {
                 case FORMANTS:
                     logger.debug("Showing formants compared chart of " + selectedResult1.getSoundFile().getName() + " and " + selectedResult2.getCsvResult().getName());
+                    CompareChart chart = new FormantCharts();
+                    chartPanel = chart.createComparedChart(selectedResult1.getCsvResult(), selectedResult2.getCsvResult());
                     break;
                 case F0:
-                    CompareChart chart = new F0PitchCharts();
-                    chartPanel = chart.createComparedChart(selectedResult1.getCsvResult(), selectedResult2.getCsvResult());
                     logger.debug("Showing pitch compared chart of " + selectedResult1.getSoundFile().getName() + " and " + selectedResult2.getCsvResult().getName());
+                    chart = new F0PitchCharts();
+                    chartPanel = chart.createComparedChart(selectedResult1.getCsvResult(), selectedResult2.getCsvResult());
                     break;
                 case INTENSITY:
+                    logger.debug("Showing intensity compared chart of " + selectedResult1.getSoundFile().getName() + " and " + selectedResult2.getCsvResult().getName());
                     chart = new IntensityCharts();
                     chartPanel = chart.createComparedChart(selectedResult1.getCsvResult(), selectedResult2.getCsvResult());
-                    logger.debug("Showing intensity compared chart of " + selectedResult1.getSoundFile().getName() + " and " + selectedResult2.getCsvResult().getName());
                     break;
             }
             GraphWindow resultWindow = new GraphWindow("Compared graph", chartPanel);

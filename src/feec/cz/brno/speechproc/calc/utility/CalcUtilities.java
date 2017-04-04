@@ -38,4 +38,27 @@ public class CalcUtilities {
         else
             return (values.get(middle - 1) + values.get(middle)) / 2.0;
     }
+    
+    public static double variance(List<Double> values) {
+        double mean = mean(values);
+        double temp = 0;
+        for (double a : values) {
+            temp += (a - mean) * (a - mean);
+        }
+        return temp / values.size();
+    }
+    
+    public static double stdev(List<Double> values) {
+        return Math.sqrt(variance(values));
+    }
+    
+    public static double max(List<Double> values) {
+        double maxValue = Double.MIN_VALUE;
+        for (Double d : values) {
+            if (d > maxValue) {
+                maxValue = d;
+            }
+        }
+        return maxValue;
+    }
 }
