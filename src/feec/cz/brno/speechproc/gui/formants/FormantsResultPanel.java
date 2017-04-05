@@ -6,6 +6,7 @@
 package feec.cz.brno.speechproc.gui.formants;
 
 import au.com.bytecode.opencsv.CSVReader;
+import com.google.common.primitives.Doubles;
 import feec.cz.brno.speechproc.calc.api.formants.IFormants;
 import feec.cz.brno.speechproc.calc.utility.CalcUtilities;
 import feec.cz.brno.speechproc.gui.Icons;
@@ -18,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import org.apache.commons.math3.stat.descriptive.rank.Percentile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -73,6 +75,12 @@ public class FormantsResultPanel extends javax.swing.JPanel {
         maxF2ValueLabel = new javax.swing.JLabel();
         varianceF2DescriptionLabel = new javax.swing.JLabel();
         varianceF2ValueLabel = new javax.swing.JLabel();
+        firstPerF2DescriptionLabel = new javax.swing.JLabel();
+        firstPerF2ValueLabel = new javax.swing.JLabel();
+        ninePerF2DescriptionLabel = new javax.swing.JLabel();
+        ninePerF2ValueLabel = new javax.swing.JLabel();
+        irF2DescriptionLabel = new javax.swing.JLabel();
+        irF2ValueLabel = new javax.swing.JLabel();
         formant3Panel = new javax.swing.JPanel();
         meanDescriptionF3Label = new javax.swing.JLabel();
         meanF3Label = new javax.swing.JLabel();
@@ -86,6 +94,12 @@ public class FormantsResultPanel extends javax.swing.JPanel {
         maxF3ValueLabel = new javax.swing.JLabel();
         varianceF3DescriptionLabel = new javax.swing.JLabel();
         varianceF3ValueLabel = new javax.swing.JLabel();
+        firstPerF3DescriptionLabel = new javax.swing.JLabel();
+        firstPerF3ValueLabel = new javax.swing.JLabel();
+        ninePerF3DescriptionLabel = new javax.swing.JLabel();
+        ninePerF3ValueLabel = new javax.swing.JLabel();
+        irF3DescriptionLabel = new javax.swing.JLabel();
+        irF3ValueLabel = new javax.swing.JLabel();
         showGraphButton = new javax.swing.JButton(Icons.GRAPH_ICON);
         formant1Panel = new javax.swing.JPanel();
         meanDescriptionF1Label = new javax.swing.JLabel();
@@ -100,6 +114,12 @@ public class FormantsResultPanel extends javax.swing.JPanel {
         maxF1ValueLabel = new javax.swing.JLabel();
         varianceF1DescriptionLabel = new javax.swing.JLabel();
         varianceF1ValueLabel = new javax.swing.JLabel();
+        firstPerF1DescriptionLabel = new javax.swing.JLabel();
+        firstPerF1ValueLabel = new javax.swing.JLabel();
+        ninePerF1DescriptionLabel = new javax.swing.JLabel();
+        ninePerF1ValueLabel = new javax.swing.JLabel();
+        irF1DescriptionLabel = new javax.swing.JLabel();
+        irF1ValueLabel = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -134,6 +154,18 @@ public class FormantsResultPanel extends javax.swing.JPanel {
 
         varianceF2ValueLabel.setText("jLabel2");
 
+        firstPerF2DescriptionLabel.setText("1.p:");
+
+        firstPerF2ValueLabel.setText("jLabel2");
+
+        ninePerF2DescriptionLabel.setText("99.p:");
+
+        ninePerF2ValueLabel.setText("jLabel4");
+
+        irF2DescriptionLabel.setText("IR:");
+
+        irF2ValueLabel.setText("jLabel2");
+
         javax.swing.GroupLayout formant2PanelLayout = new javax.swing.GroupLayout(formant2Panel);
         formant2Panel.setLayout(formant2PanelLayout);
         formant2PanelLayout.setHorizontalGroup(
@@ -146,7 +178,10 @@ public class FormantsResultPanel extends javax.swing.JPanel {
                     .addComponent(stedvF2DescriptionLabel)
                     .addComponent(minF2DescriptionLabel)
                     .addComponent(maxF2DescriptionLabel)
-                    .addComponent(varianceF2DescriptionLabel))
+                    .addComponent(varianceF2DescriptionLabel)
+                    .addComponent(firstPerF2DescriptionLabel)
+                    .addComponent(ninePerF2DescriptionLabel)
+                    .addComponent(irF2DescriptionLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(formant2PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(meanF2Label, javax.swing.GroupLayout.DEFAULT_SIZE, 61, Short.MAX_VALUE)
@@ -154,7 +189,13 @@ public class FormantsResultPanel extends javax.swing.JPanel {
                     .addComponent(stdevF2ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(varianceF2ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(minF2ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(maxF2ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(maxF2ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(formant2PanelLayout.createSequentialGroup()
+                        .addGroup(formant2PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(firstPerF2ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 61, Short.MAX_VALUE)
+                            .addComponent(ninePerF2ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(irF2ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         formant2PanelLayout.setVerticalGroup(
@@ -184,7 +225,19 @@ public class FormantsResultPanel extends javax.swing.JPanel {
                 .addGroup(formant2PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(maxF2DescriptionLabel)
                     .addComponent(maxF2ValueLabel))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(formant2PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(firstPerF2DescriptionLabel)
+                    .addComponent(firstPerF2ValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(formant2PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ninePerF2DescriptionLabel)
+                    .addComponent(ninePerF2ValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(formant2PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(irF2DescriptionLabel)
+                    .addComponent(irF2ValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         formant3Panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Formant 3"));
@@ -213,6 +266,18 @@ public class FormantsResultPanel extends javax.swing.JPanel {
 
         varianceF3ValueLabel.setText("jLabel2");
 
+        firstPerF3DescriptionLabel.setText("1.p:");
+
+        firstPerF3ValueLabel.setText("jLabel2");
+
+        ninePerF3DescriptionLabel.setText("99.p:");
+
+        ninePerF3ValueLabel.setText("jLabel4");
+
+        irF3DescriptionLabel.setText("IR:");
+
+        irF3ValueLabel.setText("jLabel2");
+
         javax.swing.GroupLayout formant3PanelLayout = new javax.swing.GroupLayout(formant3Panel);
         formant3Panel.setLayout(formant3PanelLayout);
         formant3PanelLayout.setHorizontalGroup(
@@ -225,7 +290,10 @@ public class FormantsResultPanel extends javax.swing.JPanel {
                     .addComponent(stdevF3DescriptionLabel)
                     .addComponent(minF3DescriptionLabel)
                     .addComponent(maxF3DescriptionLabel)
-                    .addComponent(varianceF3DescriptionLabel))
+                    .addComponent(varianceF3DescriptionLabel)
+                    .addComponent(firstPerF3DescriptionLabel)
+                    .addComponent(ninePerF3DescriptionLabel)
+                    .addComponent(irF3DescriptionLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(formant3PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(stdevF3ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -233,7 +301,10 @@ public class FormantsResultPanel extends javax.swing.JPanel {
                     .addComponent(meanF3Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(varianceF3ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(minF3ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(maxF3ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(maxF3ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(firstPerF3ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(irF3ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ninePerF3ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         formant3PanelLayout.setVerticalGroup(
@@ -263,6 +334,18 @@ public class FormantsResultPanel extends javax.swing.JPanel {
                 .addGroup(formant3PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(maxF3DescriptionLabel)
                     .addComponent(maxF3ValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(formant3PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(firstPerF3DescriptionLabel)
+                    .addComponent(firstPerF3ValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(formant3PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ninePerF3DescriptionLabel)
+                    .addComponent(ninePerF3ValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(formant3PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(irF3DescriptionLabel)
+                    .addComponent(irF3ValueLabel))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -299,6 +382,18 @@ public class FormantsResultPanel extends javax.swing.JPanel {
 
         varianceF1ValueLabel.setText("jLabel1");
 
+        firstPerF1DescriptionLabel.setText("1.p:");
+
+        firstPerF1ValueLabel.setText("jLabel2");
+
+        ninePerF1DescriptionLabel.setText("99.p:");
+
+        ninePerF1ValueLabel.setText("jLabel2");
+
+        irF1DescriptionLabel.setText("IR:");
+
+        irF1ValueLabel.setText("jLabel2");
+
         javax.swing.GroupLayout formant1PanelLayout = new javax.swing.GroupLayout(formant1Panel);
         formant1Panel.setLayout(formant1PanelLayout);
         formant1PanelLayout.setHorizontalGroup(
@@ -311,9 +406,15 @@ public class FormantsResultPanel extends javax.swing.JPanel {
                     .addComponent(meanDescriptionF1Label, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(varianceF1DescriptionLabel)
                     .addComponent(minF1DescriptionLabel)
-                    .addComponent(maxF1DescriptionLabel))
+                    .addComponent(maxF1DescriptionLabel)
+                    .addComponent(firstPerF1DescriptionLabel)
+                    .addComponent(ninePerF1DescriptionLabel)
+                    .addComponent(irF1DescriptionLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(formant1PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(irF1ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ninePerF1ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(firstPerF1ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(medianF1Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(meanF1Label, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(varianceF1ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -351,6 +452,18 @@ public class FormantsResultPanel extends javax.swing.JPanel {
                         .addComponent(maxF1DescriptionLabel)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(maxF1ValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(formant1PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(firstPerF1DescriptionLabel)
+                    .addComponent(firstPerF1ValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(formant1PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ninePerF1DescriptionLabel)
+                    .addComponent(ninePerF1ValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(formant1PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(irF1DescriptionLabel)
+                    .addComponent(irF1ValueLabel))
                 .addContainerGap())
         );
 
@@ -365,7 +478,7 @@ public class FormantsResultPanel extends javax.swing.JPanel {
                 .addComponent(formant2Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(formant3Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
                 .addComponent(showGraphButton)
                 .addContainerGap())
         );
@@ -443,14 +556,46 @@ public class FormantsResultPanel extends javax.swing.JPanel {
         maxF1ValueLabel.setText(Collections.max(formant1) + " Hz");
         maxF2ValueLabel.setText(Collections.max(formant2) + " Hz");
         maxF3ValueLabel.setText(Collections.max(formant3) + " Hz");
+        
+        Percentile percentile = new Percentile(0.1);
+        double firstPerF1 = percentile.evaluate(Doubles.toArray(formant1));
+        double firstPerF2 = percentile.evaluate(Doubles.toArray(formant2));
+        double firstPerF3 = percentile.evaluate(Doubles.toArray(formant3));
+        firstPerF1ValueLabel.setText(firstPerF1 + " Hz");
+        firstPerF2ValueLabel.setText(firstPerF2 + " Hz");
+        firstPerF3ValueLabel.setText(firstPerF3 + " Hz");
+        
+        percentile = new Percentile(0.99);
+        double ninePerF1 = percentile.evaluate(Doubles.toArray(formant1));
+        double ninePerF2 = percentile.evaluate(Doubles.toArray(formant2));
+        double ninePerF3 = percentile.evaluate(Doubles.toArray(formant3));
+        ninePerF1ValueLabel.setText(ninePerF1 + " Hz");
+        ninePerF2ValueLabel.setText(ninePerF2 + " Hz");
+        ninePerF3ValueLabel.setText(ninePerF3 + " Hz");
+        
+        irF1ValueLabel.setText(ninePerF1 - firstPerF1 + " Hz");
+        irF2ValueLabel.setText(ninePerF2 - firstPerF2 + " Hz");
+        irF3ValueLabel.setText(ninePerF3 - firstPerF3 + " Hz");
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel firstPerF1DescriptionLabel;
+    private javax.swing.JLabel firstPerF1ValueLabel;
+    private javax.swing.JLabel firstPerF2DescriptionLabel;
+    private javax.swing.JLabel firstPerF2ValueLabel;
+    private javax.swing.JLabel firstPerF3DescriptionLabel;
+    private javax.swing.JLabel firstPerF3ValueLabel;
     private javax.swing.JPanel formant1Panel;
     private javax.swing.JPanel formant2Panel;
     private javax.swing.JPanel formant3Panel;
     private javax.swing.JTable formantsTable;
     private javax.swing.JPanel infoPanel;
+    private javax.swing.JLabel irF1DescriptionLabel;
+    private javax.swing.JLabel irF1ValueLabel;
+    private javax.swing.JLabel irF2DescriptionLabel;
+    private javax.swing.JLabel irF2ValueLabel;
+    private javax.swing.JLabel irF3DescriptionLabel;
+    private javax.swing.JLabel irF3ValueLabel;
     private javax.swing.JLabel maxF1DescriptionLabel;
     private javax.swing.JLabel maxF1ValueLabel;
     private javax.swing.JLabel maxF2DescriptionLabel;
@@ -475,6 +620,12 @@ public class FormantsResultPanel extends javax.swing.JPanel {
     private javax.swing.JLabel minF2ValueLabel;
     private javax.swing.JLabel minF3DescriptionLabel;
     private javax.swing.JLabel minF3ValueLabel;
+    private javax.swing.JLabel ninePerF1DescriptionLabel;
+    private javax.swing.JLabel ninePerF1ValueLabel;
+    private javax.swing.JLabel ninePerF2DescriptionLabel;
+    private javax.swing.JLabel ninePerF2ValueLabel;
+    private javax.swing.JLabel ninePerF3DescriptionLabel;
+    private javax.swing.JLabel ninePerF3ValueLabel;
     private javax.swing.JButton showGraphButton;
     private javax.swing.JLabel stdevF1DescriptionLabel;
     private javax.swing.JLabel stdevF1ValueLabel;

@@ -126,6 +126,7 @@
           <ComponentRef name="maxFormantTextField"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Maximum formant (Hz):"/>
+        <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;&#xa;5000 for an adult male&lt;br/&gt;&#xa;5500 for an adult female&#xa;&lt;/html&gt;"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">

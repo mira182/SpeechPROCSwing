@@ -71,6 +71,7 @@ public class FormantParamsDialog extends javax.swing.JDialog {
 
         jLabel3.setLabelFor(maxFormantTextField);
         jLabel3.setText("Maximum formant (Hz):");
+        jLabel3.setToolTipText("<html>\n5000 for an adult male<br/>\n5500 for an adult female\n</html>");
 
         jLabel4.setLabelFor(windowLengthTextField);
         jLabel4.setText("Window length (s):");

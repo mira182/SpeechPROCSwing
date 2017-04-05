@@ -41,6 +41,7 @@ import org.apache.logging.log4j.Logger;
 
 import static feec.cz.brno.speechproc.calc.api.f0.IF0.OUTPUT_FOLDER_F0;
 import static feec.cz.brno.speechproc.calc.api.formants.IFormants.OUTPUT_FOLDER_FORMANTS;
+import feec.cz.brno.speechproc.gui.help.HelpWindow;
 
 /**
  *
@@ -59,6 +60,8 @@ public class SpeechProc extends javax.swing.JFrame {
     private FormantsImpl formantsTask;
     private F0Impl f0Task;
     private IntensityImpl intensityTask;
+    
+    private HelpWindow helpWindow;
 
     /**
      * Creates new form SpeechProc
@@ -336,8 +339,14 @@ public class SpeechProc extends javax.swing.JFrame {
         helpMenu.setMnemonic('h');
         helpMenu.setText("Help");
 
+        contentsMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, java.awt.event.InputEvent.CTRL_MASK));
         contentsMenuItem.setMnemonic('c');
         contentsMenuItem.setText("Contents");
+        contentsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                contentsMenuItemActionPerformed(evt);
+            }
+        });
         helpMenu.add(contentsMenuItem);
 
         aboutMenuItem.setMnemonic('a');
@@ -449,6 +458,15 @@ public class SpeechProc extends javax.swing.JFrame {
             centerTabbedPanel.remove(centerTabbedPanel.getSelectedIndex());
         }
     }//GEN-LAST:event_centerTabbedPanelKeyPressed
+
+    private void contentsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contentsMenuItemActionPerformed
+        if (helpWindow == null) {
+            helpWindow = new HelpWindow();
+            helpWindow.setVisible(true);
+        } else {
+            helpWindow.setVisible(true);
+        }
+    }//GEN-LAST:event_contentsMenuItemActionPerformed
 
     private void intensityMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                  
         List<File> soundFiles = getSelectedSoundFiles();

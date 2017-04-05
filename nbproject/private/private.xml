@@ -8,17 +8,16 @@
             <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/gui/results/ResultsTableModel.java</file>
             <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/api/f0/F0Impl.java</file>
             <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/gui/results/GraphWindow.java</file>
-            <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/gui/formants/FormantCharts.java</file>
             <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/api/SpeechParameter.java</file>
             <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/gui/Icons.java</file>
             <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/gui/results/ResultPanel.java</file>
-            <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/main/SpeechProc.java</file>
+            <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/gui/api/CompareChart.java</file>
             <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/resources/praat/intensity.praat</file>
             <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/api/formants/FormantsImpl.java</file>
             <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/resources/praat/formants.praat</file>
             <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/api/intensity/IntensityImpl.java</file>
             <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/api/params/ScriptResult.java</file>
-            <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/gui/f0/F0PitchCharts.java</file>
+            <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/utility/CalcUtilities.java</file>
             <file>file:/home/hynstm/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/api/params/ScriptParameters.java</file>
         </group>
     </open-files>
