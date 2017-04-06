@@ -1,19 +1,20 @@
 package feec.cz.brno.speechproc.main;
 
-import feec.cz.brno.speechproc.calc.api.f0.F0Impl;
-import feec.cz.brno.speechproc.calc.api.formants.FormantsImpl;
-import feec.cz.brno.speechproc.calc.api.intensity.IntensityImpl;
-import feec.cz.brno.speechproc.calc.api.params.ScriptParameter;
-import feec.cz.brno.speechproc.calc.api.params.ScriptParameters;
-import feec.cz.brno.speechproc.calc.api.runscript.PraatScript;
-import feec.cz.brno.speechproc.calc.api.runscript.ScriptRunException;
-import feec.cz.brno.speechproc.calc.api.runscript.ScriptRunner;
+import feec.cz.brno.speechproc.calc.runscripts.PraatScript;
+import feec.cz.brno.speechproc.calc.runscripts.ScriptRunException;
+import feec.cz.brno.speechproc.calc.runscripts.ScriptRunner;
+import feec.cz.brno.speechproc.calc.runscripts.scriptparams.ScriptParameter;
+import feec.cz.brno.speechproc.calc.runscripts.scriptparams.ScriptParameters;
+import feec.cz.brno.speechproc.calc.speechparams.f0.F0Impl;
+import feec.cz.brno.speechproc.calc.speechparams.formants.FormantsImpl;
+import feec.cz.brno.speechproc.calc.speechparams.intensity.IntensityImpl;
 import feec.cz.brno.speechproc.gui.Icons;
 import feec.cz.brno.speechproc.gui.JTabbedPaneCloseButton;
-import feec.cz.brno.speechproc.gui.f0.F0ParamsDialog;
-import feec.cz.brno.speechproc.gui.formants.FormantCharts;
-import feec.cz.brno.speechproc.gui.formants.FormantParamsDialog;
-import feec.cz.brno.speechproc.gui.results.ResultPanel;
+import feec.cz.brno.speechproc.gui.help.HelpWindow;
+import feec.cz.brno.speechproc.gui.parameters.f0.F0ParamsDialog;
+import feec.cz.brno.speechproc.gui.parameters.formants.FormantCharts;
+import feec.cz.brno.speechproc.gui.parameters.formants.FormantParamsDialog;
+import feec.cz.brno.speechproc.gui.parameters.results.ResultPanel;
 import feec.cz.brno.speechproc.gui.soundlist.SoundFilesTableModel;
 import java.awt.Cursor;
 import java.awt.event.KeyEvent;
@@ -39,9 +40,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static feec.cz.brno.speechproc.calc.api.f0.IF0.OUTPUT_FOLDER_F0;
-import static feec.cz.brno.speechproc.calc.api.formants.IFormants.OUTPUT_FOLDER_FORMANTS;
-import feec.cz.brno.speechproc.gui.help.HelpWindow;
+import static feec.cz.brno.speechproc.calc.speechparams.f0.IF0.OUTPUT_FOLDER_F0;
+import static feec.cz.brno.speechproc.calc.speechparams.formants.IFormants.OUTPUT_FOLDER_FORMANTS;
+import static feec.cz.brno.speechproc.calc.speechparams.intensity.IIntensity.OUTPUT_FOLDER_INTENSITY;
 
 /**
  *
@@ -361,8 +362,14 @@ public class SpeechProc extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
-        FileUtils.deleteQuietly(OUTPUT_FOLDER_F0);
-        FileUtils.deleteQuietly(OUTPUT_FOLDER_FORMANTS);
+        try {
+            logger.info("Deleting folders with csv files.");
+            FileUtils.deleteDirectory(OUTPUT_FOLDER_F0);
+            FileUtils.deleteDirectory(OUTPUT_FOLDER_INTENSITY);
+            FileUtils.deleteDirectory(OUTPUT_FOLDER_FORMANTS);
+        } catch (IOException ex) {
+            logger.error("Deleting calculated CSV files failed!", ex);
+        }
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
 

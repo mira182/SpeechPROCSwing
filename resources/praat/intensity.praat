@@ -29,5 +29,5 @@ mean = Get mean... 0.0 0.0 Energy
 stdev = Get standard deviation... 0.0 0.0
 median = Get quantile... 0.0 0.0 0.5
 
-appendFileLine: outputStatsFileName$, "Min (dB)", " ", "Time of min (s)", " ", "Max (dB)", " ", "Time of max (s)", " ", "Mean (dB)", "Median (dB)", " ", "Stdev (dB)"
+appendFileLine: outputStatsFileName$, "Min(dB)", " ", "TimeOfMin(s)", " ", "Max(dB)", " ", "TimeOfMax(s)", " ", "Mean(dB)", "Median(dB)", " ", "Stdev(dB)"
 appendFileLine: outputStatsFileName$, min, " ", timeOfMin, " ", max, " ", timeOfMax, " ", mean, " ", median, " ", stdev

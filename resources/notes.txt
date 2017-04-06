@@ -4,3 +4,6 @@ https://github.com/lennes/spect/tree/master/scripts
 Useful links:
 http://ec-concord.ied.edu.hk/phonetics_and_phonology/wordpress/learning_website/chapter_4_prosodic_analysis_new(1).htm#4.1.3_Pause_duration_
 http://www.fon.hum.uva.nl/praat/manual/Script_for_onset_detection.html
+
+QUESTIONS:
+1. What is mezipercentilovy rozsah
