@@ -6,4 +6,6 @@ http://ec-concord.ied.edu.hk/phonetics_and_phonology/wordpress/learning_website/
 http://www.fon.hum.uva.nl/praat/manual/Script_for_onset_detection.html
 
 QUESTIONS:
-1. What is mezipercentilovy rozsah
+1. What is mezipercentilovy rozsah?
+2. Calculate qunatiles of intensity?
+3. How to display compared charts? (either every two lines in separate chart or all in one)

@@ -91,6 +91,10 @@ public class SpeechProc extends javax.swing.JFrame {
 
         toolBar = new javax.swing.JToolBar();
         praatScriptBtn = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JToolBar.Separator();
+        formantsToolbarButton = new javax.swing.JButton();
+        f0ToolbarButton = new javax.swing.JButton();
+        intensityToolbarButton = new javax.swing.JButton();
         bottomPanel = new javax.swing.JPanel();
         progressLabel = new javax.swing.JLabel();
         progressBar = new javax.swing.JProgressBar();
@@ -121,6 +125,11 @@ public class SpeechProc extends javax.swing.JFrame {
         setTitle("Speech PROC");
         setMinimumSize(new java.awt.Dimension(1200, 800));
         setSize(new java.awt.Dimension(1078, 980));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         toolBar.setRollover(true);
 
@@ -135,6 +144,40 @@ public class SpeechProc extends javax.swing.JFrame {
             }
         });
         toolBar.add(praatScriptBtn);
+        toolBar.add(jSeparator1);
+
+        formantsToolbarButton.setText("Formants");
+        formantsToolbarButton.setFocusable(false);
+        formantsToolbarButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        formantsToolbarButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        formantsToolbarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                formantsToolbarButtonActionPerformed(evt);
+            }
+        });
+        toolBar.add(formantsToolbarButton);
+
+        f0ToolbarButton.setText("Voice report");
+        f0ToolbarButton.setFocusable(false);
+        f0ToolbarButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        f0ToolbarButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        f0ToolbarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                f0ToolbarButtonActionPerformed(evt);
+            }
+        });
+        toolBar.add(f0ToolbarButton);
+
+        intensityToolbarButton.setText("Intensity");
+        intensityToolbarButton.setFocusable(false);
+        intensityToolbarButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        intensityToolbarButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        intensityToolbarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                intensityToolbarButtonActionPerformed(evt);
+            }
+        });
+        toolBar.add(intensityToolbarButton);
 
         getContentPane().add(toolBar, java.awt.BorderLayout.PAGE_START);
 
@@ -317,7 +360,7 @@ public class SpeechProc extends javax.swing.JFrame {
 
         f0MenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         f0MenuItem.setMnemonic('p');
-        f0MenuItem.setText("F0 (pitch)");
+        f0MenuItem.setText("Voice report");
         f0MenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 f0MenuItemActionPerformed(evt);
@@ -327,7 +370,7 @@ public class SpeechProc extends javax.swing.JFrame {
 
         intensityMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         intensityMenuItem.setMnemonic('d');
-        intensityMenuItem.setText("Intensity");
+        intensityMenuItem.setText("Loudness");
         intensityMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 intensityMenuItemActionPerformed(evt);
@@ -362,46 +405,11 @@ public class SpeechProc extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
-        try {
-            logger.info("Deleting folders with csv files.");
-            FileUtils.deleteDirectory(OUTPUT_FOLDER_F0);
-            FileUtils.deleteDirectory(OUTPUT_FOLDER_INTENSITY);
-            FileUtils.deleteDirectory(OUTPUT_FOLDER_FORMANTS);
-        } catch (IOException ex) {
-            logger.error("Deleting calculated CSV files failed!", ex);
-        }
-        System.exit(0);
+        
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
     private void formantsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_formantsMenuItemActionPerformed
-        List<File> soundFiles = getSelectedSoundFiles();
-
-        if (soundFiles.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No sound file selected!", "No file.", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        FormantParamsDialog paramsDialog = new FormantParamsDialog(this);
-        paramsDialog.setVisible(true);
-        
-        if (paramsDialog.isOk()) {
-
-            setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
-            ResultPanel resultPanel = new ResultPanel();
-            centerTabbedPanel.add("Formants", resultPanel);
-            centerTabbedPanel.setSelectedComponent(resultPanel);
-
-            formantsTask = new FormantsImpl(this, paramsDialog, soundFiles, resultPanel.getResultTableModel(), progressLabel);
-            progressBar.setValue(0);
-            formantsTask.addPropertyChangeListener((PropertyChangeEvent evt1) -> {
-                if ("progress".equals(evt1.getPropertyName())) {
-                    int progress = (Integer) evt1.getNewValue();
-                    progressBar.setValue(progress);
-                }
-            });
-            formantsTask.execute();
-        }
+        calculateFormants();
     }//GEN-LAST:event_formantsMenuItemActionPerformed
 
     private void removeSoundFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeSoundFileBtnActionPerformed
@@ -425,33 +433,7 @@ public class SpeechProc extends javax.swing.JFrame {
     }//GEN-LAST:event_praatScriptMenuItemActionPerformed
 
     private void f0MenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_f0MenuItemActionPerformed
-        List<File> soundFiles = getSelectedSoundFiles();
-
-        if (soundFiles.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No sound file selected!", "No file.", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
-        F0ParamsDialog paramsDialog = new F0ParamsDialog(this);
-        paramsDialog.setVisible(true);
-        
-        if (paramsDialog.isOk()) {
-            setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
-            ResultPanel resultPanel = new ResultPanel();
-            centerTabbedPanel.add("F0 pitch", resultPanel);
-            centerTabbedPanel.setSelectedComponent(resultPanel);
-
-            f0Task = new F0Impl(this, paramsDialog, soundFiles, resultPanel.getResultTableModel(), progressLabel);
-            progressBar.setValue(0);
-            f0Task.addPropertyChangeListener((PropertyChangeEvent evt1) -> {
-                if ("progress".equals(evt1.getPropertyName())) {
-                    int progress = (Integer) evt1.getNewValue();
-                    progressBar.setValue(progress);
-                }
-            });
-            f0Task.execute();
-        }
+        calculateF0();
     }//GEN-LAST:event_f0MenuItemActionPerformed
 
     private void soundFilesTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_soundFilesTableKeyReleased
@@ -473,31 +455,27 @@ public class SpeechProc extends javax.swing.JFrame {
         } else {
             helpWindow.setVisible(true);
         }
+        logger.info("Help window showed");
     }//GEN-LAST:event_contentsMenuItemActionPerformed
 
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        deleteTempFiles();
+    }//GEN-LAST:event_formWindowClosing
+
+    private void formantsToolbarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_formantsToolbarButtonActionPerformed
+        calculateFormants();
+    }//GEN-LAST:event_formantsToolbarButtonActionPerformed
+
+    private void f0ToolbarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_f0ToolbarButtonActionPerformed
+        calculateF0();
+    }//GEN-LAST:event_f0ToolbarButtonActionPerformed
+
+    private void intensityToolbarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_intensityToolbarButtonActionPerformed
+        calculateIntensity();
+    }//GEN-LAST:event_intensityToolbarButtonActionPerformed
+
     private void intensityMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                  
-        List<File> soundFiles = getSelectedSoundFiles();
-
-        if (soundFiles.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No sound file selected!", "No file.", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
-        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
-        ResultPanel resultPanel = new ResultPanel();
-        centerTabbedPanel.add("Intensity", resultPanel);
-        centerTabbedPanel.setSelectedComponent(resultPanel);
-        
-        intensityTask = new IntensityImpl(this, soundFiles, resultPanel.getResultTableModel(), progressLabel);
-        progressBar.setValue(0);
-        intensityTask.addPropertyChangeListener((PropertyChangeEvent evt1) -> {
-            if ("progress".equals(evt1.getPropertyName())) {
-                int progress = (Integer) evt1.getNewValue();
-                progressBar.setValue(progress);
-            }
-        });
-        intensityTask.execute();
+        calculateIntensity();
     }                                                                                
 
     private void addSoundFiles() {
@@ -590,6 +568,18 @@ public class SpeechProc extends javax.swing.JFrame {
 
         return selectedSoundFiles;
     }
+    
+    private void deleteTempFiles() {
+        try {
+            FileUtils.deleteDirectory(OUTPUT_FOLDER_F0);
+            FileUtils.deleteDirectory(OUTPUT_FOLDER_INTENSITY);
+            FileUtils.deleteDirectory(OUTPUT_FOLDER_FORMANTS);
+            logger.info("Deleted folders with csv files.");
+        } catch (IOException ex) {
+            logger.error("Deleting calculated CSV files failed!", ex);
+        }
+        System.exit(0);
+    }
 
     /**
      * @param args the command line arguments
@@ -630,10 +620,14 @@ public class SpeechProc extends javax.swing.JFrame {
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenuItem f0MenuItem;
+    private javax.swing.JButton f0ToolbarButton;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenuItem formantsMenuItem;
+    private javax.swing.JButton formantsToolbarButton;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JMenuItem intensityMenuItem;
+    private javax.swing.JButton intensityToolbarButton;
+    private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JPanel leftPanel;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openSoundFilesMenuItem;
@@ -649,5 +643,91 @@ public class SpeechProc extends javax.swing.JFrame {
     private javax.swing.JTable soundFilesTable;
     private javax.swing.JToolBar toolBar;
     // End of variables declaration//GEN-END:variables
+
+    private void calculateF0() {
+        List<File> soundFiles = getSelectedSoundFiles();
+
+        if (soundFiles.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No sound file selected!", "No file.", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        F0ParamsDialog paramsDialog = new F0ParamsDialog(this);
+        paramsDialog.setVisible(true);
+
+        if (paramsDialog.isOk()) {
+            setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+            ResultPanel resultPanel = new ResultPanel();
+            centerTabbedPanel.add("F0 pitch", resultPanel);
+            centerTabbedPanel.setSelectedComponent(resultPanel);
+
+            f0Task = new F0Impl(this, paramsDialog, soundFiles, resultPanel.getResultTableModel(), progressLabel);
+            progressBar.setValue(0);
+            f0Task.addPropertyChangeListener((PropertyChangeEvent evt1) -> {
+                if ("progress".equals(evt1.getPropertyName())) {
+                    int progress = (Integer) evt1.getNewValue();
+                    progressBar.setValue(progress);
+                }
+            });
+            f0Task.execute();
+        }
+    }
+
+    private void calculateFormants() {
+        List<File> soundFiles = getSelectedSoundFiles();
+
+        if (soundFiles.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No sound file selected!", "No file.", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        FormantParamsDialog paramsDialog = new FormantParamsDialog(this);
+        paramsDialog.setVisible(true);
+
+        if (paramsDialog.isOk()) {
+
+            setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+            ResultPanel resultPanel = new ResultPanel();
+            centerTabbedPanel.add("Formants", resultPanel);
+            centerTabbedPanel.setSelectedComponent(resultPanel);
+
+            formantsTask = new FormantsImpl(this, paramsDialog, soundFiles, resultPanel.getResultTableModel(), progressLabel);
+            progressBar.setValue(0);
+            formantsTask.addPropertyChangeListener((PropertyChangeEvent evt1) -> {
+                if ("progress".equals(evt1.getPropertyName())) {
+                    int progress = (Integer) evt1.getNewValue();
+                    progressBar.setValue(progress);
+                }
+            });
+            formantsTask.execute();
+        }
+    }
+
+    private void calculateIntensity() {
+        List<File> soundFiles = getSelectedSoundFiles();
+
+        if (soundFiles.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No sound file selected!", "No file.", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+        ResultPanel resultPanel = new ResultPanel();
+        centerTabbedPanel.add("Intensity", resultPanel);
+        centerTabbedPanel.setSelectedComponent(resultPanel);
+
+        intensityTask = new IntensityImpl(this, soundFiles, resultPanel.getResultTableModel(), progressLabel);
+        progressBar.setValue(0);
+        intensityTask.addPropertyChangeListener((PropertyChangeEvent evt1) -> {
+            if ("progress".equals(evt1.getPropertyName())) {
+                int progress = (Integer) evt1.getNewValue();
+                progressBar.setValue(progress);
+            }
+        });
+        intensityTask.execute();
+    }
 
 }

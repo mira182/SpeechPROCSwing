@@ -10,7 +10,6 @@ import com.google.common.base.Throwables;
 import feec.cz.brno.speechproc.calc.runscripts.result.ResultStatus;
 import feec.cz.brno.speechproc.calc.runscripts.result.ScriptResult;
 import feec.cz.brno.speechproc.gui.Icons;
-import feec.cz.brno.speechproc.gui.api.charts.CompareChart;
 import feec.cz.brno.speechproc.gui.parameters.f0.F0PitchCharts;
 import feec.cz.brno.speechproc.gui.parameters.f0.F0ResultPanel;
 import feec.cz.brno.speechproc.gui.parameters.formants.FormantCharts;
@@ -36,6 +35,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jfree.chart.ChartPanel;
+import feec.cz.brno.speechproc.gui.api.charts.Chart;
 
 
 /**
@@ -93,7 +93,7 @@ public class ResultPanel extends javax.swing.JPanel {
         );
         resultTable.setModel(resultTableModel);
         resultTable.getSelectionModel().addListSelectionListener(new ResultTableListSelectionListener());
-        resultTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        resultTable.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         resultTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 resultTableMouseClicked(evt);
@@ -174,7 +174,7 @@ public class ResultPanel extends javax.swing.JPanel {
             switch (selectedResult1.getCategory()) {
                 case FORMANTS:
                     logger.debug("Showing formants compared chart of " + selectedResult1.getSoundFile().getName() + " and " + selectedResult2.getCsvResult().getName());
-                    CompareChart chart = new FormantCharts();
+                    Chart chart = new FormantCharts();
                     chartPanel = chart.createComparedChart(selectedResult1.getCsvResult(), selectedResult2.getCsvResult());
                     break;
                 case F0:

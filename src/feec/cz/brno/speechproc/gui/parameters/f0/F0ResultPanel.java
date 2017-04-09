@@ -100,6 +100,22 @@ public class F0ResultPanel extends javax.swing.JPanel {
         shimmerApq11ValueLabel = new javax.swing.JLabel();
         shimmerDdaDescriptionLabel = new javax.swing.JLabel();
         shimmerDdaValueLabel = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        hnrAutDescriptionLabel = new javax.swing.JLabel();
+        hnrNHDescriptionLabel = new javax.swing.JLabel();
+        hnrHNDescriptionLabel = new javax.swing.JLabel();
+        hnrAutValueLabel = new javax.swing.JLabel();
+        hnrNHValueLabel = new javax.swing.JLabel();
+        hnrHNValueLabel = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        voiceFracDescriptionLabel = new javax.swing.JLabel();
+        voiceFracValueLabel = new javax.swing.JLabel();
+        voiceNBreaksDescriptionLabel = new javax.swing.JLabel();
+        voiceNBreaksValueLabel = new javax.swing.JLabel();
+        voiceDegreeDescriptionLabel = new javax.swing.JLabel();
+        voiceDegreeValueLabel = new javax.swing.JLabel();
+        tptDescriptionLabel = new javax.swing.JLabel();
+        tptValueLabel = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         f0Table = new javax.swing.JTable();
 
@@ -190,7 +206,7 @@ public class F0ResultPanel extends javax.swing.JPanel {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(relStdevDescriptionLabel)
                         .addGap(18, 18, 18)
-                        .addComponent(relStdevValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)))
+                        .addComponent(relStdevValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -384,6 +400,119 @@ public class F0ResultPanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("HNR"));
+
+        hnrAutDescriptionLabel.setText("HNR (aut):");
+
+        hnrNHDescriptionLabel.setText("HNR (nh):");
+
+        hnrHNDescriptionLabel.setText("HNR (hn):");
+
+        hnrAutValueLabel.setText("jLabel1");
+
+        hnrNHValueLabel.setText("jLabel1");
+
+        hnrHNValueLabel.setText("jLabel1");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(hnrHNDescriptionLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(hnrHNValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(hnrAutDescriptionLabel)
+                            .addComponent(hnrNHDescriptionLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(hnrNHValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(hnrAutValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(hnrAutDescriptionLabel)
+                    .addComponent(hnrAutValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(hnrNHDescriptionLabel)
+                    .addComponent(hnrNHValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(hnrHNDescriptionLabel)
+                    .addComponent(hnrHNValueLabel))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Voice breaks"));
+
+        voiceFracDescriptionLabel.setText("Voicing fraction:");
+
+        voiceFracValueLabel.setText("jLabel1");
+
+        voiceNBreaksDescriptionLabel.setText("Voicing nBreaks:");
+
+        voiceNBreaksValueLabel.setText("jLabel1");
+
+        voiceDegreeDescriptionLabel.setText("Voicing degree:");
+
+        voiceDegreeValueLabel.setText("jLabel1");
+
+        tptDescriptionLabel.setText("TPT:");
+        tptDescriptionLabel.setToolTipText("Total pause time");
+
+        tptValueLabel.setText("jLabel2");
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(voiceDegreeDescriptionLabel)
+                    .addComponent(voiceNBreaksDescriptionLabel)
+                    .addComponent(voiceFracDescriptionLabel)
+                    .addComponent(tptDescriptionLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(voiceNBreaksValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(voiceDegreeValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(voiceFracValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tptValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(voiceFracDescriptionLabel)
+                    .addComponent(voiceFracValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(voiceNBreaksDescriptionLabel)
+                    .addComponent(voiceNBreaksValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(voiceDegreeDescriptionLabel)
+                    .addComponent(voiceDegreeValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tptDescriptionLabel)
+                    .addComponent(tptValueLabel))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -395,23 +524,32 @@ public class F0ResultPanel extends javax.swing.JPanel {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(showGraphButton)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(showGraphButton)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(showGraphButton))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -429,7 +567,7 @@ public class F0ResultPanel extends javax.swing.JPanel {
         logger.debug("Showing pitch chart from " + csvResultFile.getName());
         if (f0Graph == null) {
             F0PitchCharts charts = new F0PitchCharts();
-            f0Graph = new GraphWindow(csvResultFile.getAbsolutePath(), charts.createChart(csvResultFile));
+            f0Graph = new GraphWindow(csvResultFile.getName(), charts.createChart(csvResultFile));
             f0Graph.setVisible(true);
         } else {
             f0Graph.setVisible(true);
@@ -485,14 +623,33 @@ public class F0ResultPanel extends javax.swing.JPanel {
         vrValueLabel.setText(csvLine[16] + " Hz");
         relVRValueLabel.setText(csvLine[17]);
         relStdevValueLabel.setText(csvLine[18]);
+        
+        // HNR
+        hnrAutValueLabel.setText(csvLine[19]);
+        hnrNHValueLabel.setText(csvLine[20]);
+        hnrHNValueLabel.setText(csvLine[21] + " dB");
+        
+        // voicing
+        voiceFracValueLabel.setText(csvLine[22]);
+        voiceNBreaksValueLabel.setText(csvLine[23]);
+        voiceDegreeValueLabel.setText(csvLine[24]);
+        tptValueLabel.setText(csvLine[27]);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable f0Table;
+    private javax.swing.JLabel hnrAutDescriptionLabel;
+    private javax.swing.JLabel hnrAutValueLabel;
+    private javax.swing.JLabel hnrHNDescriptionLabel;
+    private javax.swing.JLabel hnrHNValueLabel;
+    private javax.swing.JLabel hnrNHDescriptionLabel;
+    private javax.swing.JLabel hnrNHValueLabel;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel jitterDdpDescriptionLabel;
@@ -532,8 +689,16 @@ public class F0ResultPanel extends javax.swing.JPanel {
     private javax.swing.JButton showGraphButton;
     private javax.swing.JLabel stdevDescriptionLabel;
     private javax.swing.JLabel stdevValueLabel;
+    private javax.swing.JLabel tptDescriptionLabel;
+    private javax.swing.JLabel tptValueLabel;
     private javax.swing.JLabel varDescriptionLabel;
     private javax.swing.JLabel varValueLabel;
+    private javax.swing.JLabel voiceDegreeDescriptionLabel;
+    private javax.swing.JLabel voiceDegreeValueLabel;
+    private javax.swing.JLabel voiceFracDescriptionLabel;
+    private javax.swing.JLabel voiceFracValueLabel;
+    private javax.swing.JLabel voiceNBreaksDescriptionLabel;
+    private javax.swing.JLabel voiceNBreaksValueLabel;
     private javax.swing.JLabel vrDescriptionLabel;
     private javax.swing.JLabel vrValueLabel;
     // End of variables declaration//GEN-END:variables

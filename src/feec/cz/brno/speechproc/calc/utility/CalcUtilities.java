@@ -14,11 +14,11 @@ import java.util.List;
  */
 public class CalcUtilities {
     
-    public static double getDouble(String number) {
+    public static Double getDouble(String number) {
         try {
             return Double.parseDouble(number);
         } catch (NumberFormatException e) {
-            return Double.NaN;
+            return null;
         }
     }
     

@@ -6,13 +6,20 @@
 package feec.cz.brno.speechproc.gui.api.charts;
 
 import java.io.File;
+import java.util.List;
 import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.xy.XYSeries;
 
 /**
  *
  * @author hynstm
  */
-public interface CompareChart {
+public interface Chart {
+    
+    List<XYSeries> getSeriesFromFile(File csvFile);
+    
+    void applySettings(JFreeChart chart);
 
     ChartPanel createChart(File csvFile);
     

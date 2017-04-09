@@ -2,12 +2,14 @@ package feec.cz.brno.speechproc.gui.parameters.formants;
 
 import au.com.bytecode.opencsv.CSVReader;
 import feec.cz.brno.speechproc.calc.utility.CalcUtilities;
-import feec.cz.brno.speechproc.gui.api.charts.CompareChart;
+import feec.cz.brno.speechproc.gui.api.charts.Chart;
 import java.awt.geom.Ellipse2D;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jfree.chart.ChartFactory;
@@ -23,80 +25,91 @@ import org.jfree.data.xy.XYSeriesCollection;
  *
  * @author mira
  */
-public class FormantCharts implements CompareChart {
+public class FormantCharts implements Chart {
     
     private static final Logger logger = LogManager.getLogger(FormantCharts.class);
 
     @Override
     public ChartPanel createChart(File csvFile) {
         XYSeriesCollection dataset = new XYSeriesCollection();
-        CSVReader reader = null;
-        ChartPanel chartPanel = null;
-        try {
-            reader = new CSVReader(new FileReader(csvFile), ',');
+        
+        getSeriesFromFile(csvFile).forEach(series -> dataset.addSeries(series));
+        
+        JFreeChart chart = ChartFactory.createScatterPlot("Formants", "Time [s]", "Frequency [Hz]", dataset, PlotOrientation.VERTICAL, true, true, true);
 
-            // Set up series
-            final XYSeries seriesF1 = new XYSeries("Formant 1");
-            final XYSeries seriesF2 = new XYSeries("Formant 2");
-            final XYSeries seriesF3 = new XYSeries("Formant 3");
+        applySettings(chart);
 
-            double F1 = 0;
-            double F2 = 0;
-            double F3 = 0;
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setMouseZoomable(true);
 
-            // header
-            String[] readNextLine = reader.readNext();
-            while ((readNextLine = reader.readNext()) != null) {
-                // add values to dataset
-                double Time = CalcUtilities.getDouble(readNextLine[0]);
-                try {
-                    F1 = Double.parseDouble(readNextLine[3]);
-                    seriesF1.add(Time, F1);
-                } catch (NumberFormatException e) {
-                }
-                try {
-                    F2 = Double.parseDouble(readNextLine[5]);
-                    seriesF2.add(Time, F2);
-                } catch (NumberFormatException e) {
-                }
-                try {
-                    F3 = Double.parseDouble(readNextLine[7]);
-                    seriesF3.add(Time, F3);
-                } catch (NumberFormatException e) {
-                }
-            }
-
-            dataset.addSeries(seriesF1);
-            dataset.addSeries(seriesF2);
-            dataset.addSeries(seriesF3);
-
-            JFreeChart chart = ChartFactory.createScatterPlot("Formants", "Time [s]", "Frequency [Hz]", dataset, PlotOrientation.VERTICAL, true, true, true);
-
-            XYPlot xyPlot = (XYPlot) chart.getPlot();
-            XYItemRenderer renderer = xyPlot.getRenderer();
-            Ellipse2D.Double circle = new Ellipse2D.Double(-3.0, -3.0, 6.0, 6.0);
-            renderer.setSeriesShape(0, circle);
-            renderer.setSeriesShape(1, circle);
-            renderer.setSeriesShape(2, circle);
-
-            chartPanel = new ChartPanel(chart);
-
-            reader.close();
-        } catch (FileNotFoundException ex) {
-            logger.error("Couldn't create formants chart.", ex);
-        } catch (IOException ex) {
-            logger.error("Couldn't create formants chart.", ex);
-        }
         return chartPanel;
     }
 
     @Override
     public ChartPanel createComparedChart(File csvFile1, File csvFile2) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        XYSeriesCollection dataset = new XYSeriesCollection();
+
+        getSeriesFromFile(csvFile1).forEach(series -> dataset.addSeries(series));
+        getSeriesFromFile(csvFile2).forEach(series -> dataset.addSeries(series));
+
+        JFreeChart chart = ChartFactory.createScatterPlot("Formants", "Time [s]", "Frequency [Hz]", dataset, PlotOrientation.VERTICAL, true, true, true);
+
+        applySettings(chart);
+
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setMouseZoomable(true);
+
+        return chartPanel;
     }
     
     @Override
     public ChartPanel createStatsChart(File csvFile) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    @Override
+    public List<XYSeries> getSeriesFromFile(File csvFile) {
+        logger.debug("Creating data series from " + csvFile.getAbsolutePath());
+        List<XYSeries> series = new ArrayList<>();
+        // Set up series
+        final XYSeries seriesF1 = new XYSeries("Formant 1 of " + csvFile.getName());
+        final XYSeries seriesF2 = new XYSeries("Formant 2 of " + csvFile.getName());
+        final XYSeries seriesF3 = new XYSeries("Formant 3 of " + csvFile.getName());
+        // header
+        try (CSVReader reader = new CSVReader(new FileReader(csvFile), ',')) {
+            // header
+            String[] readNextLine = reader.readNext();
+            while ((readNextLine = reader.readNext()) != null) {
+                // add values to dataset
+                Double Time = CalcUtilities.getDouble(readNextLine[0]);
+
+                Double F1 = CalcUtilities.getDouble(readNextLine[3]);
+                Double F2 = CalcUtilities.getDouble(readNextLine[5]);
+                Double F3 = CalcUtilities.getDouble(readNextLine[7]);
+
+                seriesF1.add(Time, F1);
+                seriesF2.add(Time, F2);
+                seriesF3.add(Time, F3);
+            }
+
+            series.add(seriesF1);
+            series.add(seriesF2);
+            series.add(seriesF3);
+        } catch (FileNotFoundException ex) {
+            logger.error("Couldn't create intensity chart.", ex);
+        } catch (IOException ex) {
+            logger.error("Couldn't create intensity chart.", ex);
+        }
+        return series;
+    }
+
+    @Override
+    public void applySettings(JFreeChart chart) {
+        XYPlot xyPlot = (XYPlot) chart.getPlot();
+        XYItemRenderer renderer = xyPlot.getRenderer();
+        Ellipse2D.Double circle = new Ellipse2D.Double(-3.0, -3.0, 6.0, 6.0);
+        for (int seriesIndex = 0; seriesIndex < chart.getXYPlot().getSeriesCount(); seriesIndex++) {
+            renderer.setSeriesShape(seriesIndex, circle);
+        }
     }
 }
