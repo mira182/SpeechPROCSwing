@@ -26,11 +26,13 @@ public class Icons {
     private static final Image minusImage = new ImageIcon(SpeechProc.class.getClassLoader().getResource("images/icons/minus.png")).getImage();
     private static final Image detailsImage = new ImageIcon(SpeechProc.class.getClassLoader().getResource("images/icons/details.png")).getImage();
     private static final Image compareChartsImage = new ImageIcon(SpeechProc.class.getClassLoader().getResource("images/icons/compare-charts.png")).getImage();
+    private static final Image vowelsImage = new ImageIcon(SpeechProc.class.getClassLoader().getResource("images/icons/vowels.png")).getImage();
 
     public static final ImageIcon GRAPH_ICON = new ImageIcon(graphImage.getScaledInstance(IMG_WIDTH, IMG_HEIGHT, SCALE_SMOOTH));
     public static final ImageIcon PLUS_ICON = new ImageIcon(plusImage.getScaledInstance(IMG_WIDTH, IMG_HEIGHT, SCALE_SMOOTH));
     public static final ImageIcon MINUS_ICON = new ImageIcon(minusImage.getScaledInstance(IMG_WIDTH, IMG_HEIGHT, SCALE_SMOOTH));
     public static final ImageIcon DETAILS_ICON = new ImageIcon(detailsImage.getScaledInstance(IMG_WIDTH, IMG_HEIGHT, SCALE_SMOOTH));
     public static final ImageIcon COMPARE_CHARTS_ICON = new ImageIcon(compareChartsImage.getScaledInstance(IMG_WIDTH, IMG_HEIGHT, SCALE_SMOOTH));
+    public static final ImageIcon VOWELS_ICON = new ImageIcon(vowelsImage.getScaledInstance(IMG_WIDTH, IMG_HEIGHT, SCALE_SMOOTH));
     
 }

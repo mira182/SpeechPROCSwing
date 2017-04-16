@@ -7,7 +7,6 @@ package feec.cz.brno.speechproc.gui.parameters.intensity;
 
 import au.com.bytecode.opencsv.CSVReader;
 import feec.cz.brno.speechproc.calc.utility.CalcUtilities;
-import feec.cz.brno.speechproc.gui.api.charts.Chart;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -22,12 +21,13 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import feec.cz.brno.speechproc.gui.api.charts.IChart;
 
 /**
  *
  * @author mira
  */
-public class IntensityCharts implements Chart {
+public class IntensityCharts implements IChart {
     
     private static final Logger logger = LogManager.getLogger(IntensityCharts.class);
 

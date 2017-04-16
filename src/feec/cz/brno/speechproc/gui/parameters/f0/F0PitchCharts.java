@@ -7,7 +7,6 @@ package feec.cz.brno.speechproc.gui.parameters.f0;
 
 import au.com.bytecode.opencsv.CSVReader;
 import feec.cz.brno.speechproc.calc.utility.CalcUtilities;
-import feec.cz.brno.speechproc.gui.api.charts.Chart;
 import feec.cz.brno.speechproc.gui.parameters.formants.FormantCharts;
 import java.awt.geom.Ellipse2D;
 import java.io.File;
@@ -26,12 +25,13 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import feec.cz.brno.speechproc.gui.api.charts.IChart;
 
 /**
  *
  * @author mira
  */
-public class F0PitchCharts implements Chart {
+public class F0PitchCharts implements IChart {
     
     private static final Logger logger = LogManager.getLogger(FormantCharts.class);
 

@@ -7,9 +7,12 @@ package feec.cz.brno.speechproc.gui.parameters.results;
 
 
 import com.google.common.base.Throwables;
+import feec.cz.brno.speechproc.calc.runscripts.result.ResultCategory;
 import feec.cz.brno.speechproc.calc.runscripts.result.ResultStatus;
 import feec.cz.brno.speechproc.calc.runscripts.result.ScriptResult;
 import feec.cz.brno.speechproc.gui.Icons;
+import feec.cz.brno.speechproc.gui.api.charts.IChart;
+import feec.cz.brno.speechproc.gui.api.charts.IFormantCharts;
 import feec.cz.brno.speechproc.gui.parameters.f0.F0PitchCharts;
 import feec.cz.brno.speechproc.gui.parameters.f0.F0ResultPanel;
 import feec.cz.brno.speechproc.gui.parameters.formants.FormantCharts;
@@ -35,7 +38,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jfree.chart.ChartPanel;
-import feec.cz.brno.speechproc.gui.api.charts.Chart;
 
 
 /**
@@ -85,6 +87,7 @@ public class ResultPanel extends javax.swing.JPanel {
         resultTable = new javax.swing.JTable(resultTableModel);
         showDetailsButton = new javax.swing.JButton();
         compareButton = new javax.swing.JButton();
+        vowelSpaceButton = new javax.swing.JButton();
 
         resultTable.registerKeyboardAction(
             null,
@@ -123,13 +126,24 @@ public class ResultPanel extends javax.swing.JPanel {
             }
         });
 
+        vowelSpaceButton.setIcon(Icons.VOWELS_ICON);
+        vowelSpaceButton.setText("Vowel space chart");
+        vowelSpaceButton.setEnabled(false);
+        vowelSpaceButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                vowelSpaceButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(99, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(vowelSpaceButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(compareButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(showDetailsButton)
@@ -142,7 +156,8 @@ public class ResultPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(showDetailsButton)
-                    .addComponent(compareButton))
+                    .addComponent(compareButton)
+                    .addComponent(vowelSpaceButton))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -174,7 +189,7 @@ public class ResultPanel extends javax.swing.JPanel {
             switch (selectedResult1.getCategory()) {
                 case FORMANTS:
                     logger.debug("Showing formants compared chart of " + selectedResult1.getSoundFile().getName() + " and " + selectedResult2.getCsvResult().getName());
-                    Chart chart = new FormantCharts();
+                    IChart chart = new FormantCharts();
                     chartPanel = chart.createComparedChart(selectedResult1.getCsvResult(), selectedResult2.getCsvResult());
                     break;
                 case F0:
@@ -192,6 +207,24 @@ public class ResultPanel extends javax.swing.JPanel {
             resultWindow.setVisible(true);
         }
     }//GEN-LAST:event_compareButtonActionPerformed
+
+    private void vowelSpaceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vowelSpaceButtonActionPerformed
+        // TODO add vowel space area chart
+        if (resultTable.getSelectedRowCount() == 5) {
+            ScriptResult selectedResult1 = resultTableModel.getResult(resultTable.getSelectedRows()[0]);
+            ScriptResult selectedResult2 = resultTableModel.getResult(resultTable.getSelectedRows()[1]);
+            ScriptResult selectedResult3 = resultTableModel.getResult(resultTable.getSelectedRows()[2]);
+            ScriptResult selectedResult4 = resultTableModel.getResult(resultTable.getSelectedRows()[3]);
+            ScriptResult selectedResult5 = resultTableModel.getResult(resultTable.getSelectedRows()[4]);
+            if (selectedResult1.getCategory().equals(ResultCategory.FORMANTS)) {
+                IFormantCharts formantCharts = new FormantCharts();
+                ChartPanel chartPanel = formantCharts.createVowelSpaceAreaChart(selectedResult1.getCsvResult(), selectedResult2.getCsvResult(), 
+                        selectedResult3.getCsvResult(), selectedResult4.getCsvResult(), selectedResult5.getCsvResult());
+                GraphWindow resultWindow = new GraphWindow("Vowel space area chart", chartPanel);
+                resultWindow.setVisible(true);
+            }
+        }
+    }//GEN-LAST:event_vowelSpaceButtonActionPerformed
 
     public void addRow(ScriptResult result) {
         resultTableModel.addRow(result);
@@ -247,6 +280,7 @@ public class ResultPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable resultTable;
     private javax.swing.JButton showDetailsButton;
+    private javax.swing.JButton vowelSpaceButton;
     // End of variables declaration//GEN-END:variables
 
     class ResultTableListSelectionListener implements ListSelectionListener {
@@ -258,8 +292,12 @@ public class ResultPanel extends javax.swing.JPanel {
                         && resultTableModel.getResult(resultTable.getSelectedRows()[1]).getStatus().equals(ResultStatus.OK)) {
                     compareButton.setEnabled(true);
                 }
+            } else if (resultTable.getSelectedRowCount() == 5) {
+                if (resultTableModel.getResult(resultTable.getSelectedRows()[0]).getCategory().equals(ResultCategory.FORMANTS))
+                    vowelSpaceButton.setEnabled(true);
             } else {
                 compareButton.setEnabled(false);
+                vowelSpaceButton.setEnabled(false);
             }
         }
         

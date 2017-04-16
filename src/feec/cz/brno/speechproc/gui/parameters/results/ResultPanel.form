@@ -18,7 +18,9 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Component id="jScrollPane1" alignment="0" pref="0" max="32767" attributes="0"/>
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="99" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="vowelSpaceButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="compareButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="showDetailsButton" min="-2" max="-2" attributes="0"/>
@@ -34,6 +36,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="showDetailsButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="compareButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="vowelSpaceButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -92,6 +95,18 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="compareButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="vowelSpaceButton">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="Icons.VOWELS_ICON" type="code"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Vowel space chart"/>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="vowelSpaceButtonActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

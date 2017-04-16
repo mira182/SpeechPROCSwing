@@ -116,6 +116,9 @@ public class F0ResultPanel extends javax.swing.JPanel {
         voiceDegreeValueLabel = new javax.swing.JLabel();
         tptDescriptionLabel = new javax.swing.JLabel();
         tptValueLabel = new javax.swing.JLabel();
+        jPanel7 = new javax.swing.JPanel();
+        meanEnergyDescriptionLabel = new javax.swing.JLabel();
+        meanEnergyValueLabel = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         f0Table = new javax.swing.JTable();
 
@@ -513,6 +516,33 @@ public class F0ResultPanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Energy"));
+
+        meanEnergyDescriptionLabel.setText("E (mean):");
+
+        meanEnergyValueLabel.setText("jLabel1");
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(meanEnergyDescriptionLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(meanEnergyValueLabel)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(meanEnergyDescriptionLabel)
+                    .addComponent(meanEnergyValueLabel))
+                .addContainerGap(73, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -529,8 +559,10 @@ public class F0ResultPanel extends javax.swing.JPanel {
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(showGraphButton)
-                .addContainerGap())
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(showGraphButton)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -538,7 +570,9 @@ public class F0ResultPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -634,6 +668,9 @@ public class F0ResultPanel extends javax.swing.JPanel {
         voiceNBreaksValueLabel.setText(csvLine[23]);
         voiceDegreeValueLabel.setText(csvLine[24]);
         tptValueLabel.setText(csvLine[27]);
+        
+        // energy
+//        meanEnergyValueLabel.setText(String.valueOf(CalcUtilities.mean());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -650,6 +687,7 @@ public class F0ResultPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel jitterDdpDescriptionLabel;
@@ -665,6 +703,8 @@ public class F0ResultPanel extends javax.swing.JPanel {
     private javax.swing.JLabel maxDescriptionLabel;
     private javax.swing.JLabel maxValueLabel;
     private javax.swing.JLabel meanDescriptionLabel;
+    private javax.swing.JLabel meanEnergyDescriptionLabel;
+    private javax.swing.JLabel meanEnergyValueLabel;
     private javax.swing.JLabel meanValueLabel;
     private javax.swing.JLabel medianDescriptionLabel;
     private javax.swing.JLabel medianValuleLabel;

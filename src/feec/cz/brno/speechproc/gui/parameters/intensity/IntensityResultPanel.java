@@ -7,7 +7,6 @@ package feec.cz.brno.speechproc.gui.parameters.intensity;
 
 import au.com.bytecode.opencsv.CSVReader;
 import feec.cz.brno.speechproc.gui.Icons;
-import feec.cz.brno.speechproc.gui.api.charts.Chart;
 import feec.cz.brno.speechproc.gui.parameters.results.GraphWindow;
 import java.io.File;
 import java.io.FileReader;
@@ -16,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import feec.cz.brno.speechproc.gui.api.charts.IChart;
 
 /**
  *
@@ -219,7 +219,7 @@ public class IntensityResultPanel extends javax.swing.JPanel {
     private void showGraphButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showGraphButtonActionPerformed
         logger.debug("Showing intensity graph from " + csvResultFile.getName());
         if (intensityChart == null) {    
-            Chart graph = new IntensityCharts();
+            IChart graph = new IntensityCharts();
             intensityChart = new GraphWindow(csvResultFile.getName(), graph.createChart(csvResultFile));
             intensityChart.setVisible(true);
         } else {

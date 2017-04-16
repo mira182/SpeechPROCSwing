@@ -15,7 +15,7 @@ import org.jfree.data.xy.XYSeries;
  *
  * @author hynstm
  */
-public interface Chart {
+public interface IChart {
     
     List<XYSeries> getSeriesFromFile(File csvFile);
     

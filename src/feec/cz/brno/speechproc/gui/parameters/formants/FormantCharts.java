@@ -2,7 +2,8 @@ package feec.cz.brno.speechproc.gui.parameters.formants;
 
 import au.com.bytecode.opencsv.CSVReader;
 import feec.cz.brno.speechproc.calc.utility.CalcUtilities;
-import feec.cz.brno.speechproc.gui.api.charts.Chart;
+import feec.cz.brno.speechproc.gui.api.charts.IFormantCharts;
+import feec.cz.brno.speechproc.gui.api.charts.LegendXYItemLabelGenerator;
 import java.awt.geom.Ellipse2D;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,7 +26,7 @@ import org.jfree.data.xy.XYSeriesCollection;
  *
  * @author mira
  */
-public class FormantCharts implements Chart {
+public class FormantCharts implements IFormantCharts {
     
     private static final Logger logger = LogManager.getLogger(FormantCharts.class);
 
@@ -111,5 +112,72 @@ public class FormantCharts implements Chart {
         for (int seriesIndex = 0; seriesIndex < chart.getXYPlot().getSeriesCount(); seriesIndex++) {
             renderer.setSeriesShape(seriesIndex, circle);
         }
+    }
+
+    @Override
+    public ChartPanel createVowelSpaceAreaChart(File aVowel, File eVowel, File iVowel, File oVowel, File uVowel) {
+        XYSeriesCollection dataset = new XYSeriesCollection();
+        XYSeries vowelASeries = new XYSeries("Vowel A");
+        XYSeries vowelESeries = new XYSeries("Vowel E");
+        XYSeries vowelISeries = new XYSeries("Vowel I");
+        XYSeries vowelOSeries = new XYSeries("Vowel O");
+        XYSeries vowelUSeries = new XYSeries("Vowel U");
+        
+        vowelASeries.add(CalcUtilities.mean(getFormantValues(aVowel, 1)), CalcUtilities.mean(getFormantValues(aVowel, 2)));
+        vowelESeries.add(CalcUtilities.mean(getFormantValues(eVowel, 1)), CalcUtilities.mean(getFormantValues(eVowel, 2)));
+        vowelISeries.add(CalcUtilities.mean(getFormantValues(iVowel, 1)), CalcUtilities.mean(getFormantValues(iVowel, 2)));
+        vowelOSeries.add(CalcUtilities.mean(getFormantValues(oVowel, 1)), CalcUtilities.mean(getFormantValues(oVowel, 2)));
+        vowelUSeries.add(CalcUtilities.mean(getFormantValues(uVowel, 1)), CalcUtilities.mean(getFormantValues(uVowel, 2)));
+        
+        dataset.addSeries(vowelASeries);
+        dataset.addSeries(vowelESeries);
+        dataset.addSeries(vowelISeries);
+        dataset.addSeries(vowelOSeries);
+        dataset.addSeries(vowelUSeries);
+
+        JFreeChart chart = ChartFactory.createScatterPlot("Formants", "Formant 1 [Hz]", "Formant 2 [Hz]", dataset, PlotOrientation.HORIZONTAL, true, true, true);
+        chart.getXYPlot().getDomainAxis().setInverted(true);
+        chart.getXYPlot().getRangeAxis().setInverted(true);
+        
+        applySettings(chart);
+        XYPlot xyPlot = (XYPlot) chart.getPlot();
+        XYItemRenderer renderer = xyPlot.getRenderer();
+        renderer.setBaseItemLabelGenerator(new LegendXYItemLabelGenerator(xyPlot.getLegendItems()));
+        renderer.setBaseItemLabelsVisible(true);
+
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setMouseZoomable(true);
+
+        return chartPanel;
+    }
+
+    @Override
+    public List<Double> getFormantValues(File csvFile, int formant) {
+        List<Double> values = new ArrayList<>();
+        // header
+        try (CSVReader reader = new CSVReader(new FileReader(csvFile), ',')) {
+            // header
+            String[] readNextLine = reader.readNext();
+            Double formantValue = 0.0;
+            while ((readNextLine = reader.readNext()) != null) {
+                switch (formant) {
+                    case 1:
+                        formantValue = CalcUtilities.getDouble(readNextLine[3]);
+                        break;
+                    case 2:
+                        formantValue = CalcUtilities.getDouble(readNextLine[5]);
+                        break;
+                    case 3:
+                        formantValue = CalcUtilities.getDouble(readNextLine[7]);
+                        break;
+                }
+                values.add(formantValue);
+            }
+        } catch (FileNotFoundException ex) {
+            logger.error("Couldn't create vowel space chart.", ex);
+        } catch (IOException ex) {
+            logger.error("Couldn't create vowel space chart.", ex);
+        }
+        return values;
     }
 }
