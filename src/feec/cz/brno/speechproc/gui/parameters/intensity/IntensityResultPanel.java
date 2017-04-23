@@ -6,7 +6,7 @@
 package feec.cz.brno.speechproc.gui.parameters.intensity;
 
 import au.com.bytecode.opencsv.CSVReader;
-import feec.cz.brno.speechproc.gui.Icons;
+import feec.cz.brno.speechproc.gui.icons.Icons;
 import feec.cz.brno.speechproc.gui.parameters.results.GraphWindow;
 import java.io.File;
 import java.io.FileReader;

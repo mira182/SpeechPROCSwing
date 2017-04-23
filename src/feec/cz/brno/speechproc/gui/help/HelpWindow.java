@@ -8,9 +8,13 @@ package feec.cz.brno.speechproc.gui.help;
 import java.io.IOException;
 import java.net.URL;
 import javax.swing.JTree;
+import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,6 +29,7 @@ public class HelpWindow extends javax.swing.JFrame implements TreeSelectionListe
     
     private JTree helpTree;
     private URL helpURL;
+    private DefaultMutableTreeNode top = new DefaultMutableTreeNode("Help");
 
     /**
      * Creates new form HelpWindow
@@ -32,6 +37,7 @@ public class HelpWindow extends javax.swing.JFrame implements TreeSelectionListe
     public HelpWindow() {
         initTree();
         initComponents();
+        logger.info("Help window displayed.");
     }
 
     /**
@@ -49,12 +55,16 @@ public class HelpWindow extends javax.swing.JFrame implements TreeSelectionListe
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Help");
-        setPreferredSize(new java.awt.Dimension(640, 480));
 
-        jSplitPane1.setDividerLocation(210);
+        jSplitPane1.setDividerLocation(300);
         jSplitPane1.setLeftComponent(leftScrollPane);
 
         htmlEditorPane.setEditable(false);
+        htmlEditorPane.addHyperlinkListener(new javax.swing.event.HyperlinkListener() {
+            public void hyperlinkUpdate(javax.swing.event.HyperlinkEvent evt) {
+                htmlEditorPaneHyperlinkUpdate(evt);
+            }
+        });
         rightScrollPane.setViewportView(htmlEditorPane);
 
         jSplitPane1.setRightComponent(rightScrollPane);
@@ -64,9 +74,36 @@ public class HelpWindow extends javax.swing.JFrame implements TreeSelectionListe
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void htmlEditorPaneHyperlinkUpdate(javax.swing.event.HyperlinkEvent evt) {//GEN-FIRST:event_htmlEditorPaneHyperlinkUpdate
+        if (evt.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+            logger.debug("Activated hyperlink: {}", evt.getURL());
+            for (int i = 0; i < helpTree.getRowCount(); i++) {
+                selectNodeWithURL(top, evt.getURL());
+            }
+        }
+    }//GEN-LAST:event_htmlEditorPaneHyperlinkUpdate
+
+    private void selectNodeWithURL(DefaultMutableTreeNode node, URL url) {
+        int childCount = node.getChildCount();
+
+        for (int i = 0; i < childCount; i++) {
+            DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) node.getChildAt(i);
+            if (childNode.getChildCount() > 0) {
+                selectNodeWithURL(childNode, url);
+            } else {
+                HelpNodeInfo nodeInfo = (HelpNodeInfo) childNode.getUserObject();
+                if (nodeInfo.getUrl().equals(url)) {
+                    TreeNode[] nodes = ((DefaultTreeModel) helpTree.getModel()).getPathToRoot(childNode);
+                    TreePath tpath = new TreePath(nodes);
+                    helpTree.scrollPathToVisible(tpath);
+                    helpTree.setSelectionPath(tpath);
+                }
+            }
+        }
+    }
+        
     private void initTree() {
         //Create the nodes.
-        DefaultMutableTreeNode top = new DefaultMutableTreeNode("Help");
         createNodes(top);
 
         //Create a tree that allows one selection at a time.
@@ -75,6 +112,10 @@ public class HelpWindow extends javax.swing.JFrame implements TreeSelectionListe
 
         //Listen for when the selection changes.
         helpTree.addTreeSelectionListener(this);
+        
+        for (int i = 0; i < helpTree.getRowCount(); i++) {
+            helpTree.expandRow(i);
+        }
     }
     
     private void displayURL(URL url) {
@@ -91,25 +132,63 @@ public class HelpWindow extends javax.swing.JFrame implements TreeSelectionListe
     
     private void createNodes(DefaultMutableTreeNode top) {
         DefaultMutableTreeNode category = null;
+        DefaultMutableTreeNode subCategory = null;
         DefaultMutableTreeNode book = null;
 
         category = new DefaultMutableTreeNode("Parameters calculation");
         top.add(category);
 
-        // Formants
+        // Formant param
         book = new DefaultMutableTreeNode(new HelpNodeInfo("Formants", "/help/parameters/formants.html"));
         category.add(book);
 
-        // F0
+        // F0 param
         book = new DefaultMutableTreeNode(new HelpNodeInfo("Fundamental frequency", "/help/parameters/f0.html"));
         category.add(book);
 
-        //JFC Swing Tutorial
+        // Intensity param
         book = new DefaultMutableTreeNode(new HelpNodeInfo("Intensity", "/help/parameters/intensity.html"));
         category.add(book);
 
+        // RESULTS
         category = new DefaultMutableTreeNode("Results");
         top.add(category);
+        
+        // Result panel
+        book = new DefaultMutableTreeNode(new HelpNodeInfo("Result panel", "/help/components/resultPanel.html"));
+        category.add(book);
+        
+        // Sound file list
+        book = new DefaultMutableTreeNode(new HelpNodeInfo("Sound file list", "/help/components/soundFileList.html"));
+        category.add(book);
+        
+        // RESULT DETAILS
+        subCategory = new DefaultMutableTreeNode("Result details");
+        category.add(subCategory);
+        
+        // Formants result details
+        book = new DefaultMutableTreeNode(new HelpNodeInfo("Formants", "/help/components/resultdetails/formantResultDetails.html"));
+        subCategory.add(book);
+        
+        // F0 result details
+        book = new DefaultMutableTreeNode(new HelpNodeInfo("Voice report", "/help/components/resultdetails/f0ResultDetails.html"));
+        subCategory.add(book);
+        
+        // Intensity result details
+        book = new DefaultMutableTreeNode(new HelpNodeInfo("Intensity", "/help/components/resultdetails/intensityResultDetails.html"));
+        subCategory.add(book);
+        
+        // Settings
+        book = new DefaultMutableTreeNode(new HelpNodeInfo("Settings", "/help/components/settings.html"));
+        top.add(book);
+        
+        // COMPONENTS
+        category = new DefaultMutableTreeNode("Components");
+        top.add(category);
+        
+        // Toolbar
+        book = new DefaultMutableTreeNode(new HelpNodeInfo("Toolbar", "/help/components/toolbar.html"));
+        category.add(book);
 
         // 
 //        book = new DefaultMutableTreeNode(new HelpNodeInfo("The Java Virtual Machine Specification", "vm.html"));

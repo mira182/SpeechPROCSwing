@@ -5,7 +5,7 @@
  */
 package feec.cz.brno.speechproc.testing.gui;
 
-import feec.cz.brno.speechproc.gui.Icons;
+import feec.cz.brno.speechproc.gui.icons.Icons;
 
 /**
  *

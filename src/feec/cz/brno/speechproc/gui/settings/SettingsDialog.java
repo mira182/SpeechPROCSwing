@@ -27,6 +27,7 @@ public class SettingsDialog extends javax.swing.JDialog {
         super(parent, true);
         initComponents();
         settings = Settings.getInstance();
+        logger.info("Settings dialog displayed.");
     }
 
     /**

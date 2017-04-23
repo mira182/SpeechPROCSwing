@@ -10,7 +10,7 @@ import com.google.common.base.Throwables;
 import feec.cz.brno.speechproc.calc.runscripts.result.ResultCategory;
 import feec.cz.brno.speechproc.calc.runscripts.result.ResultStatus;
 import feec.cz.brno.speechproc.calc.runscripts.result.ScriptResult;
-import feec.cz.brno.speechproc.gui.Icons;
+import feec.cz.brno.speechproc.gui.icons.Icons;
 import feec.cz.brno.speechproc.gui.api.charts.IChart;
 import feec.cz.brno.speechproc.gui.api.charts.IFormantCharts;
 import feec.cz.brno.speechproc.gui.parameters.f0.F0PitchCharts;
