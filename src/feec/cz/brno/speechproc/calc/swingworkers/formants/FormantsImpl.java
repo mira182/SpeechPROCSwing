@@ -3,15 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package feec.cz.brno.speechproc.calc.speechparams.intensity;
+package feec.cz.brno.speechproc.calc.swingworkers.formants;
 
-import feec.cz.brno.speechproc.calc.runscripts.result.ResultCategory;
-import feec.cz.brno.speechproc.calc.runscripts.result.ResultStatus;
-import feec.cz.brno.speechproc.calc.runscripts.scriptparams.ScriptParameter;
-import feec.cz.brno.speechproc.calc.runscripts.scriptparams.ScriptParameters;
-import feec.cz.brno.speechproc.calc.runscripts.result.ScriptResult;
 import feec.cz.brno.speechproc.calc.runscripts.PraatScript;
 import feec.cz.brno.speechproc.calc.runscripts.ScriptRunException;
+import feec.cz.brno.speechproc.calc.runscripts.result.ResultCategory;
+import feec.cz.brno.speechproc.calc.runscripts.result.ResultStatus;
+import feec.cz.brno.speechproc.calc.runscripts.result.ScriptResult;
+import feec.cz.brno.speechproc.calc.runscripts.scriptparams.ScriptParameter;
+import feec.cz.brno.speechproc.calc.runscripts.scriptparams.ScriptParameters;
+import feec.cz.brno.speechproc.gui.parameters.formants.FormantParamsDialog;
 import feec.cz.brno.speechproc.gui.parameters.results.ResultsTableModel;
 import java.awt.Cursor;
 import java.io.File;
@@ -26,53 +27,59 @@ import org.apache.logging.log4j.Logger;
 
 import static feec.cz.brno.speechproc.main.SpeechProc.FS;
 
+
 /**
  *
  * @author mira
  */
-public class IntensityImpl extends SwingWorker<Boolean, ScriptResult> implements IIntensity {
-
-    private final static Logger logger = LogManager.getLogger(IntensityImpl.class);
-
+public class FormantsImpl extends SwingWorker<Boolean, ScriptResult> implements IFormants {
+    
+    private final static Logger logger = LogManager.getLogger(FormantsImpl.class);
+    
     private final JLabel progressLabel;
-    private final ResultsTableModel resultsTableModel;
     private final JFrame parent;
+    private final ResultsTableModel resultsTableModel;
+    private final FormantParamsDialog paramsDialog;
     private final List<File> soundFiles;
 
-    public IntensityImpl(final JFrame parent, final List<File> soundFiles, ResultsTableModel resultsTableModel, JLabel progressLabel) {
+    public FormantsImpl(JFrame parent, FormantParamsDialog paramsDialog, final List<File> soundFiles, ResultsTableModel resultsTableModel, JLabel progressLabel) {
         this.parent = parent;
         this.soundFiles = soundFiles;
+        this.paramsDialog = paramsDialog;
         this.resultsTableModel = resultsTableModel;
         this.progressLabel = progressLabel;
     }
-    
+
     @Override
     protected Boolean doInBackground() throws Exception {
         parent.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        progressLabel.setText("Calculation of intensity...");
+        progressLabel.setText("Calculation of formants...");
         
-        if (!OUTPUT_FOLDER_INTENSITY.exists()) {
-            OUTPUT_FOLDER_INTENSITY.mkdirs();
+        if (!OUTPUT_FOLDER_FORMANTS.exists()) {
+            OUTPUT_FOLDER_FORMANTS.mkdirs();
         }
 
         int processedFiles = 0;
         for (File soundFile : soundFiles) {
             ScriptParameters parameters = new ScriptParameters();
+            parameters.add(new ScriptParameter("timeStep", paramsDialog.getTimeStep()));
+            parameters.add(new ScriptParameter("maxFormantsNumber", IFormants.MAXIMUX_FORMANTS));
+            parameters.add(new ScriptParameter("maxFormants", paramsDialog.getMaxFormant()));
+            parameters.add(new ScriptParameter("windowLength", paramsDialog.getWindowLength()));
+            parameters.add(new ScriptParameter("preemphasis", paramsDialog.getPreemphasis()));
             parameters.add(new ScriptParameter("soundFilePath", soundFile.getAbsolutePath()));
-            parameters.add(new ScriptParameter(OUTPUT_FILE_PARAM, new File(OUTPUT_FOLDER_INTENSITY.getAbsolutePath() + FS + soundFile.getName() + "-intensity.csv")));
-            parameters.add(new ScriptParameter(OUTPUT_FILE_STATS_PARAM, new File(OUTPUT_FOLDER_INTENSITY.getAbsolutePath() + FS + soundFile.getName() + "-intensity-stats.csv")));
+            parameters.add(new ScriptParameter(OUTPUT_FILE_PARAM, new File(OUTPUT_FOLDER_FORMANTS.getAbsoluteFile() + FS + soundFile.getName() + "-formantsListing.csv")));
 
             try {
-                PraatScript praat = new PraatScript(new File(getClass().getClassLoader().getResource("praat/intensity.praat").getFile()), parameters);
+                PraatScript praat = new PraatScript(new File(getClass().getClassLoader().getResource("praat/formants.praat").getFile()), parameters);
                 praat.runScript();
 
                 File csvResultFile = new File(String.valueOf(parameters.getParameter(OUTPUT_FILE_PARAM).getValue()));
-                File csvStatsFile = new File(String.valueOf(parameters.getParameter(OUTPUT_FILE_STATS_PARAM).getValue()));
                 
-                publish(new ScriptResult(soundFile, ResultStatus.OK, ResultCategory.INTENSITY, csvResultFile, csvStatsFile, null));
+                publish(new ScriptResult(soundFile, ResultStatus.OK, ResultCategory.FORMANTS, csvResultFile, null));
             } catch (IOException | InterruptedException | ScriptRunException ex) {
                 logger.error("Praat script run has failed: ", ex);
-                publish(new ScriptResult(soundFile, ResultStatus.FAILED, ResultCategory.INTENSITY, ex));
+                publish(new ScriptResult(soundFile, ResultStatus.FAILED, ResultCategory.FORMANTS, ex));
             }
             setProgress(100 * ++processedFiles / soundFiles.size());
         }
@@ -85,11 +92,12 @@ public class IntensityImpl extends SwingWorker<Boolean, ScriptResult> implements
             resultsTableModel.addRow(result);
         }
     }
-    
+
     @Override
     protected void done() {
         parent.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         progressLabel.setText(null);
-        JOptionPane.showMessageDialog(parent, "Calculating of intensity has finished.", "Done", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(parent, "Calculating of formants has finished.", "Finished.", JOptionPane.INFORMATION_MESSAGE);
     }
+    
 }

@@ -20,7 +20,7 @@ public abstract class ScriptRunnerAbstract implements ScriptRunner {
     private final static Logger logger = LogManager.getLogger(PraatScript.class);
     
     protected final static String PRAAT_COMMAND = "praat --run ";
-    protected final static String MATLAB_COMMAND = "matlab ";
+    protected final static String MATLAB_COMMAND = "C:\\Program Files\\MATLAB\\MATLAB Production Server\\R2015a\\bin\\matlab.exe -nodisplay -nosplash -nodesktop -r \"try, run('%s'), catch, exit, end, exit\" ";
     protected final static String OCTAVE_COMMAND = "octave ";
 
     public abstract String buildCommand();

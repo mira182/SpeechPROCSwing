@@ -7,7 +7,7 @@ package feec.cz.brno.speechproc.gui.parameters.formants;
 
 import au.com.bytecode.opencsv.CSVReader;
 import com.google.common.primitives.Doubles;
-import feec.cz.brno.speechproc.calc.speechparams.formants.IFormants;
+import feec.cz.brno.speechproc.calc.swingworkers.formants.IFormants;
 import feec.cz.brno.speechproc.calc.utility.CalcUtilities;
 import feec.cz.brno.speechproc.gui.Icons;
 import feec.cz.brno.speechproc.gui.parameters.results.GraphWindow;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package feec.cz.brno.speechproc.calc.speechparams.energy;
+package feec.cz.brno.speechproc.calc.swingworkers.energy;
 
 import feec.cz.brno.speechproc.calc.utility.AudioSampleReader;
 import java.io.File;
@@ -37,5 +37,24 @@ public class Energy {
             sum += Math.pow(samples[i], 2);
         }
         return sum;
+    }
+    
+    public double[] energy(File soundFile) {
+        double sum = 0, a1 = 0;
+        double[] samples = getSamples(soundFile);
+        double[] o1 = new double[samples.length];// processed signal
+
+        for (int n = 0; n < samples.length; n++) {
+            for (int k = 0; k < 40; k++) {
+                if (n - k >= 0) {
+                    a1 = samples[n - k];
+                    sum = sum + (a1 * a1);// energy
+                }
+            }
+            o1[n] = sum;
+            sum = 0;
+        }
+        
+        return o1;
     }
 }

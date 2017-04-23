@@ -4,9 +4,14 @@
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} %logger{36} %-5level - %msg%n" />
         </Console>
-        <File name="MyFile" fileName="speechproc.log" immediateFlush="false" append="false">
-            <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} %logger{36} %-5level - %msg%n"/>
-        </File>
+        <RollingFile name="MyFile" fileName="speechproc.log" filePattern="speechproc-%d{dd-MM-yyyy}.log">
+            <PatternLayout pattern="%d{HH:mm:ss} %logger{36} %-5level - %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="1 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="200"/>
+        </RollingFile>
     </Appenders>
     <Loggers>
         <Root level="debug">

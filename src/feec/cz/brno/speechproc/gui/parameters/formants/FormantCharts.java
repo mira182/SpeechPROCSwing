@@ -4,6 +4,7 @@ import au.com.bytecode.opencsv.CSVReader;
 import feec.cz.brno.speechproc.calc.utility.CalcUtilities;
 import feec.cz.brno.speechproc.gui.api.charts.IFormantCharts;
 import feec.cz.brno.speechproc.gui.api.charts.LegendXYItemLabelGenerator;
+import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,6 +22,7 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.util.ShapeUtilities;
 
 /**
  *
@@ -38,7 +40,7 @@ public class FormantCharts implements IFormantCharts {
         
         JFreeChart chart = ChartFactory.createScatterPlot("Formants", "Time [s]", "Frequency [Hz]", dataset, PlotOrientation.VERTICAL, true, true, true);
 
-        applySettings(chart);
+        applyChartSettings(chart);
 
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setMouseZoomable(true);
@@ -55,7 +57,7 @@ public class FormantCharts implements IFormantCharts {
 
         JFreeChart chart = ChartFactory.createScatterPlot("Formants", "Time [s]", "Frequency [Hz]", dataset, PlotOrientation.VERTICAL, true, true, true);
 
-        applySettings(chart);
+        applyComparedChartSettings(chart);
 
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setMouseZoomable(true);
@@ -73,9 +75,9 @@ public class FormantCharts implements IFormantCharts {
         logger.debug("Creating data series from " + csvFile.getAbsolutePath());
         List<XYSeries> series = new ArrayList<>();
         // Set up series
-        final XYSeries seriesF1 = new XYSeries("Formant 1 of " + csvFile.getName());
-        final XYSeries seriesF2 = new XYSeries("Formant 2 of " + csvFile.getName());
-        final XYSeries seriesF3 = new XYSeries("Formant 3 of " + csvFile.getName());
+        final XYSeries seriesF1 = new XYSeries("Formant 1 of " + csvFile.getName().substring(0, csvFile.getName().lastIndexOf("-")));
+        final XYSeries seriesF2 = new XYSeries("Formant 2 of " + csvFile.getName().substring(0, csvFile.getName().lastIndexOf("-")));
+        final XYSeries seriesF3 = new XYSeries("Formant 3 of " + csvFile.getName().substring(0, csvFile.getName().lastIndexOf("-")));
         // header
         try (CSVReader reader = new CSVReader(new FileReader(csvFile), ',')) {
             // header
@@ -104,8 +106,7 @@ public class FormantCharts implements IFormantCharts {
         return series;
     }
 
-    @Override
-    public void applySettings(JFreeChart chart) {
+    public void applyChartSettings(JFreeChart chart) {
         XYPlot xyPlot = (XYPlot) chart.getPlot();
         XYItemRenderer renderer = xyPlot.getRenderer();
         Ellipse2D.Double circle = new Ellipse2D.Double(-3.0, -3.0, 6.0, 6.0);
@@ -139,7 +140,7 @@ public class FormantCharts implements IFormantCharts {
         chart.getXYPlot().getDomainAxis().setInverted(true);
         chart.getXYPlot().getRangeAxis().setInverted(true);
         
-        applySettings(chart);
+        applyChartSettings(chart);
         XYPlot xyPlot = (XYPlot) chart.getPlot();
         XYItemRenderer renderer = xyPlot.getRenderer();
         renderer.setBaseItemLabelGenerator(new LegendXYItemLabelGenerator(xyPlot.getLegendItems()));
@@ -179,5 +180,20 @@ public class FormantCharts implements IFormantCharts {
             logger.error("Couldn't create vowel space chart.", ex);
         }
         return values;
+    }
+
+    private void applyComparedChartSettings(JFreeChart chart) {
+        XYPlot xyPlot = (XYPlot) chart.getPlot();
+        XYItemRenderer renderer = xyPlot.getRenderer();
+        Ellipse2D.Double circle = new Ellipse2D.Double(-3.0, -3.0, 3.0, 3.0);
+        Shape cross = ShapeUtilities.createDiagonalCross(3.0f, 0.2f);
+        
+        renderer.setSeriesShape(0, circle);
+        renderer.setSeriesShape(1, circle);
+        renderer.setSeriesShape(2, circle);
+        
+        renderer.setSeriesShape(3, cross);
+        renderer.setSeriesShape(4, cross);
+        renderer.setSeriesShape(5, cross);
     }
 }

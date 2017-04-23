@@ -5,9 +5,9 @@ import feec.cz.brno.speechproc.calc.runscripts.ScriptRunException;
 import feec.cz.brno.speechproc.calc.runscripts.ScriptRunner;
 import feec.cz.brno.speechproc.calc.runscripts.scriptparams.ScriptParameter;
 import feec.cz.brno.speechproc.calc.runscripts.scriptparams.ScriptParameters;
-import feec.cz.brno.speechproc.calc.speechparams.f0.F0Impl;
-import feec.cz.brno.speechproc.calc.speechparams.formants.FormantsImpl;
-import feec.cz.brno.speechproc.calc.speechparams.intensity.IntensityImpl;
+import feec.cz.brno.speechproc.calc.swingworkers.f0.F0Impl;
+import feec.cz.brno.speechproc.calc.swingworkers.formants.FormantsImpl;
+import feec.cz.brno.speechproc.calc.swingworkers.intensity.IntensityImpl;
 import feec.cz.brno.speechproc.gui.Icons;
 import feec.cz.brno.speechproc.gui.JTabbedPaneCloseButton;
 import feec.cz.brno.speechproc.gui.help.HelpWindow;
@@ -40,9 +40,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static feec.cz.brno.speechproc.calc.speechparams.f0.IF0.OUTPUT_FOLDER_F0;
-import static feec.cz.brno.speechproc.calc.speechparams.formants.IFormants.OUTPUT_FOLDER_FORMANTS;
-import static feec.cz.brno.speechproc.calc.speechparams.intensity.IIntensity.OUTPUT_FOLDER_INTENSITY;
+import static feec.cz.brno.speechproc.calc.runscripts.SpeechParameter.OUTPUT_FILE_PARAM;
+import static feec.cz.brno.speechproc.calc.swingworkers.f0.IF0.OUTPUT_FOLDER_F0;
+import static feec.cz.brno.speechproc.calc.swingworkers.formants.IFormants.OUTPUT_FOLDER_FORMANTS;
+import static feec.cz.brno.speechproc.calc.swingworkers.intensity.IIntensity.OUTPUT_FOLDER_INTENSITY;
 
 /**
  *
@@ -62,7 +63,11 @@ public class SpeechProc extends javax.swing.JFrame {
     private F0Impl f0Task;
     private IntensityImpl intensityTask;
     
+    // HELP
     private HelpWindow helpWindow;
+    
+    // SETTINGS
+    private String matlabURL = "C:\\Program Files\\MATLAB\\MATLAB Production Server\\R2015a\\bin\\matlab.exe";
 
     /**
      * Creates new form SpeechProc
@@ -110,13 +115,19 @@ public class SpeechProc extends javax.swing.JFrame {
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openSoundFilesMenuItem = new javax.swing.JMenuItem();
-        praatScriptMenuItem = new javax.swing.JMenuItem();
         saveAsMenuItem = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
-        formantsMenuItem = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
         f0MenuItem = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
         intensityMenuItem = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        formantsMenuItem = new javax.swing.JMenuItem();
+        scriptsMenu = new javax.swing.JMenu();
+        matlabScriptMenuItem = new javax.swing.JMenuItem();
+        octaveScriptMenuItem = new javax.swing.JMenuItem();
+        praatScriptMenuItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         contentsMenuItem = new javax.swing.JMenuItem();
         aboutMenuItem = new javax.swing.JMenuItem();
@@ -318,16 +329,6 @@ public class SpeechProc extends javax.swing.JFrame {
         });
         fileMenu.add(openSoundFilesMenuItem);
 
-        praatScriptMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
-        praatScriptMenuItem.setMnemonic('s');
-        praatScriptMenuItem.setText("Run praat script...");
-        praatScriptMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                praatScriptMenuItemActionPerformed(evt);
-            }
-        });
-        fileMenu.add(praatScriptMenuItem);
-
         saveAsMenuItem.setMnemonic('a');
         saveAsMenuItem.setText("Save As ...");
         saveAsMenuItem.setDisplayedMnemonicIndex(5);
@@ -348,15 +349,7 @@ public class SpeechProc extends javax.swing.JFrame {
         editMenu.setMnemonic('e');
         editMenu.setText("Parameters");
 
-        formantsMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        formantsMenuItem.setMnemonic('t');
-        formantsMenuItem.setText("Formants listing");
-        formantsMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                formantsMenuItemActionPerformed(evt);
-            }
-        });
-        editMenu.add(formantsMenuItem);
+        jMenu1.setText("Phonation");
 
         f0MenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         f0MenuItem.setMnemonic('p');
@@ -366,7 +359,11 @@ public class SpeechProc extends javax.swing.JFrame {
                 f0MenuItemActionPerformed(evt);
             }
         });
-        editMenu.add(f0MenuItem);
+        jMenu1.add(f0MenuItem);
+
+        editMenu.add(jMenu1);
+
+        jMenu2.setText("Prosody");
 
         intensityMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         intensityMenuItem.setMnemonic('d');
@@ -376,9 +373,46 @@ public class SpeechProc extends javax.swing.JFrame {
                 intensityMenuItemActionPerformed(evt);
             }
         });
-        editMenu.add(intensityMenuItem);
+        jMenu2.add(intensityMenuItem);
+
+        editMenu.add(jMenu2);
+
+        jMenu3.setText("Tongue position");
+
+        formantsMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        formantsMenuItem.setMnemonic('t');
+        formantsMenuItem.setText("Formants listing");
+        formantsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                formantsMenuItemActionPerformed(evt);
+            }
+        });
+        jMenu3.add(formantsMenuItem);
+
+        editMenu.add(jMenu3);
 
         menuBar.add(editMenu);
+
+        scriptsMenu.setText("Scripts");
+
+        matlabScriptMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
+        matlabScriptMenuItem.setText("Run matlab script");
+        scriptsMenu.add(matlabScriptMenuItem);
+
+        octaveScriptMenuItem.setText("Run octave script");
+        scriptsMenu.add(octaveScriptMenuItem);
+
+        praatScriptMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
+        praatScriptMenuItem.setMnemonic('s');
+        praatScriptMenuItem.setText("Run praat script...");
+        praatScriptMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                praatScriptMenuItemActionPerformed(evt);
+            }
+        });
+        scriptsMenu.add(praatScriptMenuItem);
+
+        menuBar.add(scriptsMenu);
 
         helpMenu.setMnemonic('h');
         helpMenu.setText("Help");
@@ -538,7 +572,7 @@ public class SpeechProc extends javax.swing.JFrame {
                 parameters.add(new ScriptParameter("soundFilePath", soundFile.getAbsolutePath()));
 
 //            parameters.add(soundFile.getCanonicalPath().replaceFirst(soundFile.getName(), "test.csv"));
-                parameters.add(new ScriptParameter("outputFile", "./formantsListings.csv"));
+                parameters.add(new ScriptParameter(OUTPUT_FILE_PARAM, "./formantsListings.csv"));
 
                 ScriptRunner praat = new PraatScript(praatScript, parameters);
                 try {
@@ -627,9 +661,14 @@ public class SpeechProc extends javax.swing.JFrame {
     private javax.swing.JMenu helpMenu;
     private javax.swing.JMenuItem intensityMenuItem;
     private javax.swing.JButton intensityToolbarButton;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JPanel leftPanel;
+    private javax.swing.JMenuItem matlabScriptMenuItem;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenuItem octaveScriptMenuItem;
     private javax.swing.JMenuItem openSoundFilesMenuItem;
     private javax.swing.JButton praatScriptBtn;
     private javax.swing.JMenuItem praatScriptMenuItem;
@@ -637,6 +676,7 @@ public class SpeechProc extends javax.swing.JFrame {
     private javax.swing.JLabel progressLabel;
     private javax.swing.JButton removeSoundFileBtn;
     private javax.swing.JMenuItem saveAsMenuItem;
+    private javax.swing.JMenu scriptsMenu;
     private javax.swing.JTextField searchFileTextField;
     private javax.swing.JLabel searchLabel;
     private javax.swing.JScrollPane soundFilesListScrollPanel;

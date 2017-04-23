@@ -8,7 +8,6 @@ package feec.cz.brno.speechproc.gui.api.charts;
 import java.io.File;
 import java.util.List;
 import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
 import org.jfree.data.xy.XYSeries;
 
 /**
@@ -18,8 +17,6 @@ import org.jfree.data.xy.XYSeries;
 public interface IChart {
     
     List<XYSeries> getSeriesFromFile(File csvFile);
-    
-    void applySettings(JFreeChart chart);
 
     ChartPanel createChart(File csvFile);
     

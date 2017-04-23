@@ -7,6 +7,7 @@ package feec.cz.brno.speechproc.gui.parameters.intensity;
 
 import au.com.bytecode.opencsv.CSVReader;
 import feec.cz.brno.speechproc.calc.utility.CalcUtilities;
+import feec.cz.brno.speechproc.gui.api.charts.IChart;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -21,7 +22,6 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import feec.cz.brno.speechproc.gui.api.charts.IChart;
 
 /**
  *
@@ -36,7 +36,7 @@ public class IntensityCharts implements IChart {
         logger.debug("Creating data series from " + csvFile.getAbsolutePath());
         
         List<XYSeries> series = new ArrayList<>();
-        final XYSeries seriesIntensity = new XYSeries("Intensity of " + csvFile.getName());
+        final XYSeries seriesIntensity = new XYSeries("Intensity of " + csvFile.getName().substring(0, csvFile.getName().lastIndexOf("-")));
         try {
             CSVReader reader = new CSVReader(new FileReader(csvFile), ' ');
 
@@ -94,9 +94,5 @@ public class IntensityCharts implements IChart {
     @Override
     public ChartPanel createStatsChart(File csvFile) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void applySettings(JFreeChart chart) {
     }
 }

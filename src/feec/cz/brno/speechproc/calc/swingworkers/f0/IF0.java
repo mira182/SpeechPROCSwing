@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package feec.cz.brno.speechproc.calc.speechparams.f0;
+package feec.cz.brno.speechproc.calc.swingworkers.f0;
 
 import feec.cz.brno.speechproc.calc.runscripts.SpeechParameter;
 import java.io.File;

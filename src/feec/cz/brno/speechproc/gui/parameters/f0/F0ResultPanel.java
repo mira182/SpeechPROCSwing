@@ -632,6 +632,7 @@ public class F0ResultPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Failed to load pitch table from CSV file " + csvStatsFile.getName(), "Error", JOptionPane.ERROR_MESSAGE);
             logger.error("Failed to load pitch table from CSV file!", ex);
         }
+        
         // jitter
         jitterLocValueLabel.setText(csvLine[0]);
         jitterLocAbsValueLabel.setText(csvLine[1]);

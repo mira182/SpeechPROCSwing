@@ -15,11 +15,11 @@ public class PraatScript extends ScriptRunnerAbstract {
     private final static Logger logger = LogManager.getLogger(PraatScript.class);
     
     private final File praatScriptName;
-    private final ScriptParameters parameters;
+    private final ScriptParameters scriptParameters;
 
     public PraatScript(File praatScript, ScriptParameters parameters) {
         this.praatScriptName = praatScript;
-        this.parameters = parameters;
+        this.scriptParameters = parameters;
     }
     
     @Override
@@ -28,7 +28,7 @@ public class PraatScript extends ScriptRunnerAbstract {
         
         command.append(ScriptRunnerAbstract.PRAAT_COMMAND);
         command.append(praatScriptName.getAbsolutePath()).append(" ");
-        parameters.forEach(param -> command.append(String.valueOf(param)).append(" "));
+        scriptParameters.forEach(param -> command.append(String.valueOf(param)).append(" "));
         
         return command.toString();
     }

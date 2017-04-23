@@ -7,6 +7,7 @@ package feec.cz.brno.speechproc.gui.parameters.f0;
 
 import au.com.bytecode.opencsv.CSVReader;
 import feec.cz.brno.speechproc.calc.utility.CalcUtilities;
+import feec.cz.brno.speechproc.gui.api.charts.IChart;
 import feec.cz.brno.speechproc.gui.parameters.formants.FormantCharts;
 import java.awt.geom.Ellipse2D;
 import java.io.File;
@@ -25,7 +26,6 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import feec.cz.brno.speechproc.gui.api.charts.IChart;
 
 /**
  *
@@ -81,11 +81,11 @@ public class F0PitchCharts implements IChart {
             CSVReader reader = new CSVReader(new FileReader(csvFile), ' ');
 
             // Set up series
-            final XYSeries seriesF0min = new XYSeries("F0 min of " + csvFile.getName());
-            final XYSeries seriesF0max = new XYSeries("F0 max of " + csvFile.getName());
-            final XYSeries seriesF0mean = new XYSeries("mean F0 of " + csvFile.getName());
-            final XYSeries seriesF0stdev = new XYSeries("F0 stdev of " + csvFile.getName());
-            final XYSeries seriesF0vr = new XYSeries("F0 VR of " + csvFile.getName());
+            final XYSeries seriesF0min = new XYSeries("F0 min of " + csvFile.getName().substring(0, csvFile.getName().lastIndexOf("-")));
+            final XYSeries seriesF0max = new XYSeries("F0 max of " + csvFile.getName().substring(0, csvFile.getName().lastIndexOf("-")));
+            final XYSeries seriesF0mean = new XYSeries("mean F0 of " + csvFile.getName().substring(0, csvFile.getName().lastIndexOf("-")));
+            final XYSeries seriesF0stdev = new XYSeries("F0 stdev of " + csvFile.getName().substring(0, csvFile.getName().lastIndexOf("-")));
+            final XYSeries seriesF0vr = new XYSeries("F0 VR of " + csvFile.getName().substring(0, csvFile.getName().lastIndexOf("-")));
 
             // header
             String[] readNextLine = reader.readNext();
@@ -121,7 +121,6 @@ public class F0PitchCharts implements IChart {
         return series;
     }
 
-    @Override
     public void applySettings(JFreeChart chart) {
         XYPlot xyPlot = (XYPlot) chart.getPlot();
         XYItemRenderer renderer = xyPlot.getRenderer();
