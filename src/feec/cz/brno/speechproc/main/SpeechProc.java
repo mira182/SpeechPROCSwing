@@ -1,10 +1,10 @@
 package feec.cz.brno.speechproc.main;
 
+import feec.cz.brno.speechproc.calc.runscripts.MatlabScript;
+import feec.cz.brno.speechproc.calc.runscripts.OctaveScript;
 import feec.cz.brno.speechproc.calc.runscripts.PraatScript;
 import feec.cz.brno.speechproc.calc.runscripts.ScriptRunException;
 import feec.cz.brno.speechproc.calc.runscripts.ScriptRunner;
-import feec.cz.brno.speechproc.calc.runscripts.scriptparams.ScriptParameter;
-import feec.cz.brno.speechproc.calc.runscripts.scriptparams.ScriptParameters;
 import feec.cz.brno.speechproc.calc.swingworkers.f0.F0Impl;
 import feec.cz.brno.speechproc.calc.swingworkers.formants.FormantsImpl;
 import feec.cz.brno.speechproc.calc.swingworkers.intensity.IntensityImpl;
@@ -12,9 +12,9 @@ import feec.cz.brno.speechproc.gui.Icons;
 import feec.cz.brno.speechproc.gui.JTabbedPaneCloseButton;
 import feec.cz.brno.speechproc.gui.help.HelpWindow;
 import feec.cz.brno.speechproc.gui.parameters.f0.F0ParamsDialog;
-import feec.cz.brno.speechproc.gui.parameters.formants.FormantCharts;
 import feec.cz.brno.speechproc.gui.parameters.formants.FormantParamsDialog;
 import feec.cz.brno.speechproc.gui.parameters.results.ResultPanel;
+import feec.cz.brno.speechproc.gui.settings.SettingsDialog;
 import feec.cz.brno.speechproc.gui.soundlist.SoundFilesTableModel;
 import java.awt.Cursor;
 import java.awt.event.KeyEvent;
@@ -40,7 +40,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static feec.cz.brno.speechproc.calc.runscripts.SpeechParameter.OUTPUT_FILE_PARAM;
 import static feec.cz.brno.speechproc.calc.swingworkers.f0.IF0.OUTPUT_FOLDER_F0;
 import static feec.cz.brno.speechproc.calc.swingworkers.formants.IFormants.OUTPUT_FOLDER_FORMANTS;
 import static feec.cz.brno.speechproc.calc.swingworkers.intensity.IIntensity.OUTPUT_FOLDER_INTENSITY;
@@ -67,6 +66,9 @@ public class SpeechProc extends javax.swing.JFrame {
     private HelpWindow helpWindow;
     
     // SETTINGS
+    private SettingsDialog settingsDialog;
+    
+    // SETTINGS
     private String matlabURL = "C:\\Program Files\\MATLAB\\MATLAB Production Server\\R2015a\\bin\\matlab.exe";
 
     /**
@@ -83,6 +85,7 @@ public class SpeechProc extends javax.swing.JFrame {
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
             logger.error("Cannot set Nimbus Look and feel.", e);
         }
+        logger.info("Initializing components.");
         initComponents();
     }
 
@@ -95,7 +98,9 @@ public class SpeechProc extends javax.swing.JFrame {
     private void initComponents() {
 
         toolBar = new javax.swing.JToolBar();
-        praatScriptBtn = new javax.swing.JButton();
+        praatScriptButton = new javax.swing.JButton();
+        matlabScriptButton = new javax.swing.JButton();
+        octaveScriptButton = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         formantsToolbarButton = new javax.swing.JButton();
         f0ToolbarButton = new javax.swing.JButton();
@@ -116,6 +121,7 @@ public class SpeechProc extends javax.swing.JFrame {
         fileMenu = new javax.swing.JMenu();
         openSoundFilesMenuItem = new javax.swing.JMenuItem();
         saveAsMenuItem = new javax.swing.JMenuItem();
+        settingsMenuItem = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
@@ -144,17 +150,39 @@ public class SpeechProc extends javax.swing.JFrame {
 
         toolBar.setRollover(true);
 
-        praatScriptBtn.setText("Run praat script");
-        praatScriptBtn.setToolTipText("Run praat script...");
-        praatScriptBtn.setFocusable(false);
-        praatScriptBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        praatScriptBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        praatScriptBtn.addActionListener(new java.awt.event.ActionListener() {
+        praatScriptButton.setText("Praat script");
+        praatScriptButton.setToolTipText("Run praat script...");
+        praatScriptButton.setFocusable(false);
+        praatScriptButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        praatScriptButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        praatScriptButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                praatScriptBtnActionPerformed(evt);
+                praatScriptButtonActionPerformed(evt);
             }
         });
-        toolBar.add(praatScriptBtn);
+        toolBar.add(praatScriptButton);
+
+        matlabScriptButton.setText("Matlab script");
+        matlabScriptButton.setFocusable(false);
+        matlabScriptButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        matlabScriptButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        matlabScriptButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                matlabScriptButtonActionPerformed(evt);
+            }
+        });
+        toolBar.add(matlabScriptButton);
+
+        octaveScriptButton.setText("Octave script");
+        octaveScriptButton.setFocusable(false);
+        octaveScriptButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        octaveScriptButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        octaveScriptButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                octaveScriptButtonActionPerformed(evt);
+            }
+        });
+        toolBar.add(octaveScriptButton);
         toolBar.add(jSeparator1);
 
         formantsToolbarButton.setText("Formants");
@@ -334,6 +362,15 @@ public class SpeechProc extends javax.swing.JFrame {
         saveAsMenuItem.setDisplayedMnemonicIndex(5);
         fileMenu.add(saveAsMenuItem);
 
+        settingsMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        settingsMenuItem.setText("Settings");
+        settingsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                settingsMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(settingsMenuItem);
+
         exitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
         exitMenuItem.setMnemonic('x');
         exitMenuItem.setText("Exit");
@@ -397,9 +434,19 @@ public class SpeechProc extends javax.swing.JFrame {
 
         matlabScriptMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
         matlabScriptMenuItem.setText("Run matlab script");
+        matlabScriptMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                matlabScriptMenuItemActionPerformed(evt);
+            }
+        });
         scriptsMenu.add(matlabScriptMenuItem);
 
         octaveScriptMenuItem.setText("Run octave script");
+        octaveScriptMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                octaveScriptMenuItemActionPerformed(evt);
+            }
+        });
         scriptsMenu.add(octaveScriptMenuItem);
 
         praatScriptMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
@@ -439,7 +486,7 @@ public class SpeechProc extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
-        
+        exit();
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
     private void formantsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_formantsMenuItemActionPerformed
@@ -458,9 +505,9 @@ public class SpeechProc extends javax.swing.JFrame {
         addSoundFiles();
     }//GEN-LAST:event_addSoundFileBtnActionPerformed
 
-    private void praatScriptBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_praatScriptBtnActionPerformed
+    private void praatScriptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_praatScriptButtonActionPerformed
         runPraatScript();
-    }//GEN-LAST:event_praatScriptBtnActionPerformed
+    }//GEN-LAST:event_praatScriptButtonActionPerformed
 
     private void praatScriptMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_praatScriptMenuItemActionPerformed
         runPraatScript();
@@ -493,7 +540,7 @@ public class SpeechProc extends javax.swing.JFrame {
     }//GEN-LAST:event_contentsMenuItemActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        deleteTempFiles();
+        exit();
     }//GEN-LAST:event_formWindowClosing
 
     private void formantsToolbarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_formantsToolbarButtonActionPerformed
@@ -508,10 +555,40 @@ public class SpeechProc extends javax.swing.JFrame {
         calculateIntensity();
     }//GEN-LAST:event_intensityToolbarButtonActionPerformed
 
+    private void settingsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsMenuItemActionPerformed
+        if (settingsDialog == null) {
+            settingsDialog = new SettingsDialog(this);
+            settingsDialog.setVisible(true);
+        } else {
+            settingsDialog.setVisible(true);
+        }
+    }//GEN-LAST:event_settingsMenuItemActionPerformed
+
+    private void matlabScriptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_matlabScriptButtonActionPerformed
+        runMatlabScript();
+    }//GEN-LAST:event_matlabScriptButtonActionPerformed
+
+    private void octaveScriptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_octaveScriptButtonActionPerformed
+        runOctaveScript();
+    }//GEN-LAST:event_octaveScriptButtonActionPerformed
+
+    private void matlabScriptMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_matlabScriptMenuItemActionPerformed
+        runMatlabScript();
+    }//GEN-LAST:event_matlabScriptMenuItemActionPerformed
+
+    private void octaveScriptMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_octaveScriptMenuItemActionPerformed
+        runOctaveScript();
+    }//GEN-LAST:event_octaveScriptMenuItemActionPerformed
+
     private void intensityMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                  
         calculateIntensity();
     }                                                                                
 
+    private void exit() {
+        deleteTempFiles();
+        logger.info("Exiting...");
+    }
+    
     private void addSoundFiles() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -558,36 +635,61 @@ public class SpeechProc extends javax.swing.JFrame {
         fileChooser.setFileFilter(new FileNameExtensionFilter("Praat script (*.praat)", "praat"));
 
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            ScriptParameters parameters = new ScriptParameters();
             File praatScript = fileChooser.getSelectedFile();
-            List<File> soundFiles = getSelectedSoundFiles();
-
-            if (soundFiles.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "No sound file selected!", "No file.", JOptionPane.WARNING_MESSAGE);
+            ScriptRunner praat = new PraatScript(praatScript, null);
+            try {
+                praat.runScript();
+            } catch (IOException | InterruptedException | ScriptRunException ex) {
+                logger.error("Praat script run has failed: ", ex);
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            for (File soundFile : soundFiles) {
+            JOptionPane.showMessageDialog(this, "Praat script has finished successfully.", "Success!", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+    
+    private void runMatlabScript() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Open matlab script");
+        fileChooser.setMultiSelectionEnabled(rootPaneCheckingEnabled);
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Matlab script (*.m)", "m"));
 
-                parameters.add(new ScriptParameter("soundFilePath", soundFile.getAbsolutePath()));
-
-//            parameters.add(soundFile.getCanonicalPath().replaceFirst(soundFile.getName(), "test.csv"));
-                parameters.add(new ScriptParameter(OUTPUT_FILE_PARAM, "./formantsListings.csv"));
-
-                ScriptRunner praat = new PraatScript(praatScript, parameters);
-                try {
-                    praat.runScript();
-                } catch (IOException | InterruptedException | ScriptRunException ex) {
-                    logger.error("Praat script run has failed: ", ex);
-                    JOptionPane.showMessageDialog(this, ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                JOptionPane.showMessageDialog(this, "Praat script has finished successfully.", "Success!", JOptionPane.INFORMATION_MESSAGE);
-
-                FormantCharts graph = new FormantCharts();
-                centerTabbedPanel.add("Formants listing", graph.createChart(new File("formantsListings.csv")));
+        if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            File matlabScript = fileChooser.getSelectedFile();
+            ScriptRunner matlab = new MatlabScript(matlabScript, null);
+            try {
+                matlab.runScript();
+            } catch (IOException | InterruptedException | ScriptRunException ex) {
+                logger.error("Matlab script run has failed: ", ex);
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+                return;
             }
+
+            JOptionPane.showMessageDialog(this, "Matlab script has finished successfully.", "Success!", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+    
+    private void runOctaveScript() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Open octave script");
+        fileChooser.setMultiSelectionEnabled(rootPaneCheckingEnabled);
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Octave script (*.octave)", "octave"));
+
+        if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            File octaveScript = fileChooser.getSelectedFile();
+            ScriptRunner octave = new OctaveScript(octaveScript, null);
+            try {
+                octave.runScript();
+            } catch (IOException | InterruptedException | ScriptRunException ex) {
+                logger.error("Octave script run has failed: ", ex);
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            JOptionPane.showMessageDialog(this, "Octave script has finished successfully.", "Success!", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -666,11 +768,13 @@ public class SpeechProc extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JPanel leftPanel;
+    private javax.swing.JButton matlabScriptButton;
     private javax.swing.JMenuItem matlabScriptMenuItem;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JButton octaveScriptButton;
     private javax.swing.JMenuItem octaveScriptMenuItem;
     private javax.swing.JMenuItem openSoundFilesMenuItem;
-    private javax.swing.JButton praatScriptBtn;
+    private javax.swing.JButton praatScriptButton;
     private javax.swing.JMenuItem praatScriptMenuItem;
     private javax.swing.JProgressBar progressBar;
     private javax.swing.JLabel progressLabel;
@@ -679,6 +783,7 @@ public class SpeechProc extends javax.swing.JFrame {
     private javax.swing.JMenu scriptsMenu;
     private javax.swing.JTextField searchFileTextField;
     private javax.swing.JLabel searchLabel;
+    private javax.swing.JMenuItem settingsMenuItem;
     private javax.swing.JScrollPane soundFilesListScrollPanel;
     private javax.swing.JTable soundFilesTable;
     private javax.swing.JToolBar toolBar;

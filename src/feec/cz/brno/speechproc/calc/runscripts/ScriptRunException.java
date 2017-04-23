@@ -5,8 +5,6 @@
  */
 package feec.cz.brno.speechproc.calc.runscripts;
 
-import java.util.logging.Logger;
-
 /**
  *
  * @author hynstm

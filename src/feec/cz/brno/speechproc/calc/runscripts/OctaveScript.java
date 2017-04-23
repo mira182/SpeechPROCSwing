@@ -5,19 +5,27 @@
  */
 package feec.cz.brno.speechproc.calc.runscripts;
 
+import feec.cz.brno.speechproc.calc.runscripts.scriptparams.ScriptParameters;
+import java.io.File;
+
+
 /**
  *
  * @author mira
  */
 public class OctaveScript extends ScriptRunnerAbstract {
     
-    private String scriptName;
+    private final File octaveScript;
+    private final ScriptParameters scriptParameters;
 
-    
-    
+    public OctaveScript(File octaveScript, ScriptParameters scriptParameters) {
+        this.octaveScript = octaveScript;
+        this.scriptParameters = scriptParameters;
+    }
+
     @Override
     public String buildCommand() {
-        return ScriptRunnerAbstract.OCTAVE_COMMAND;
+        return String.format(OCTAVE_COMMAND, octaveScript.getAbsolutePath());
     }
     
 }

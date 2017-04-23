@@ -5,6 +5,7 @@
  */
 package feec.cz.brno.speechproc.calc.runscripts;
 
+import feec.cz.brno.speechproc.gui.settings.Settings;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,9 +20,9 @@ public abstract class ScriptRunnerAbstract implements ScriptRunner {
     
     private final static Logger logger = LogManager.getLogger(PraatScript.class);
     
-    protected final static String PRAAT_COMMAND = "praat --run ";
-    protected final static String MATLAB_COMMAND = "C:\\Program Files\\MATLAB\\MATLAB Production Server\\R2015a\\bin\\matlab.exe -nodisplay -nosplash -nodesktop -r \"try, run('%s'), catch, exit, end, exit\" ";
-    protected final static String OCTAVE_COMMAND = "octave ";
+    protected final static String PRAAT_COMMAND = Settings.getInstance().getPraatPath() + " --run ";
+    protected final static String MATLAB_COMMAND = Settings.getInstance().getMatlabPath() + " -nodisplay -nosplash -nodesktop -r \"try, run('%s'), catch, exit, end, exit\" ";
+    protected final static String OCTAVE_COMMAND = Settings.getInstance().getOctavePath() + " ";
 
     public abstract String buildCommand();
     
