@@ -6,7 +6,10 @@ import feec.cz.brno.speechproc.calc.runscripts.PraatScript;
 import feec.cz.brno.speechproc.calc.runscripts.ScriptRunException;
 import feec.cz.brno.speechproc.calc.runscripts.ScriptRunner;
 import feec.cz.brno.speechproc.calc.swingworkers.f0.F0Impl;
+import feec.cz.brno.speechproc.calc.swingworkers.f0.IF0;
 import feec.cz.brno.speechproc.calc.swingworkers.formants.FormantsImpl;
+import feec.cz.brno.speechproc.calc.swingworkers.formants.IFormants;
+import feec.cz.brno.speechproc.calc.swingworkers.intensity.IIntensity;
 import feec.cz.brno.speechproc.calc.swingworkers.intensity.IntensityImpl;
 import feec.cz.brno.speechproc.gui.help.HelpWindow;
 import feec.cz.brno.speechproc.gui.icons.Icons;
@@ -22,6 +25,9 @@ import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,9 +35,6 @@ import java.util.Vector;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -41,6 +44,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import static feec.cz.brno.speechproc.calc.runscripts.SpeechParameter.OUTPUT_FOLDER;
 import static feec.cz.brno.speechproc.calc.swingworkers.f0.IF0.OUTPUT_FOLDER_F0;
 import static feec.cz.brno.speechproc.calc.swingworkers.formants.IFormants.OUTPUT_FOLDER_FORMANTS;
 import static feec.cz.brno.speechproc.calc.swingworkers.intensity.IIntensity.OUTPUT_FOLDER_INTENSITY;
@@ -54,8 +58,16 @@ public class SpeechProc extends javax.swing.JFrame {
     private final static Logger logger = LogManager.getLogger(SpeechProc.class);
     
     public static final String FS = System.getProperty("file.separator");
-    public static final String USER_DIR = System.getProperty("user.dir");
+    public static final String PRAAT_SCRIPTS_COPY_FOLDER = "praat";
     public static final String OS = System.getProperty("os.name").toLowerCase();
+    public static String JAR_FOLDER_PATH;
+    static {
+        try {
+            JAR_FOLDER_PATH = new File(SpeechProc.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParentFile().getPath();
+        } catch (URISyntaxException ex) {
+            logger.error("Failed to get JAR folder path.", ex);
+        }
+    }
 
     private SoundFilesTableModel soundFilesTableModel = new SoundFilesTableModel();
     private TableRowSorter<TableModel> searchFieldRowSorter = new TableRowSorter<>(soundFilesTableModel);
@@ -74,19 +86,10 @@ public class SpeechProc extends javax.swing.JFrame {
      * Creates new form SpeechProc
      */
     public SpeechProc() {
-        try {
-            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
-            logger.error("Cannot set Nimbus Look and feel.", e);
-        }
         logger.info("Initializing components.");
         initComponents();
         defaultSettings();
+        extractPraatScripts();
     }
 
     /**
@@ -667,7 +670,7 @@ public class SpeechProc extends javax.swing.JFrame {
         fileChooser.setMultiSelectionEnabled(true);
         fileChooser.setDialogTitle("Open sound file");
         // TODO use user.home
-//        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+//        fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
         fileChooser.setCurrentDirectory(new File("/media/mira/0f00c26e-7ed7-4b05-99c3-763797a05b44/mira/School/2016_17/DIPLOMKA/PAR_CZ_001/K1004/"));
         fileChooser.setFileFilter(new FileNameExtensionFilter("Sound files (*.wav, *.mp3)", "wav", "mp3"));
         
@@ -680,7 +683,7 @@ public class SpeechProc extends javax.swing.JFrame {
                 soundFilesTableModel.addRow(file);
             });
         } else {
-            logger.trace("Open sound files cancelled by user.");
+            logger.debug("Open sound files cancelled by user.");
         }
     }
     
@@ -722,7 +725,7 @@ public class SpeechProc extends javax.swing.JFrame {
                 return;
             }
 
-            JOptionPane.showMessageDialog(this, "Praat script has finished successfully.", "Success!", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Praat script has started successfully.", "Success!", JOptionPane.INFORMATION_MESSAGE);
         }
     }
     
@@ -746,7 +749,7 @@ public class SpeechProc extends javax.swing.JFrame {
                 return;
             }
 
-            JOptionPane.showMessageDialog(this, "Matlab script has finished successfully.", "Success!", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Matlab script has started successfully.", "Success!", JOptionPane.INFORMATION_MESSAGE);
         }
     }
     
@@ -770,7 +773,7 @@ public class SpeechProc extends javax.swing.JFrame {
                 return;
             }
 
-            JOptionPane.showMessageDialog(this, "Octave script has finished successfully.", "Success!", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Octave script has started successfully.", "Success!", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -792,9 +795,34 @@ public class SpeechProc extends javax.swing.JFrame {
             FileUtils.deleteDirectory(OUTPUT_FOLDER_F0);
             FileUtils.deleteDirectory(OUTPUT_FOLDER_INTENSITY);
             FileUtils.deleteDirectory(OUTPUT_FOLDER_FORMANTS);
+            FileUtils.deleteDirectory(OUTPUT_FOLDER);
             logger.info("Deleted folders with csv files.");
         } catch (IOException ex) {
             logger.error("Deleting calculated CSV files failed!", ex);
+        }
+    }
+    
+    private void extractPraatScripts() {
+        try {
+            extractFileFromJar(IF0.SCRIPT_FILE_RELATIVE_TO_JAR, "F0.praat");
+            extractFileFromJar(IFormants.SCRIPT_FILE_RELATIVE_TO_JAR, "formants.praat");
+            extractFileFromJar(IIntensity.SCRIPT_FILE_RELATIVE_TO_JAR, "intensity.praat");
+        } catch (IOException ex) {
+            logger.error("Failed to extract praat scripts outside of JAR file.", ex);
+            JOptionPane.showMessageDialog(this, "Failed to extract praat scripts outside of JAR file.", "Critical error!", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }
+    
+    private void extractFileFromJar(String resourceFileName, String outputFileName) throws IOException {
+        // extract file next to jar file
+        File outputFolder = new File(JAR_FOLDER_PATH + FS + PRAAT_SCRIPTS_COPY_FOLDER);
+        if (!outputFolder.exists()) outputFolder.mkdirs();
+        File file = new File(outputFolder.getAbsolutePath() + FS + outputFileName);
+        if (!file.exists()) {
+            InputStream link = (getClass().getResourceAsStream(resourceFileName));
+            Files.copy(link, file.getAbsoluteFile().toPath());
+            logger.info("Extracted file: {} to: {}", outputFileName, file);
         }
     }
     
@@ -845,7 +873,7 @@ public class SpeechProc extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SpeechProc.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            logger.error("Cannot set Nimbus Look and feel.", ex);
         }
         //</editor-fold>
 

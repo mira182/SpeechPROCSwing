@@ -7,13 +7,14 @@ package feec.cz.brno.speechproc.gui.parameters.intensity;
 
 import au.com.bytecode.opencsv.CSVReader;
 import feec.cz.brno.speechproc.calc.utility.CalcUtilities;
-import feec.cz.brno.speechproc.gui.api.charts.IChart;
+import feec.cz.brno.speechproc.gui.api.charts.IIntensityCharts;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JPanel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jfree.chart.ChartFactory;
@@ -27,7 +28,7 @@ import org.jfree.data.xy.XYSeriesCollection;
  *
  * @author mira
  */
-public class IntensityCharts implements IChart {
+public class IntensityCharts implements IIntensityCharts {
     
     private static final Logger logger = LogManager.getLogger(IntensityCharts.class);
 
@@ -67,6 +68,7 @@ public class IntensityCharts implements IChart {
         
         getSeriesFromFile(csvFile).forEach(series -> dataset.addSeries(series));
         
+        logger.debug("Creating intensity chart.");
         JFreeChart chart = ChartFactory.createXYLineChart("Intensity", "Time [s]", "Intensity [dB]", dataset, PlotOrientation.VERTICAL, true, true, true);
         
         ChartPanel chartPanel = new ChartPanel(chart);
@@ -83,6 +85,7 @@ public class IntensityCharts implements IChart {
         getSeriesFromFile(csvFile1).forEach(series -> dataset.addSeries(series));
         getSeriesFromFile(csvFile2).forEach(series -> dataset.addSeries(series));
 
+        logger.debug("Creating intensity compared chart.");
         JFreeChart chart = ChartFactory.createXYLineChart("Intensity", "Time [s]", "Frequency [Hz]", dataset, PlotOrientation.VERTICAL, true, true, true);
 
         ChartPanel chartPanel = new ChartPanel(chart);
@@ -94,5 +97,10 @@ public class IntensityCharts implements IChart {
     @Override
     public ChartPanel createStatsChart(File csvFile) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public JPanel getControlPanel() {
+        return null;
     }
 }

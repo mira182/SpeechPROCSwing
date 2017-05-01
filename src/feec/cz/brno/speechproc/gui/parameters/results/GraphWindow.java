@@ -5,6 +5,8 @@
  */
 package feec.cz.brno.speechproc.gui.parameters.results;
 
+import java.awt.BorderLayout;
+import javax.swing.JPanel;
 import org.jfree.chart.ChartPanel;
 
 /**
@@ -18,10 +20,17 @@ public class GraphWindow extends javax.swing.JFrame {
      * @param title
      * @param chartPanel
      */
-    public GraphWindow(String title, ChartPanel chartPanel) {
-        setTitle(title);
-        setContentPane(chartPanel);
+    public GraphWindow(String title, ChartPanel chartPanel, JPanel controlPanel) {
+        super(title);
         initComponents();
+        initPanels(chartPanel, controlPanel);
+    }
+    
+    private void initPanels(ChartPanel chartPanel, JPanel controlPanel) {
+        add(chartPanel, BorderLayout.CENTER);
+        add(controlPanel, BorderLayout.SOUTH);
+        pack();
+        setVisible(true);
     }
 
     /**
@@ -33,17 +42,6 @@ public class GraphWindow extends javax.swing.JFrame {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

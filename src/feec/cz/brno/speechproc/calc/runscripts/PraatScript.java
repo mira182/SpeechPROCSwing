@@ -1,9 +1,9 @@
 package feec.cz.brno.speechproc.calc.runscripts;
 
 import feec.cz.brno.speechproc.calc.runscripts.scriptparams.ScriptParameters;
+import feec.cz.brno.speechproc.gui.settings.Settings;
+import feec.cz.brno.speechproc.main.SpeechProc;
 import java.io.File;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -11,7 +11,6 @@ import org.apache.logging.log4j.Logger;
  * @author mira
  */
 public class PraatScript extends ScriptRunnerAbstract {
-    private final static Logger logger = LogManager.getLogger(PraatScript.class);
     
     private final File praatScriptName;
     private final ScriptParameters scriptParameters;
@@ -25,9 +24,20 @@ public class PraatScript extends ScriptRunnerAbstract {
     public String buildCommand() {
         StringBuilder command = new StringBuilder();
         
+        command.append(Settings.getInstance().getPraatPath());
         command.append(ScriptRunnerAbstract.PRAAT_COMMAND);
-        command.append(praatScriptName.getAbsolutePath()).append(" ");
-        scriptParameters.forEach(param -> command.append(String.valueOf(param)).append(" "));
+        if (SpeechProc.isWindows()) command.append("\"");
+        command.append(praatScriptName.getAbsolutePath());
+        if (SpeechProc.isWindows()) command.append("\"");
+        command.append(" ");
+        scriptParameters.forEach(param -> {
+            if (SpeechProc.isWindows()) 
+                command.append("\""); 
+            command.append(String.valueOf(param)); 
+            if (SpeechProc.isWindows()) 
+                command.append("\""); 
+            command.append(" ");
+        });
         
         return command.toString();
     }

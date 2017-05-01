@@ -10,9 +10,9 @@ import com.google.common.base.Throwables;
 import feec.cz.brno.speechproc.calc.runscripts.result.ResultCategory;
 import feec.cz.brno.speechproc.calc.runscripts.result.ResultStatus;
 import feec.cz.brno.speechproc.calc.runscripts.result.ScriptResult;
-import feec.cz.brno.speechproc.gui.icons.Icons;
 import feec.cz.brno.speechproc.gui.api.charts.IChart;
 import feec.cz.brno.speechproc.gui.api.charts.IFormantCharts;
+import feec.cz.brno.speechproc.gui.icons.Icons;
 import feec.cz.brno.speechproc.gui.parameters.f0.F0PitchCharts;
 import feec.cz.brno.speechproc.gui.parameters.f0.F0ResultPanel;
 import feec.cz.brno.speechproc.gui.parameters.formants.FormantCharts;
@@ -186,10 +186,11 @@ public class ResultPanel extends javax.swing.JPanel {
             ScriptResult selectedResult1 = resultTableModel.getResult(resultTable.getSelectedRows()[0]);
             ScriptResult selectedResult2 = resultTableModel.getResult(resultTable.getSelectedRows()[1]);
             ChartPanel chartPanel = null;
+            IChart chart = null;
             switch (selectedResult1.getCategory()) {
                 case FORMANTS:
                     logger.debug("Showing formants compared chart of " + selectedResult1.getSoundFile().getName() + " and " + selectedResult2.getCsvResult().getName());
-                    IChart chart = new FormantCharts();
+                    chart = new FormantCharts();
                     chartPanel = chart.createComparedChart(selectedResult1.getCsvResult(), selectedResult2.getCsvResult());
                     break;
                 case F0:
@@ -203,7 +204,7 @@ public class ResultPanel extends javax.swing.JPanel {
                     chartPanel = chart.createComparedChart(selectedResult1.getCsvResult(), selectedResult2.getCsvResult());
                     break;
             }
-            GraphWindow resultWindow = new GraphWindow("Compared graph", chartPanel);
+            GraphWindow resultWindow = new GraphWindow("Compared graph", chartPanel, chart.getControlPanel());
             resultWindow.setVisible(true);
         }
     }//GEN-LAST:event_compareButtonActionPerformed
@@ -220,7 +221,7 @@ public class ResultPanel extends javax.swing.JPanel {
                 IFormantCharts formantCharts = new FormantCharts();
                 ChartPanel chartPanel = formantCharts.createVowelSpaceAreaChart(selectedResult1.getCsvResult(), selectedResult2.getCsvResult(), 
                         selectedResult3.getCsvResult(), selectedResult4.getCsvResult(), selectedResult5.getCsvResult());
-                GraphWindow resultWindow = new GraphWindow("Vowel space area chart", chartPanel);
+                GraphWindow resultWindow = new GraphWindow("Vowel space area chart", chartPanel, formantCharts.getControlPanel());
                 resultWindow.setVisible(true);
             }
         }
@@ -271,7 +272,7 @@ public class ResultPanel extends javax.swing.JPanel {
             ta.setEditable(false);
             JScrollPane scrolPane = new JScrollPane(ta);
             scrolPane.setPreferredSize(new Dimension(700, 240));
-            JOptionPane.showMessageDialog(this, scrolPane, "Failure reason.", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, scrolPane, "Failure reason.", JOptionPane.ERROR_MESSAGE);
         }
     }
 

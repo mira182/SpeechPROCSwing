@@ -5,12 +5,13 @@
  */
 package feec.cz.brno.speechproc.calc.runscripts;
 
-import feec.cz.brno.speechproc.gui.settings.Settings;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import static feec.cz.brno.speechproc.main.SpeechProc.FS;
 
 /**
  *
@@ -20,9 +21,9 @@ public abstract class ScriptRunnerAbstract implements ScriptRunner {
     
     private final static Logger logger = LogManager.getLogger(PraatScript.class);
     
-    protected final static String PRAAT_COMMAND = Settings.getInstance().getPraatPath() + " --run ";
-    protected final static String MATLAB_COMMAND = Settings.getInstance().getMatlabPath() + " -nodisplay -nosplash -nodesktop -r \"try, run('%s'), catch, exit, end, exit\" ";
-    protected final static String OCTAVE_COMMAND = Settings.getInstance().getOctavePath() + " ";
+    protected final static String PRAAT_COMMAND = " --run ";
+    protected final static String MATLAB_COMMAND = " -nodisplay -nosplash -nodesktop -r \"try, run('%s'), catch, exit, end, exit\" ";
+    protected final static String OCTAVE_COMMAND = " ";
 
     public abstract String buildCommand();
     
@@ -44,10 +45,15 @@ public abstract class ScriptRunnerAbstract implements ScriptRunner {
         proc.waitFor();
 
         BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+        BufferedReader stdOutput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 
         String line;
         while ((line = stdError.readLine()) != null) {
-            output.append(line).append(System.getProperty("line.separator"));
+            output.append(line).append(FS);
+        }
+        
+        while ((line = stdOutput.readLine()) != null) {
+            output.append(line).append(FS);
         }
 
         if (!output.toString().isEmpty())

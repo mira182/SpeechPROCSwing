@@ -9,7 +9,7 @@ import feec.cz.brno.speechproc.calc.runscripts.SpeechParameter;
 import java.io.File;
 
 import static feec.cz.brno.speechproc.main.SpeechProc.FS;
-import static feec.cz.brno.speechproc.main.SpeechProc.USER_DIR;
+import static feec.cz.brno.speechproc.main.SpeechProc.JAR_FOLDER_PATH;
 
 /**
  *
@@ -17,5 +17,8 @@ import static feec.cz.brno.speechproc.main.SpeechProc.USER_DIR;
  */
 public interface IIntensity extends SpeechParameter {
     
-    public static final File OUTPUT_FOLDER_INTENSITY = new File(USER_DIR + FS + "tmpFiles" + FS + "intensity");
+    public static final String SCRIPT_FILE_RELATIVE_TO_JAR = "/praat/intensity.praat";
+    
+    public static final File OUTPUT_FOLDER_INTENSITY = new File(JAR_FOLDER_PATH + FS + OUTPUT_FOLDER_NAME + FS + "intensity");
+    public static final File SCRIPT_FILE_INTENSITY = new File(JAR_FOLDER_PATH + FS + SCRIPT_FILE_RELATIVE_TO_JAR);
 }

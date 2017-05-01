@@ -9,7 +9,7 @@ import feec.cz.brno.speechproc.calc.runscripts.SpeechParameter;
 import java.io.File;
 
 import static feec.cz.brno.speechproc.main.SpeechProc.FS;
-import static feec.cz.brno.speechproc.main.SpeechProc.USER_DIR;
+import static feec.cz.brno.speechproc.main.SpeechProc.JAR_FOLDER_PATH;
 
 /**
  *
@@ -27,5 +27,8 @@ public interface IFormants extends SpeechParameter {
     
     public static final double MAXIMUX_FORMANTS = 3.0;
     
-    public static final File OUTPUT_FOLDER_FORMANTS = new File(USER_DIR + FS + "tmpFiles" + FS + "formants");
+    public static final String SCRIPT_FILE_RELATIVE_TO_JAR = "/praat/formants.praat";
+    
+    public static final File OUTPUT_FOLDER_FORMANTS = new File(JAR_FOLDER_PATH + FS + OUTPUT_FOLDER_NAME + FS + "formants");
+    public static final File SCRIPT_FILE_FORMANTS = new File(JAR_FOLDER_PATH + FS + SCRIPT_FILE_RELATIVE_TO_JAR);
 }

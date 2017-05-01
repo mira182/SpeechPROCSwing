@@ -5,13 +5,13 @@
  */
 package feec.cz.brno.speechproc.calc.swingworkers.f0;
 
-import feec.cz.brno.speechproc.calc.runscripts.result.ResultCategory;
-import feec.cz.brno.speechproc.calc.runscripts.result.ResultStatus;
-import feec.cz.brno.speechproc.calc.runscripts.scriptparams.ScriptParameter;
-import feec.cz.brno.speechproc.calc.runscripts.scriptparams.ScriptParameters;
-import feec.cz.brno.speechproc.calc.runscripts.result.ScriptResult;
 import feec.cz.brno.speechproc.calc.runscripts.PraatScript;
 import feec.cz.brno.speechproc.calc.runscripts.ScriptRunException;
+import feec.cz.brno.speechproc.calc.runscripts.result.ResultCategory;
+import feec.cz.brno.speechproc.calc.runscripts.result.ResultStatus;
+import feec.cz.brno.speechproc.calc.runscripts.result.ScriptResult;
+import feec.cz.brno.speechproc.calc.runscripts.scriptparams.ScriptParameter;
+import feec.cz.brno.speechproc.calc.runscripts.scriptparams.ScriptParameters;
 import feec.cz.brno.speechproc.gui.parameters.f0.F0ParamsDialog;
 import feec.cz.brno.speechproc.gui.parameters.results.ResultsTableModel;
 import java.awt.Cursor;
@@ -54,6 +54,7 @@ public class F0Impl extends SwingWorker<Boolean, ScriptResult> implements IF0 {
     protected Boolean doInBackground() throws Exception {
         parent.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         progressLabel.setText("Calculation of fundamental frequency...");
+        logger.info("Starting F0 calculations.");
         
         if (!OUTPUT_FOLDER_F0.exists()) {
             OUTPUT_FOLDER_F0.mkdirs();
@@ -66,11 +67,11 @@ public class F0Impl extends SwingWorker<Boolean, ScriptResult> implements IF0 {
             parameters.add(new ScriptParameter("pitch_min", paramsDialog.getPitchMin()));
             parameters.add(new ScriptParameter("pitch_max", paramsDialog.getPitchMax()));
             parameters.add(new ScriptParameter("soundFilePath", soundFile.getAbsolutePath()));
-            parameters.add(new ScriptParameter(OUTPUT_FILE_PARAM, new File(OUTPUT_FOLDER_F0.getAbsolutePath() + FS + soundFile.getName() + "-pitch.csv")));
-            parameters.add(new ScriptParameter(OUTPUT_FILE_STATS_PARAM, new File(OUTPUT_FOLDER_F0.getAbsolutePath() + FS +  soundFile.getName() + "-pitch-stats.csv")));
+            parameters.add(new ScriptParameter(OUTPUT_FILE_PARAM, OUTPUT_FOLDER_F0.getAbsolutePath() + FS + soundFile.getName() + "-pitch.csv"));
+            parameters.add(new ScriptParameter(OUTPUT_FILE_STATS_PARAM, OUTPUT_FOLDER_F0.getAbsolutePath() + FS +  soundFile.getName() + "-pitch-stats.csv"));
 
             try {
-                PraatScript praat = new PraatScript(new File(getClass().getClassLoader().getResource("praat/F0.praat").getFile()), parameters);
+                PraatScript praat = new PraatScript(SCRIPT_FILE_F0, parameters);
                 praat.runScript();
 
                 File csvResultFile = new File(String.valueOf(parameters.getParameter(OUTPUT_FILE_PARAM).getValue()));

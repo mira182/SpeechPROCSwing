@@ -4,6 +4,7 @@ import au.com.bytecode.opencsv.CSVReader;
 import feec.cz.brno.speechproc.calc.utility.CalcUtilities;
 import feec.cz.brno.speechproc.gui.api.charts.IFormantCharts;
 import feec.cz.brno.speechproc.gui.api.charts.LegendXYItemLabelGenerator;
+import feec.cz.brno.speechproc.gui.api.charts.VisibleAction;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.io.File;
@@ -12,6 +13,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JCheckBox;
+import javax.swing.JPanel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jfree.chart.ChartFactory;
@@ -32,12 +35,19 @@ public class FormantCharts implements IFormantCharts {
     
     private static final Logger logger = LogManager.getLogger(FormantCharts.class);
 
+    private JPanel controlPanel;
+
+    public FormantCharts() {
+        controlPanel = new JPanel();
+    }
+    
     @Override
     public ChartPanel createChart(File csvFile) {
         XYSeriesCollection dataset = new XYSeriesCollection();
         
         getSeriesFromFile(csvFile).forEach(series -> dataset.addSeries(series));
         
+        logger.debug("Creating formant chart.");
         JFreeChart chart = ChartFactory.createScatterPlot("Formants", "Time [s]", "Frequency [Hz]", dataset, PlotOrientation.VERTICAL, true, true, true);
 
         applyChartSettings(chart);
@@ -55,6 +65,7 @@ public class FormantCharts implements IFormantCharts {
         getSeriesFromFile(csvFile1).forEach(series -> dataset.addSeries(series));
         getSeriesFromFile(csvFile2).forEach(series -> dataset.addSeries(series));
 
+        logger.debug("Creating formant compared chart.");
         JFreeChart chart = ChartFactory.createScatterPlot("Formants", "Time [s]", "Frequency [Hz]", dataset, PlotOrientation.VERTICAL, true, true, true);
 
         applyComparedChartSettings(chart);
@@ -113,6 +124,7 @@ public class FormantCharts implements IFormantCharts {
         for (int seriesIndex = 0; seriesIndex < chart.getXYPlot().getSeriesCount(); seriesIndex++) {
             renderer.setSeriesShape(seriesIndex, circle);
         }
+        addControlPanel(xyPlot);
     }
 
     @Override
@@ -195,5 +207,22 @@ public class FormantCharts implements IFormantCharts {
         renderer.setSeriesShape(3, cross);
         renderer.setSeriesShape(4, cross);
         renderer.setSeriesShape(5, cross);
+        
+        addControlPanel(xyPlot);
+    }
+    
+    private void addControlPanel(XYPlot plot) {
+        XYItemRenderer renderer = plot.getRenderer();
+        for (int i = 0; i < plot.getDataset().getSeriesCount(); i++) {
+            JCheckBox jcb = new JCheckBox(new VisibleAction(renderer, plot.getDataset().getSeriesKey(i).toString(), i));
+            jcb.setSelected(true);
+            renderer.setSeriesVisible(i, true);
+            controlPanel.add(jcb);
+        }
+    }
+
+    @Override
+    public JPanel getControlPanel() {
+        return controlPanel;
     }
 }

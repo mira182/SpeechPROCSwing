@@ -601,7 +601,7 @@ public class F0ResultPanel extends javax.swing.JPanel {
         logger.debug("Showing pitch chart from " + csvResultFile.getName());
         if (f0Graph == null) {
             F0PitchCharts charts = new F0PitchCharts();
-            f0Graph = new GraphWindow(csvResultFile.getName(), charts.createChart(csvResultFile));
+            f0Graph = new GraphWindow(csvResultFile.getName(), charts.createChart(csvResultFile), charts.getControlPanel());
             f0Graph.setVisible(true);
         } else {
             f0Graph.setVisible(true);

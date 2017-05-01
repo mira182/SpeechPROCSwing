@@ -5,13 +5,13 @@
  */
 package feec.cz.brno.speechproc.calc.swingworkers.intensity;
 
-import feec.cz.brno.speechproc.calc.runscripts.result.ResultCategory;
-import feec.cz.brno.speechproc.calc.runscripts.result.ResultStatus;
-import feec.cz.brno.speechproc.calc.runscripts.scriptparams.ScriptParameter;
-import feec.cz.brno.speechproc.calc.runscripts.scriptparams.ScriptParameters;
-import feec.cz.brno.speechproc.calc.runscripts.result.ScriptResult;
 import feec.cz.brno.speechproc.calc.runscripts.PraatScript;
 import feec.cz.brno.speechproc.calc.runscripts.ScriptRunException;
+import feec.cz.brno.speechproc.calc.runscripts.result.ResultCategory;
+import feec.cz.brno.speechproc.calc.runscripts.result.ResultStatus;
+import feec.cz.brno.speechproc.calc.runscripts.result.ScriptResult;
+import feec.cz.brno.speechproc.calc.runscripts.scriptparams.ScriptParameter;
+import feec.cz.brno.speechproc.calc.runscripts.scriptparams.ScriptParameters;
 import feec.cz.brno.speechproc.gui.parameters.results.ResultsTableModel;
 import java.awt.Cursor;
 import java.io.File;
@@ -50,6 +50,7 @@ public class IntensityImpl extends SwingWorker<Boolean, ScriptResult> implements
     protected Boolean doInBackground() throws Exception {
         parent.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         progressLabel.setText("Calculation of intensity...");
+        logger.info("Starting intensity calculations.");
         
         if (!OUTPUT_FOLDER_INTENSITY.exists()) {
             OUTPUT_FOLDER_INTENSITY.mkdirs();
@@ -63,7 +64,7 @@ public class IntensityImpl extends SwingWorker<Boolean, ScriptResult> implements
             parameters.add(new ScriptParameter(OUTPUT_FILE_STATS_PARAM, new File(OUTPUT_FOLDER_INTENSITY.getAbsolutePath() + FS + soundFile.getName() + "-intensity-stats.csv")));
 
             try {
-                PraatScript praat = new PraatScript(new File(getClass().getClassLoader().getResource("praat/intensity.praat").getFile()), parameters);
+                PraatScript praat = new PraatScript(SCRIPT_FILE_INTENSITY, parameters);
                 praat.runScript();
 
                 File csvResultFile = new File(String.valueOf(parameters.getParameter(OUTPUT_FILE_PARAM).getValue()));

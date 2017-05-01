@@ -135,7 +135,7 @@ public class HelpWindow extends javax.swing.JFrame implements TreeSelectionListe
         DefaultMutableTreeNode subCategory = null;
         DefaultMutableTreeNode book = null;
 
-        category = new DefaultMutableTreeNode("Parameters calculation");
+        category = new DefaultMutableTreeNode("Main functionality");
         top.add(category);
 
         // Formant param
@@ -148,6 +148,10 @@ public class HelpWindow extends javax.swing.JFrame implements TreeSelectionListe
 
         // Intensity param
         book = new DefaultMutableTreeNode(new HelpNodeInfo("Intensity", "/help/parameters/intensity.html"));
+        category.add(book);
+        
+        // Settings
+        book = new DefaultMutableTreeNode(new HelpNodeInfo("Settings", "/help/components/settings.html"));
         category.add(book);
 
         // RESULTS
@@ -177,10 +181,6 @@ public class HelpWindow extends javax.swing.JFrame implements TreeSelectionListe
         // Intensity result details
         book = new DefaultMutableTreeNode(new HelpNodeInfo("Intensity", "/help/components/resultdetails/intensityResultDetails.html"));
         subCategory.add(book);
-        
-        // Settings
-        book = new DefaultMutableTreeNode(new HelpNodeInfo("Settings", "/help/components/settings.html"));
-        top.add(book);
         
         // COMPONENTS
         category = new DefaultMutableTreeNode("Components");

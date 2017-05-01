@@ -6,6 +6,7 @@
 package feec.cz.brno.speechproc.calc.runscripts;
 
 import feec.cz.brno.speechproc.calc.runscripts.scriptparams.ScriptParameters;
+import feec.cz.brno.speechproc.gui.settings.Settings;
 import java.io.File;
 
 /**
@@ -24,7 +25,7 @@ public class MatlabScript extends ScriptRunnerAbstract {
 
     @Override
     public String buildCommand() {
-        return String.format(MATLAB_COMMAND, matlabScript.getAbsolutePath());        
+        return String.format(Settings.getInstance().getMatlabPath() + MATLAB_COMMAND, matlabScript.getAbsolutePath());
     }
     
 }

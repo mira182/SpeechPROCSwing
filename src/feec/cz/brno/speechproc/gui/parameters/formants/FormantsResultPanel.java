@@ -910,8 +910,8 @@ public class FormantsResultPanel extends javax.swing.JPanel {
     private void showGraphButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showGraphButtonActionPerformed
         logger.debug("Showing formants chart from " + csvResultFile.getName());
         if (formantsGraph == null) {
-            FormantCharts graph = new FormantCharts();
-            formantsGraph = new GraphWindow(csvResultFile.getName(), graph.createChart(csvResultFile));
+            FormantCharts charts = new FormantCharts();
+            formantsGraph = new GraphWindow(csvResultFile.getName(), charts.createChart(csvResultFile), charts.getControlPanel());
             formantsGraph.setVisible(true);
         } else {
             formantsGraph.setVisible(true);

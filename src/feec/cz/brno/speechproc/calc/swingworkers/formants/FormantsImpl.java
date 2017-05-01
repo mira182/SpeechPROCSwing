@@ -54,6 +54,7 @@ public class FormantsImpl extends SwingWorker<Boolean, ScriptResult> implements 
     protected Boolean doInBackground() throws Exception {
         parent.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         progressLabel.setText("Calculation of formants...");
+        logger.info("Starting formants calculations.");
         
         if (!OUTPUT_FOLDER_FORMANTS.exists()) {
             OUTPUT_FOLDER_FORMANTS.mkdirs();
@@ -71,7 +72,7 @@ public class FormantsImpl extends SwingWorker<Boolean, ScriptResult> implements 
             parameters.add(new ScriptParameter(OUTPUT_FILE_PARAM, new File(OUTPUT_FOLDER_FORMANTS.getAbsoluteFile() + FS + soundFile.getName() + "-formantsListing.csv")));
 
             try {
-                PraatScript praat = new PraatScript(new File(getClass().getClassLoader().getResource("praat/formants.praat").getFile()), parameters);
+                PraatScript praat = new PraatScript(SCRIPT_FILE_FORMANTS, parameters);
                 praat.runScript();
 
                 File csvResultFile = new File(String.valueOf(parameters.getParameter(OUTPUT_FILE_PARAM).getValue()));

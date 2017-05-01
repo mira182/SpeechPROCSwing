@@ -5,6 +5,8 @@
  */
 package feec.cz.brno.speechproc.gui.settings;
 
+import feec.cz.brno.speechproc.main.SpeechProc;
+
 /**
  *
  * @author mira
@@ -27,7 +29,11 @@ public class Settings {
     private String octavePath;
 
     public String getPraatPath() {
-        return praatPath;
+        if (SpeechProc.isWindows()) {
+            return "\"" + praatPath + "\"";
+        } else {
+            return praatPath;
+        }
     }
 
     public void setPraatPath(String praatPath) {
@@ -35,7 +41,11 @@ public class Settings {
     }
 
     public String getMatlabPath() {
-        return matlabPath;
+        if (SpeechProc.isWindows()) {
+            return "\"" + matlabPath + "\"";
+        } else {
+            return matlabPath;
+        }
     }
 
     public void setMatlabPath(String matlabPath) {
@@ -43,12 +53,20 @@ public class Settings {
     }
 
     public String getOctavePath() {
-        return octavePath;
+        if (SpeechProc.isWindows()) {
+            return "\"" + octavePath + "\"";
+        } else {
+            return octavePath;
+        }
     }
 
     public void setOctavePath(String octavePath) {
         this.octavePath = octavePath;
     }
-    
+
+    @Override
+    public String toString() {
+        return "Settings{" + "praatPath=" + praatPath + ", matlabPath=" + matlabPath + ", octavePath=" + octavePath + '}';
+    }
     
 }

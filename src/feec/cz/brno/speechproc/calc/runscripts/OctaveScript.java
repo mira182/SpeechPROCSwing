@@ -6,6 +6,7 @@
 package feec.cz.brno.speechproc.calc.runscripts;
 
 import feec.cz.brno.speechproc.calc.runscripts.scriptparams.ScriptParameters;
+import feec.cz.brno.speechproc.gui.settings.Settings;
 import java.io.File;
 
 
@@ -25,7 +26,7 @@ public class OctaveScript extends ScriptRunnerAbstract {
 
     @Override
     public String buildCommand() {
-        return String.format(OCTAVE_COMMAND, octaveScript.getAbsolutePath());
+        return String.format(Settings.getInstance().getOctavePath() + OCTAVE_COMMAND, octaveScript.getAbsolutePath());
     }
     
 }

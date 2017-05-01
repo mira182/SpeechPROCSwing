@@ -7,7 +7,8 @@ package feec.cz.brno.speechproc.gui.parameters.f0;
 
 import au.com.bytecode.opencsv.CSVReader;
 import feec.cz.brno.speechproc.calc.utility.CalcUtilities;
-import feec.cz.brno.speechproc.gui.api.charts.IChart;
+import feec.cz.brno.speechproc.gui.api.charts.IF0Charts;
+import feec.cz.brno.speechproc.gui.api.charts.VisibleAction;
 import feec.cz.brno.speechproc.gui.parameters.formants.FormantCharts;
 import java.awt.geom.Ellipse2D;
 import java.io.File;
@@ -16,6 +17,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JCheckBox;
+import javax.swing.JPanel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jfree.chart.ChartFactory;
@@ -31,12 +34,19 @@ import org.jfree.data.xy.XYSeriesCollection;
  *
  * @author mira
  */
-public class F0PitchCharts implements IChart {
+public class F0PitchCharts implements IF0Charts {
     
     private static final Logger logger = LogManager.getLogger(FormantCharts.class);
+    
+    private JPanel controlPanel;
+
+    public F0PitchCharts() {
+        controlPanel = new JPanel();
+    }
 
     @Override
     public ChartPanel createChart(File csvFile) {
+        logger.debug("Creating F0 pitch chart.");
         XYSeriesCollection dataset = new XYSeriesCollection();
 
         getSeriesFromFile(csvFile).forEach(series -> dataset.addSeries(series));
@@ -53,6 +63,7 @@ public class F0PitchCharts implements IChart {
 
     @Override
     public ChartPanel createComparedChart(File csvFile1, File csvFile2) {
+        logger.debug("Creating F0 pitch compared chart.");
         XYSeriesCollection dataset = new XYSeriesCollection();
 
         getSeriesFromFile(csvFile1).forEach(series -> dataset.addSeries(series));
@@ -121,12 +132,28 @@ public class F0PitchCharts implements IChart {
         return series;
     }
 
-    public void applySettings(JFreeChart chart) {
+    private void applySettings(JFreeChart chart) {
         XYPlot xyPlot = (XYPlot) chart.getPlot();
         XYItemRenderer renderer = xyPlot.getRenderer();
         Ellipse2D.Double circle = new Ellipse2D.Double(-2.0, -2.0, 4.0, 4.0);
         for (int serieIndex = 0; serieIndex < chart.getXYPlot().getSeriesCount(); serieIndex++) {
             renderer.setSeriesShape(serieIndex, circle);
         }
+        addControlPanel(xyPlot);
+    }
+    
+    private void addControlPanel(XYPlot plot) {
+        XYItemRenderer renderer = plot.getRenderer();
+        for (int i = 0; i < plot.getDataset().getSeriesCount(); i++) {
+            JCheckBox jcb = new JCheckBox(new VisibleAction(renderer, plot.getDataset().getSeriesKey(i).toString(), i));
+            jcb.setSelected(true);
+            renderer.setSeriesVisible(i, true);
+            controlPanel.add(jcb);
+        }
+    }
+
+    @Override
+    public JPanel getControlPanel() {
+        return controlPanel;
     }
 }
