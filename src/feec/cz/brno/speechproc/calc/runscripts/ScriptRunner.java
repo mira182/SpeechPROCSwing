@@ -8,7 +8,7 @@ package feec.cz.brno.speechproc.calc.runscripts;
 import java.io.IOException;
 
 /**
- *
+ * Interface for running the scripts.
  * @author mira
  */
 public interface ScriptRunner {

@@ -11,6 +11,7 @@ import feec.cz.brno.speechproc.calc.swingworkers.formants.FormantsImpl;
 import feec.cz.brno.speechproc.calc.swingworkers.formants.IFormants;
 import feec.cz.brno.speechproc.calc.swingworkers.intensity.IIntensity;
 import feec.cz.brno.speechproc.calc.swingworkers.intensity.IntensityImpl;
+import feec.cz.brno.speechproc.calc.utility.ZipFolders;
 import feec.cz.brno.speechproc.gui.help.HelpWindow;
 import feec.cz.brno.speechproc.gui.icons.Icons;
 import feec.cz.brno.speechproc.gui.parameters.JTabbedPaneCloseButton;
@@ -24,6 +25,7 @@ import java.awt.Cursor;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
@@ -32,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
+import java.util.zip.ZipOutputStream;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
@@ -50,7 +53,7 @@ import static feec.cz.brno.speechproc.calc.swingworkers.formants.IFormants.OUTPU
 import static feec.cz.brno.speechproc.calc.swingworkers.intensity.IIntensity.OUTPUT_FOLDER_INTENSITY;
 
 /**
- *
+ * Main class representing main window of application.
  * @author mira
  */
 public class SpeechProc extends javax.swing.JFrame {
@@ -58,8 +61,8 @@ public class SpeechProc extends javax.swing.JFrame {
     private final static Logger logger = LogManager.getLogger(SpeechProc.class);
     
     public static final String FS = System.getProperty("file.separator");
-    public static final String PRAAT_SCRIPTS_COPY_FOLDER = "praat";
     public static final String OS = System.getProperty("os.name").toLowerCase();
+    public static final String PRAAT_SCRIPTS_COPY_FOLDER = "praat";
     public static String JAR_FOLDER_PATH;
     static {
         try {
@@ -176,6 +179,11 @@ public class SpeechProc extends javax.swing.JFrame {
         saveButton.setFocusable(false);
         saveButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         saveButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
         toolBar.add(saveButton);
 
         settingsButton.setIcon(Icons.SETTINGS_ICON);
@@ -418,6 +426,11 @@ public class SpeechProc extends javax.swing.JFrame {
         saveAsMenuItem.setMnemonic('a');
         saveAsMenuItem.setText("Save As ...");
         saveAsMenuItem.setDisplayedMnemonicIndex(5);
+        saveAsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveAsMenuItemActionPerformed(evt);
+            }
+        });
         fileMenu.add(saveAsMenuItem);
 
         settingsMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
@@ -462,7 +475,7 @@ public class SpeechProc extends javax.swing.JFrame {
 
         intensityMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         intensityMenuItem.setMnemonic('d');
-        intensityMenuItem.setText("Loudness");
+        intensityMenuItem.setText("Intensity");
         intensityMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 intensityMenuItemActionPerformed(evt);
@@ -524,7 +537,7 @@ public class SpeechProc extends javax.swing.JFrame {
 
         contentsMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
         contentsMenuItem.setMnemonic('c');
-        contentsMenuItem.setText("Contents");
+        contentsMenuItem.setText("Help");
         contentsMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 contentsMenuItemActionPerformed(evt);
@@ -638,6 +651,14 @@ public class SpeechProc extends javax.swing.JFrame {
     private void helpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpButtonActionPerformed
         showHelp();
     }//GEN-LAST:event_helpButtonActionPerformed
+
+    private void saveAsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsMenuItemActionPerformed
+        save();
+    }//GEN-LAST:event_saveAsMenuItemActionPerformed
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        save();
+    }//GEN-LAST:event_saveButtonActionPerformed
 
     private void intensityMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                  
         calculateIntensity();
@@ -836,11 +857,36 @@ public class SpeechProc extends javax.swing.JFrame {
     }
     
     private void showHelp() {
-        if (helpWindow == null) {
-            helpWindow = new HelpWindow();
-            helpWindow.setVisible(true);
-        } else {
-            helpWindow.setVisible(true);
+//        if (helpWindow == null) {
+//            helpWindow = new HelpWindow();
+//            helpWindow.setVisible(true);
+//        } else {
+//            helpWindow.setVisible(true);
+//        }
+        helpWindow = new HelpWindow();
+        helpWindow.setVisible(true);
+    }
+    
+    private void save() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Save results");
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Zip file", "zip"));
+
+        if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            try {
+
+                FileOutputStream fos = new FileOutputStream(fileChooser.getSelectedFile());
+
+                ZipOutputStream zos = new ZipOutputStream(fos);
+
+                ZipFolders.addDirToArchive(zos, OUTPUT_FOLDER);
+
+                // close the ZipOutputStream
+                zos.close();
+
+            } catch (IOException ioe) {
+                System.out.println("Error creating zip file: " + ioe);
+            }
         }
     }
     

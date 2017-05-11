@@ -10,7 +10,7 @@ import feec.cz.brno.speechproc.gui.settings.Settings;
 import java.io.File;
 
 /**
- *
+ * 
  * @author mira
  */
 public class MatlabScript extends ScriptRunnerAbstract {

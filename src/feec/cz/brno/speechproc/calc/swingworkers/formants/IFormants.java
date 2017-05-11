@@ -12,7 +12,7 @@ import static feec.cz.brno.speechproc.main.SpeechProc.FS;
 import static feec.cz.brno.speechproc.main.SpeechProc.JAR_FOLDER_PATH;
 
 /**
- *
+ * Interface contains constants for formants calculation.
  * @author mira
  */
 public interface IFormants extends SpeechParameter {

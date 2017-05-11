@@ -5,8 +5,7 @@
  */
 package feec.cz.brno.speechproc.gui.parameters.results;
 
-import java.awt.BorderLayout;
-import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import org.jfree.chart.ChartPanel;
 
 /**
@@ -19,16 +18,17 @@ public class GraphWindow extends javax.swing.JFrame {
      * Creates new form GraphWindow
      * @param title
      * @param chartPanel
+     * @param controlPanel
      */
-    public GraphWindow(String title, ChartPanel chartPanel, JPanel controlPanel) {
+    public GraphWindow(String title, ChartPanel chartPanel, JScrollPane controlPanel) {
         super(title);
         initComponents();
         initPanels(chartPanel, controlPanel);
     }
     
-    private void initPanels(ChartPanel chartPanel, JPanel controlPanel) {
-        add(chartPanel, BorderLayout.CENTER);
-        add(controlPanel, BorderLayout.SOUTH);
+    private void initPanels(ChartPanel chartPanel, JScrollPane controlPanel) {
+        add(chartPanel);
+        add(controlPanel);
         pack();
         setVisible(true);
     }
@@ -42,6 +42,7 @@ public class GraphWindow extends javax.swing.JFrame {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.PAGE_AXIS));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

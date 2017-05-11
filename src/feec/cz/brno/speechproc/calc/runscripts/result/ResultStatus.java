@@ -6,7 +6,7 @@
 package feec.cz.brno.speechproc.calc.runscripts.result;
 
 /**
- *
+ * Status of result.
  * @author hynstm
  */
 public enum ResultStatus {

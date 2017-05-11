@@ -3,15 +3,30 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/swingworkers/f0/F0Impl.java</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/utility/AudioSampleReader.java</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/runscripts/PraatScript.java</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/gui/parameters/results/GraphWindow.java</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/gui/parameters/results/ResultPanel.java</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/resources/praat/voice_report.praat</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/swingworkers/formants/FormantsImpl.java</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/swingworkers/intensity/IIntensity.java</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/gui/parameters/intensity/IntensityResultPanel.java</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/swingworkers/f0/IF0.java</file>
             <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/gui/parameters/intensity/IntensityCharts.java</file>
             <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/swingworkers/energy/Energy.java</file>
-            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/swingworkers/f0/F0Impl.java</file>
-            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/main/SpeechProc.java</file>
-            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/utility/AudioSampleReader.java</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/gui/settings/SettingsDialog.java</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/resources/praat/F0.praat</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/runscripts/MatlabScript.java</file>
             <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/gui/parameters/f0/F0ResultPanel.java</file>
-            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/resources/praat/voice_report.praat</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/gui/parameters/f0/F0PitchCharts.java</file>
             <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/swingworkers/matlabscript/MatlabScriptWorkerImpl.java</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/resources/praat/formants.praat</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/runscripts/OctaveScript.java</file>
             <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/gui/parameters/formants/FormantCharts.java</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/utility/ExtractResources.java</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/gui/parameters/formants/FormantsResultPanel.java</file>
+            <file>file:/home/mira/NetBeansProjects/SpeechPROCSwing/src/feec/cz/brno/speechproc/calc/swingworkers/intensity/IntensityImpl.java</file>
         </group>
     </open-files>
 </project-private>

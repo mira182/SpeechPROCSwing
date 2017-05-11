@@ -6,7 +6,7 @@
 package feec.cz.brno.speechproc.calc.runscripts.result;
 
 /**
- *
+ * Enum represents category of result.
  * @author hynstm
  */
 public enum ResultCategory {

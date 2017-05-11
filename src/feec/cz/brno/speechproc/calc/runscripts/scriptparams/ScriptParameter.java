@@ -6,7 +6,7 @@
 package feec.cz.brno.speechproc.calc.runscripts.scriptparams;
 
 /**
- *
+ * Class representing script parameter. Can be object of any type.
  * @author mira
  */
 public class ScriptParameter<T> {

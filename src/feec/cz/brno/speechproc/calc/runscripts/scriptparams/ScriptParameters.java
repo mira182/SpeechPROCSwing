@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- *
+ * Class represents list of parameters for scripts ran in command line.
  * @author hynstm
  */
 public class ScriptParameters implements Iterable<ScriptParameter> {

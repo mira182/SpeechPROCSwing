@@ -27,7 +27,7 @@ import org.apache.logging.log4j.Logger;
 import static feec.cz.brno.speechproc.main.SpeechProc.FS;
 
 /**
- *
+ * Swingworker for computing intensity in background.
  * @author mira
  */
 public class IntensityImpl extends SwingWorker<Boolean, ScriptResult> implements IIntensity {
@@ -60,12 +60,14 @@ public class IntensityImpl extends SwingWorker<Boolean, ScriptResult> implements
         for (File soundFile : soundFiles) {
             ScriptParameters parameters = new ScriptParameters();
             parameters.add(new ScriptParameter("soundFilePath", soundFile.getAbsolutePath()));
-            parameters.add(new ScriptParameter(OUTPUT_FILE_PARAM, new File(OUTPUT_FOLDER_INTENSITY.getAbsolutePath() + FS + soundFile.getName() + "-intensity.csv")));
-            parameters.add(new ScriptParameter(OUTPUT_FILE_STATS_PARAM, new File(OUTPUT_FOLDER_INTENSITY.getAbsolutePath() + FS + soundFile.getName() + "-intensity-stats.csv")));
-
+            parameters.add(new ScriptParameter(OUTPUT_FILE_PARAM, OUTPUT_FOLDER_INTENSITY.getAbsolutePath() + FS + soundFile.getName() + "-intensity.csv"));
+            parameters.add(new ScriptParameter(OUTPUT_FILE_STATS_PARAM, OUTPUT_FOLDER_INTENSITY.getAbsolutePath() + FS + soundFile.getName() + "-intensity-stats.csv"));
+            
             try {
-                PraatScript praat = new PraatScript(SCRIPT_FILE_INTENSITY, parameters);
-                praat.runScript();
+                if (!new File((String) parameters.getParameter(OUTPUT_FILE_PARAM).getValue()).exists()) {
+                    PraatScript praat = new PraatScript(SCRIPT_FILE_INTENSITY, parameters);
+                    praat.runScript();
+                }
 
                 File csvResultFile = new File(String.valueOf(parameters.getParameter(OUTPUT_FILE_PARAM).getValue()));
                 File csvStatsFile = new File(String.valueOf(parameters.getParameter(OUTPUT_FILE_STATS_PARAM).getValue()));

@@ -135,7 +135,7 @@ public class HelpWindow extends javax.swing.JFrame implements TreeSelectionListe
         DefaultMutableTreeNode subCategory = null;
         DefaultMutableTreeNode book = null;
 
-        category = new DefaultMutableTreeNode("Main functionality");
+        category = new DefaultMutableTreeNode("Speech parameters calculation");
         top.add(category);
 
         // Formant param
@@ -148,22 +148,6 @@ public class HelpWindow extends javax.swing.JFrame implements TreeSelectionListe
 
         // Intensity param
         book = new DefaultMutableTreeNode(new HelpNodeInfo("Intensity", "/help/parameters/intensity.html"));
-        category.add(book);
-        
-        // Settings
-        book = new DefaultMutableTreeNode(new HelpNodeInfo("Settings", "/help/components/settings.html"));
-        category.add(book);
-
-        // RESULTS
-        category = new DefaultMutableTreeNode("Results");
-        top.add(category);
-        
-        // Result panel
-        book = new DefaultMutableTreeNode(new HelpNodeInfo("Result panel", "/help/components/resultPanel.html"));
-        category.add(book);
-        
-        // Sound file list
-        book = new DefaultMutableTreeNode(new HelpNodeInfo("Sound file list", "/help/components/soundFileList.html"));
         category.add(book);
         
         // RESULT DETAILS
@@ -183,16 +167,27 @@ public class HelpWindow extends javax.swing.JFrame implements TreeSelectionListe
         subCategory.add(book);
         
         // COMPONENTS
-        category = new DefaultMutableTreeNode("Components");
+        category = new DefaultMutableTreeNode("Main components");
         top.add(category);
         
         // Toolbar
         book = new DefaultMutableTreeNode(new HelpNodeInfo("Toolbar", "/help/components/toolbar.html"));
         category.add(book);
-
-        // 
-//        book = new DefaultMutableTreeNode(new HelpNodeInfo("The Java Virtual Machine Specification", "vm.html"));
-//        category.add(book);
+        
+        // Sound file list
+        book = new DefaultMutableTreeNode(new HelpNodeInfo("Sound file list", "/help/components/soundFileList.html"));
+        category.add(book);
+        
+        book = new DefaultMutableTreeNode(new HelpNodeInfo("Result panel", "/help/components/resultPanel.html"));
+        category.add(book);
+        
+        // SETTINGS
+        category = new DefaultMutableTreeNode("Settings");
+        top.add(category);
+        
+        // Settings
+        book = new DefaultMutableTreeNode(new HelpNodeInfo("Settings", "/help/components/settings.html"));
+        category.add(book);
     }
     
     @Override

@@ -11,7 +11,7 @@ import java.io.IOException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
- *
+ * Class for energy calculation.
  * @author mira
  */
 public class Energy {

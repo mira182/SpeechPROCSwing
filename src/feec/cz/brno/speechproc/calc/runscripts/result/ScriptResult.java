@@ -8,8 +8,8 @@ package feec.cz.brno.speechproc.calc.runscripts.result;
 import java.io.File;
 
 /**
- *
- * @author hynstm
+ * Result of script running. Used for showing in result panel.
+ * @author mira
  */
 public class ScriptResult {
     

@@ -14,3 +14,4 @@ a.more-link { color: white; font-weight: bold; font-size: 14px; font-family: Ari
 
 a.more-link:hover { text-decoration: none; background-color: #666; border-radius: 0px; }
 
+img { margin: 10px 10px 10px 10px;}

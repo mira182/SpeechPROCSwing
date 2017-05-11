@@ -29,7 +29,7 @@ import static feec.cz.brno.speechproc.main.SpeechProc.FS;
 
 
 /**
- *
+ * Swingworker for computing F0 in background.
  * @author mira
  */
 public class F0Impl extends SwingWorker<Boolean, ScriptResult> implements IF0 {
@@ -69,10 +69,12 @@ public class F0Impl extends SwingWorker<Boolean, ScriptResult> implements IF0 {
             parameters.add(new ScriptParameter("soundFilePath", soundFile.getAbsolutePath()));
             parameters.add(new ScriptParameter(OUTPUT_FILE_PARAM, OUTPUT_FOLDER_F0.getAbsolutePath() + FS + soundFile.getName() + "-pitch.csv"));
             parameters.add(new ScriptParameter(OUTPUT_FILE_STATS_PARAM, OUTPUT_FOLDER_F0.getAbsolutePath() + FS +  soundFile.getName() + "-pitch-stats.csv"));
-
+            
             try {
-                PraatScript praat = new PraatScript(SCRIPT_FILE_F0, parameters);
-                praat.runScript();
+                if (!new File((String)parameters.getParameter(OUTPUT_FILE_PARAM).getValue()).exists()) {
+                    PraatScript praat = new PraatScript(SCRIPT_FILE_F0, parameters);
+                    praat.runScript();
+                }
 
                 File csvResultFile = new File(String.valueOf(parameters.getParameter(OUTPUT_FILE_PARAM).getValue()));
                 File csvStatsFile = new File(String.valueOf(parameters.getParameter(OUTPUT_FILE_STATS_PARAM).getValue()));

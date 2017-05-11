@@ -11,7 +11,7 @@ import static feec.cz.brno.speechproc.main.SpeechProc.FS;
 import static feec.cz.brno.speechproc.main.SpeechProc.JAR_FOLDER_PATH;
 
 /**
- *
+ * Interface containing constants related to speech parameters.
  * @author mira
  */
 public interface SpeechParameter {
@@ -19,6 +19,10 @@ public interface SpeechParameter {
     public static final String OUTPUT_FILE_PARAM = "outputFile";
     public static final String OUTPUT_FILE_STATS_PARAM = "outputStatsFileName";
     public static final String OUTPUT_FOLDER_NAME = "output";
+    
+    /**
+     * Output folder of calculated values (csv files)
+     */
     public static final File OUTPUT_FOLDER = new File(JAR_FOLDER_PATH + FS + OUTPUT_FOLDER_NAME);
     
     // TODO might be deleted

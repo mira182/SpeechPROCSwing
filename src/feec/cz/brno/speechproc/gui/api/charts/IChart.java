@@ -7,19 +7,19 @@ package feec.cz.brno.speechproc.gui.api.charts;
 
 import java.io.File;
 import java.util.List;
-import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import org.jfree.chart.ChartPanel;
 import org.jfree.data.xy.XYSeries;
 
 /**
- *
+ * Common interface for creating charts.
  * @author hynstm
  */
 public interface IChart {
     
     List<XYSeries> getSeriesFromFile(File csvFile);
     
-    JPanel getControlPanel();
+    JScrollPane getControlPanel();
 
     ChartPanel createChart(File csvFile);
     

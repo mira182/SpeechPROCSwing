@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger;
 import static feec.cz.brno.speechproc.main.SpeechProc.FS;
 
 /**
- *
+ * Abstract class for running the scripts through command line.
  * @author mira
  */
 public abstract class ScriptRunnerAbstract implements ScriptRunner {

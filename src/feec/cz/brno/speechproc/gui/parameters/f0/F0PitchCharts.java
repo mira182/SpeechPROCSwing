@@ -10,6 +10,8 @@ import feec.cz.brno.speechproc.calc.utility.CalcUtilities;
 import feec.cz.brno.speechproc.gui.api.charts.IF0Charts;
 import feec.cz.brno.speechproc.gui.api.charts.VisibleAction;
 import feec.cz.brno.speechproc.gui.parameters.formants.FormantCharts;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.geom.Ellipse2D;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jfree.chart.ChartFactory;
@@ -38,10 +41,12 @@ public class F0PitchCharts implements IF0Charts {
     
     private static final Logger logger = LogManager.getLogger(FormantCharts.class);
     
-    private JPanel controlPanel;
+    private JPanel panel;
+    private JScrollPane controlPanel;
 
     public F0PitchCharts() {
-        controlPanel = new JPanel();
+        panel = new JPanel(new GridLayout(2, 5));
+        controlPanel = new JScrollPane(panel);
     }
 
     @Override
@@ -148,12 +153,12 @@ public class F0PitchCharts implements IF0Charts {
             JCheckBox jcb = new JCheckBox(new VisibleAction(renderer, plot.getDataset().getSeriesKey(i).toString(), i));
             jcb.setSelected(true);
             renderer.setSeriesVisible(i, true);
-            controlPanel.add(jcb);
+            panel.add(jcb, BorderLayout.CENTER);
         }
     }
 
     @Override
-    public JPanel getControlPanel() {
+    public JScrollPane getControlPanel() {
         return controlPanel;
     }
 }

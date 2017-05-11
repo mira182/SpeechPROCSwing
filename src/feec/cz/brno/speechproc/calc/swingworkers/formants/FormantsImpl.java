@@ -29,7 +29,7 @@ import static feec.cz.brno.speechproc.main.SpeechProc.FS;
 
 
 /**
- *
+ * Swingworker for computing formants in background.
  * @author mira
  */
 public class FormantsImpl extends SwingWorker<Boolean, ScriptResult> implements IFormants {
@@ -69,11 +69,13 @@ public class FormantsImpl extends SwingWorker<Boolean, ScriptResult> implements 
             parameters.add(new ScriptParameter("windowLength", paramsDialog.getWindowLength()));
             parameters.add(new ScriptParameter("preemphasis", paramsDialog.getPreemphasis()));
             parameters.add(new ScriptParameter("soundFilePath", soundFile.getAbsolutePath()));
-            parameters.add(new ScriptParameter(OUTPUT_FILE_PARAM, new File(OUTPUT_FOLDER_FORMANTS.getAbsoluteFile() + FS + soundFile.getName() + "-formantsListing.csv")));
+            parameters.add(new ScriptParameter(OUTPUT_FILE_PARAM, OUTPUT_FOLDER_FORMANTS.getAbsoluteFile() + FS + soundFile.getName() + "-formantsListing.csv"));
 
             try {
-                PraatScript praat = new PraatScript(SCRIPT_FILE_FORMANTS, parameters);
-                praat.runScript();
+                if (!new File((String) parameters.getParameter(OUTPUT_FILE_PARAM).getValue()).exists()) {
+                    PraatScript praat = new PraatScript(SCRIPT_FILE_FORMANTS, parameters);
+                    praat.runScript();
+                }
 
                 File csvResultFile = new File(String.valueOf(parameters.getParameter(OUTPUT_FILE_PARAM).getValue()));
                 

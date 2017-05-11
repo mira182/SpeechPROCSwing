@@ -6,7 +6,8 @@
 package feec.cz.brno.speechproc.calc.runscripts;
 
 /**
- *
+ * Custom exception for script run failure.
+ * 
  * @author hynstm
  */
 public class ScriptRunException extends Exception {

@@ -12,7 +12,7 @@ import static feec.cz.brno.speechproc.main.SpeechProc.FS;
 import static feec.cz.brno.speechproc.main.SpeechProc.JAR_FOLDER_PATH;
 
 /**
- *
+ * Interface contains constants used for F0 calculations.
  * @author mira
  */
 public interface IF0 extends SpeechParameter {
