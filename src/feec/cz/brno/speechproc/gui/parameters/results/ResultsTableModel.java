@@ -44,4 +44,8 @@ public class ResultsTableModel extends DefaultTableModel {
     public ScriptResult getResult(int row) {
         return results.get(row);
     }
+    
+    public List<ScriptResult> getResults() {
+        return results;
+    }
 }

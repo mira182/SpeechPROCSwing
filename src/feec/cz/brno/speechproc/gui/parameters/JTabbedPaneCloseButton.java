@@ -9,6 +9,7 @@ package feec.cz.brno.speechproc.gui.parameters;
  *
  * @author mira
  */
+import feec.cz.brno.speechproc.gui.parameters.results.ResultPanel;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -148,6 +149,7 @@ public class JTabbedPaneCloseButton extends JTabbedPane {
             if (e.getSource() instanceof JButton) {
                 JButton clickedButton = (JButton) e.getSource();
                 JTabbedPane tabbedPane = (JTabbedPane) clickedButton.getParent().getParent().getParent();
+                ((ResultPanel)tab).deleteResultCsvFiles();
                 tabbedPane.remove(tab);
             }
         }

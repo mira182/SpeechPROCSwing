@@ -690,7 +690,6 @@ public class SpeechProc extends javax.swing.JFrame {
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setMultiSelectionEnabled(true);
         fileChooser.setDialogTitle("Open sound file");
-        // TODO use user.home
 //        fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
         fileChooser.setCurrentDirectory(new File("/media/mira/0f00c26e-7ed7-4b05-99c3-763797a05b44/mira/School/2016_17/DIPLOMKA/PAR_CZ_001/K1004/"));
         fileChooser.setFileFilter(new FileNameExtensionFilter("Sound files (*.wav, *.mp3)", "wav", "mp3"));
@@ -857,14 +856,12 @@ public class SpeechProc extends javax.swing.JFrame {
     }
     
     private void showHelp() {
-//        if (helpWindow == null) {
-//            helpWindow = new HelpWindow();
-//            helpWindow.setVisible(true);
-//        } else {
-//            helpWindow.setVisible(true);
-//        }
-        helpWindow = new HelpWindow();
-        helpWindow.setVisible(true);
+        if (helpWindow == null) {
+            helpWindow = new HelpWindow();
+            helpWindow.setVisible(true);
+        } else {
+            helpWindow.setVisible(true);
+        }
     }
     
     private void save() {
@@ -884,8 +881,9 @@ public class SpeechProc extends javax.swing.JFrame {
                 // close the ZipOutputStream
                 zos.close();
 
-            } catch (IOException ioe) {
-                System.out.println("Error creating zip file: " + ioe);
+            } catch (IOException ex) {
+                logger.error("Creating zip file failed.", ex);
+                JOptionPane.showMessageDialog(this, "Creating zip file failed.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }

@@ -232,7 +232,7 @@ public class IntensityResultPanel extends javax.swing.JPanel {
         try {
             CSVReader reader = new CSVReader(new FileReader(csvResultFile), ' ');
             reader.readNext();
-            intensityTableModel.setColumnIdentifiers(new String[]{"Time (s)", "Intensity"});
+            intensityTableModel.setColumnIdentifiers(new String[]{"Time (s)", "Intensity (dB)"});
             while ((csvLine = reader.readNext()) != null) {
                 intensityTableModel.addRow(csvLine);
             }
@@ -248,13 +248,13 @@ public class IntensityResultPanel extends javax.swing.JPanel {
             reader.readNext();
             csvLine = reader.readNext();
             
-            minValueLabel.setText(csvLine[0]);
-            timeOfMinValueLabel.setText(csvLine[1]);
-            maxValueLabel.setText(csvLine[2]);
-            timeOfMaxValueLabel.setText(csvLine[3]);
-            meanValueLabel.setText(csvLine[4]);
-            medianValueLabel.setText(csvLine[5]);
-            stdevValueLabel.setText(csvLine[6]);
+            minValueLabel.setText(csvLine[0] + " dB");
+            timeOfMinValueLabel.setText(csvLine[1] + " s");
+            maxValueLabel.setText(csvLine[2] + " dB");
+            timeOfMaxValueLabel.setText(csvLine[3] + " s");
+            meanValueLabel.setText(csvLine[4] + " dB");
+            medianValueLabel.setText(csvLine[5] + " dB");
+            stdevValueLabel.setText(csvLine[6] + " dB");
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Failed to load intensity table from CSV file " + csvStatsFile.getName(), "Error", JOptionPane.ERROR_MESSAGE);
             logger.error("Failed to load formants intensity from CSV file!", ex);

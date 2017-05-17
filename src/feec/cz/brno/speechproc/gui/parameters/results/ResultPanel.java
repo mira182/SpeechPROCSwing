@@ -24,6 +24,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.nio.file.Files;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -234,6 +236,24 @@ public class ResultPanel extends javax.swing.JPanel {
     
     public ResultsTableModel getResultTableModel() {
         return resultTableModel;
+    }
+    
+    public void deleteResultCsvFiles() {
+        for (ScriptResult result : resultTableModel.getResults()) {
+            try {
+                if (result.getCsvResult() != null) {
+                    Files.deleteIfExists(result.getCsvResult().toPath());
+                    logger.debug("Deleted csv file: {}", result.getCsvResult());
+                }
+                if (result.getCsvStatsResult() != null) {
+                    Files.deleteIfExists(result.getCsvStatsResult().toPath());
+                    logger.debug("Deleted csv file: {}", result.getCsvStatsResult());
+                }
+            } catch (IOException ex) {
+                logger.error("Failed to delete csv files assigned to result {}", result, ex);
+                JOptionPane.showMessageDialog(this, "Failed to delete csv files with calculated values.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
     
     protected void showResultDetails() {

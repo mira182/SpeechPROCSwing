@@ -10,19 +10,22 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
- *
+ * Utility class for zipping files.
  * @author mira
  */
 public class ZipFolders {
-    
-    
+
+    private final static Logger logger = LogManager.getLogger(ZipFolders.class);
+
     public static void addDirToArchive(ZipOutputStream zos, File srcFile) {
 
         File[] files = srcFile.listFiles();
 
-        System.out.println("Adding directory: " + srcFile.getName());
+        logger.info("Adding directory: {}", srcFile.getName());
 
         for (int i = 0; i < files.length; i++) {
 
@@ -34,7 +37,7 @@ public class ZipFolders {
 
             try {
 
-                System.out.println("tAdding file: " + files[i].getName());
+                logger.info("tAdding file: {}", files[i].getName());
 
                 // create byte buffer
                 byte[] buffer = new byte[1024];
@@ -54,8 +57,8 @@ public class ZipFolders {
                 // close the InputStream
                 fis.close();
 
-            } catch (IOException ioe) {
-                System.out.println("IOException :" + ioe);
+            } catch (IOException ex) {
+                logger.error("Error adding file into zip file", ex);
             }
 
         }
